@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     btntext: {
         color: colors.blue,
-        fontFamily:"SF-Pro-Display-SemiBold"
+         fontFamily:"SF-Pro-Display-Bold"
 
     },
     resbtn: {

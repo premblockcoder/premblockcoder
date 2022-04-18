@@ -30,8 +30,6 @@ const PrivateKey = ({ navigation, route }) => {
             </SafeAreaView>
         </>
     )
-
-
 }
 export default PrivateKey
 
