@@ -5,58 +5,38 @@ import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
 
-const CustomToken = ({ navigation }) => {
+const ChangePassword = ({ navigation }) => {
     return (
         <>
          <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
-                <CustomHeader text={"Add Custom Token"} back />
+                <CustomHeader text={"Change Password"} back />
                 <View style={{ flex: 1 }}>
-                    <View style={styles.vieww}>
-                        <Text style={styles.text4}>Network</Text>
-                        <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                            <Text style={styles.text5}>Ethereum</Text>
-                            <Image source={Images.arrowright}
-                                style={{ marginLeft: 17 }}
-                            />
-                        </View>
-                    </View>
+                    
                     <ScrollView style={{ flex: 1 }}>
                         <View style={styles.containter}>
-                            <View style={styles.box}>
-                                <Text style={styles.text2}>Contract Address</Text>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <TouchableOpacity>
-                                        <Text style={styles.text3}>Paste</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <Image source={Images.scanner}
-                                            style={styles.Image}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
+                          
+                            <View style={{ marginTop: 40 }}>
+                                <Text style={styles.text}>Old Password</Text>
+                                <InputText placeholder={"Enter old password"} placeholderTextColor={colors.gray }
+              />
                             </View>
                             <View style={{ marginTop: 20 }}>
-                                <Text style={styles.text}>Name</Text>
-                                <InputText placeholder={"Enter token name"}
-                                    inputstying={styles.input1}  placeholderTextColor={colors.textlightgray} />
+                                <Text style={styles.text}>New Password</Text>
+                                <InputText placeholder={"Enter new password"} placeholderTextColor={colors.gray }
+              />
                             </View>
                             <View style={{ marginTop: 20 }}>
-                                <Text style={styles.text}>Symbol</Text>
-                                <InputText inputstying={styles.input1}
-                                    placeholder={"Enter token name"}  placeholderTextColor={colors.textlightgray} />
-                            </View>
-                            <View style={{ marginTop: 20 }}>
-                                <Text style={styles.text}>Decimal</Text>
-                                <InputText inputstying={styles.input1} placeholder={"Enter token name"}
-                                 placeholderTextColor={colors.textlightgray} />
+                                <Text style={styles.text}>Confirm Password</Text>
+                                <InputText placeholder={"Confirm password"} placeholderTextColor={colors.gray }
+              />
                             </View>
                         </View>
                         <View style={{ paddingHorizontal: 20, marginTop: 32 }}>
-                            <Button onPress={() => navigation.navigate('AddToken')}
+                            <Button onPress={() => navigation.navigate('Login')}
                                 styling={{ height: 52 }}
-                                text={'Add Token'}
+                                text={'Submit'}
                                 textstyle={{ fontSize: 16, fontWeight: "600" }}
                             />
                         </View>
@@ -66,7 +46,7 @@ const CustomToken = ({ navigation }) => {
         </>
     )
 }
-export default CustomToken
+export default ChangePassword
 
 const styles = StyleSheet.create({
     containter: {
@@ -76,7 +56,8 @@ const styles = StyleSheet.create({
     text: {
         color: colors.black,
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 16,
+        marginBottom:10
     },
     text2: {
         color: colors.black,

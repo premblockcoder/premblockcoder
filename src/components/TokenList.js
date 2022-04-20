@@ -47,6 +47,17 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingVertical: 17,
         paddingHorizontal: 20,
-    }
+    },
+    cointext: {
+        color: colors.black,
+        fontSize: 18,
+        fontWeight: '700',
+
+    },
+    quantitytext: {
+        color: colors.textlightgray,
+        fontSize: 13,
+        marginTop: 4
+    },
 
 })

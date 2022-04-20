@@ -4,7 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+<<<<<<< HEAD
 import com.oblador.vectoricons.VectorIconsPackage;
+=======
+import com.zoontek.rnpermissions.RNPermissionsPackage;
+>>>>>>> d15522ea9e4365d23c2ecdfff88be6800a251a91
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

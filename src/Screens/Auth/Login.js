@@ -22,7 +22,7 @@ const Login = ({ navigation }) => {
             <View style={{ marginTop: 26 }}>
               <InputText placeholder={"Email Address"} placeholderTextColor={colors.darktextgray}
                 showright rightimg={Images.at} />
-              <InputText placeholder={"Password"}
+              <InputText placeholder={"Password"}placeholderTextColor={colors.darktextgray}
                 showright rightimg={Images.lock}
                 secureTextEntry
                 inputstying={{ marginTop: 14 }}
@@ -30,7 +30,8 @@ const Login = ({ navigation }) => {
             </View>
             <View style={{ marginTop: 34 }}>
               <Button
-                text={"Login"} img={Images.arrowright} onPress={() => navigation.navigate('BottomTabs')}>
+                text={"Login"} img={Images.arrowright}
+                 onPress={() => navigation.navigate('BottomTabs')}>
               </Button>
               <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
                 <Text

@@ -22,7 +22,9 @@ export const colors ={
     yellow:"#EBBC21E5",
     extradarkgray:"#616161",
     lightgrayback:"#E9E9E9",
-    extralightblack:"#010F07"
+    extralightblack:"#010F07",
+    gray:"#8E8E8E"
+    
 
 
 

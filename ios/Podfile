@@ -20,6 +20,8 @@ target 'TricePay' do
   )
    pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
   target 'TricePayTests' do
     inherit! :complete
     # Pods for testing

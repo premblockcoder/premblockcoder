@@ -31,7 +31,10 @@ import BitcoinDetail from '../Screens/Dashboard/BitcoinDetail.js';
 import SendBitcoin from '../Screens/Dashboard/SendBitcoin.js';
 import ConfirmSend from '../Screens/Dashboard/ConfirmSend.js';
 import CompleteTrans from '../Screens/Dashboard/CompleteTrans.js';
-
+import notification from '../Screens/Dashboard/notification.js';
+import Scanner from '../Screens/Dashboard/Scanner.js';
+import ChangePassword from '../Screens/Dashboard/ChangePasword.js';
+import PinView from '../Screens/Dashboard/PinView.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -116,7 +119,22 @@ const Main = () => {
           name="CompleteTrans"
           component={CompleteTrans}
         />
-
+          <Stack.Screen
+          name="notification"
+          component={notification}
+        />
+         <Stack.Screen
+          name="Scanner"
+          component={Scanner}
+        />
+     <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+        />
+         <Stack.Screen
+          name="PinView"
+          component={PinView}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

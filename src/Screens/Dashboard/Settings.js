@@ -3,8 +3,7 @@ import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, StatusBa
 import { CustomHeader } from '../../components/common';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
-
-const Settings = () => {
+const Settings = ({ navigation }) => {
     const [value, setValue] = useState(false);
     const Data = [
         {
@@ -27,40 +26,29 @@ const Settings = () => {
         },
         {
             id: 4,
+            heading: "Enable 2FA",
+            icon: Images.phone,
+            text: "Enable 2FA",
+        },
+        {
+            id: 5,
             heading: "Refer to Friends",
             icon: Images.arrowicon,
             text: "Get $10 for reffering friends",
         },
-    ];
-    const Data2 = [
-        {
-            id: 1,
-            image: Images.bell,
-            Text: 'Push Notifications',
-            content: 'For daily update you will get it',
-        },
-        {
-            id: 2,
-            image: Images.bell,
-            Text: 'SMS Notifications',
-            content: 'Add Facebook, Twitter etc',
-        },
-        {
-            id: 3,
-            image: Images.bell,
-            Text: 'Promotional Notifications',
-            content: 'Add Facebook, Twitter etc',
-        },
-    ];
 
-    setSwitchValue = (val, ind) => {
-        const tempData = _.cloneDeep(this.state.Data);
-        tempData[ind].switch = val;
-        this.setState({ Data: tempData });
+    ];
+    const on_click = (item) => {
+        if (item.heading == 'Change Password') {
+             navigation.navigate('ChangePassword')
+        }
+        else if (item.heading == 'Enable 2FA') {
+            navigation.navigate('Scanner')
+        }
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.view}>
+        <TouchableOpacity style={styles.view} onPress={() => on_click(item)}>
             <Image source={item.icon}
                 style={styles.icon}
             />
@@ -73,7 +61,7 @@ const Settings = () => {
     );
     return (
         <>
-         <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
+            <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1 }}>
                 <CustomHeader text={"Settings"} back right />
@@ -85,24 +73,40 @@ const Settings = () => {
                             keyExtractor={item => item.id}
                             contentContainerStyle={{ marginTop: 16 }}
                         />
-                    </View> 
-                    <View style={{marginTop:27}}>
+                    </View>
+                    <View style={{ paddingVertical: 20 }}>
                         <Text style={styles.Text}>NOTIFICATIONS</Text>
+
                     </View>
-                    <View>
-                        <FlatList
-                            data={Data2}
-                            renderItem={({ item }) => <NotificationCom item={item} />}
-                            keyExtractor={item => item.id}
-                            contentContainerStyle={{marginTop:10}}
-                        />
-                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('notification')}>
+                        <View style={{ flexDirection: 'row', borderBottomWidth: 1, paddingVertical: 17, borderBottomColor: "#CAC8DA34", }}>
+                            <Image source={Images.bell}
+                                style={styles.img}
+                            />
+                            <Text style={styles.Text2}>Notification</Text>
+                            <Image source={Images.arrowright}
+                                style={{ tintColor: colors.black }}
+
+                            />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+
+                        <View style={{ flexDirection: 'row', borderBottomWidth: 1, paddingVertical: 17, borderBottomColor: "#CAC8DA34", }}>
+                            <Image source={Images.logout}
+                                style={styles.img}
+                            />
+                            <Text style={styles.Text2}>Log Out</Text>
+                            <Image source={Images.arrowright}
+                                style={{ tintColor: colors.black }}
+                            />
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         </>
     )
 }
-
 export default Settings
 
 const NotificationCom = ({ item }) => {
@@ -138,12 +142,13 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         color: colors.extradarkgray,
-        marginTop:5
+        marginTop: 5
 
     },
     icon: {
-        height: 24,
-        width: 24,
+        height: 22,
+        width: 22,
+        tintColor: colors.blue
     },
     view: {
         borderBottomWidth: 1,
@@ -160,7 +165,19 @@ const styles = StyleSheet.create({
     Text: {
         color: colors.extralightblack,
         fontSize: 16,
-        fontWeight:"300"
+        fontWeight: "300"
 
+    },
+    Text2: {
+        flex: 1,
+        color: colors.extralightblack,
+        fontSize: 16,
+        marginLeft: 17
+
+    },
+    img: {
+        height: 20,
+        width: 20,
+        tintColor: colors.blue,
     }
 })
