@@ -42,9 +42,12 @@ export const Images = {
    profile:require('../assets/profile.png'),
    walletdark:require('../assets/walleticon.png'),
    arrowicon:require('../assets/arrowicon.png'),
-   bell:require('../assets/bell.png'),
+   bell:require('../assets/bel.png'),
    close:require('../assets/close.png'),
    send2x:require('../assets/send2x.png'),
    qr:require('../assets/scanimg.png'),
-   share:require('../assets/share.png')
+   share:require('../assets/share.png'),
+   logout:require('../assets/logout.png'),
+   phone:require('../assets/phone.png'),
+
 }

@@ -83,11 +83,11 @@ const Wallet = ({ navigation }) => {
                         <View style={styles.scan}>
                             <TouchableOpacity onPress={() => navigation.navigate('AddWallet')}>
                                 <Image
-                                    source={Images.plus} style={{ marginRight: 10, marginBottom: 4 }} />
+                                    source={Images.plus} style={{ marginRight: 10,height:26,width:26, marginBottom: 4 }} />
                             </TouchableOpacity>
-                            <Image source={Images.scanner} style={{ marginRight: 10 }} />
+                            <Image source={Images.scanner} style={{ marginRight: 10 ,height:24,width:24,}} />
                             <TouchableOpacity onPress={() => navigation.navigate('AddToken')}>
-                                <Image source={Images.add} />
+                                <Image source={Images.add} style={{height:24,width:24,}} />
                             </TouchableOpacity>
                         </View>
                     </View>

@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginLeft: 12,
         fontWeight: '500',
+        color: colors.black
     },
     imgs: {
         marginRight: 18

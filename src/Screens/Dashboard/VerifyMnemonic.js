@@ -6,8 +6,6 @@ import { Images } from '../../Res/Images';
 
 
 const VerifyMnemonic = ({ navigation }) => {
-
-
     const Data = ['gift', 'device', 'admit', 'modify', 'between',
         'flock', 'chat', 'frog', 'jacket', 'shoot', 'history',
     ];
@@ -52,8 +50,6 @@ const VerifyMnemonic = ({ navigation }) => {
             </SafeAreaView>
         </>
     )
-
-
 }
 export default VerifyMnemonic
 
