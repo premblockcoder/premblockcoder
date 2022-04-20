@@ -15,6 +15,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Main from './MainNavigator/navigation.js';
 import SplashScreen from 'react-native-splash-screen'
 
+
 const App = () => {
 
   useEffect(() => {

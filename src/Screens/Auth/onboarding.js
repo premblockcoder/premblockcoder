@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, ImageBackground, StatusBar, Platform } from 'react-native';
 import { Button } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -25,6 +26,7 @@ const Onboarding = ({ navigation }) => {
                         <Button
                             styling={styles.resbtn}
                             text={"Register"}
+                            textstyle={styles.restext}
                             onPress={() => navigation.navigate('Register')} />
                     </View>
                 </ImageBackground>
@@ -46,8 +48,7 @@ const styles = StyleSheet.create({
     },
     btntext: {
         color: colors.blue,
-         fontFamily:"SF-Pro-Display-Bold"
-
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     resbtn: {
         borderColor: colors.white,
@@ -60,5 +61,9 @@ const styles = StyleSheet.create({
     },
     end: {
         flex: 0.2, paddingBottom: 30, paddingStart: 24, paddingEnd: 15
+    },
+    restext:{
+    fontSize:18,
+    fontFamily:Fonts.SourceSansProSemiBold
     }
 })
