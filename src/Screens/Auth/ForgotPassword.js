@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, StatusBar } from 'react-native';
 import { ScrollView } from 'react-native';
 import { Button, InputText } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -22,7 +23,7 @@ const ForgotPassword = ({ navigation }) => {
               <Text style={styles.txt}>We will send the updated password link on your registered email</Text>
             </View>
             <View style={{ marginTop: 18 }}>
-              <InputText placeholder={"Email Address"} showright rightimg={Images.at}
+              <InputText placeholder={"Email Address"} placeholderTextColor={colors.gray} showright rightimg={Images.at}
               />
               <View style={{ marginTop: 42}}>
                 <Button onPress={() => navigation.navigate('Login')}
@@ -48,12 +49,13 @@ const styles = StyleSheet.create({
     color: colors.blue,
     marginTop: 90,
     fontSize: 29,
-    fontWeight: 'bold'
-  },
+fontFamily:Fonts.SourceSansProBold 
+ },
   txt: {
     color: colors.textlightgray,
     fontSize: 14,
     marginTop: 10,
+    fontFamily:Fonts.SourceSansProRegular
 
   },
   imgview: {

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity,FlatList,StatusBar } from 'react-native';
 import { CustomHeader } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors} from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -148,20 +149,25 @@ const styles = StyleSheet.create({
     },
     sent: {
         fontSize: 15,
-        color: colors.black
+        color: colors.black,
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     status: {
         fontSize: 13,
         color: colors.textlightgray,
-        marginLeft: 4
+        marginLeft: 4,
+        fontFamily:Fonts.SourceSansProRegular
     },
     btc: {
         fontSize: 12,
-        color: colors.black
+        color: colors.black,
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     Amount: {
         fontSize: 11,
-        color: colors.textlightgray
+        color: colors.textlightgray,
+        fontFamily:Fonts.SourceSansProSemiBold
+
     },
     dot: {
         width: 8, height: 8, borderRadius: 10

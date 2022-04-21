@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet, Image, Modal } from 'react-native';
+import { Fonts } from '../Res';
 import { colors } from '../Res/Colors';
 import { Images } from '../Res/Images';
 
@@ -95,18 +96,20 @@ const styles = StyleSheet.create({
     },
     text3: {
         color: colors.black,
-        fontSize: 13
+        fontSize: 13,
+        fontFamily: Fonts.SourceSansProSemiBold
+
     },
 
     text4: {
         color: colors.blue,
         marginLeft: 9,
         fontSize: 15,
-        fontWeight: "300"
+        fontFamily: Fonts.SourceSansProSemiBold
     },
     Text: {
         color: colors.black,
         fontSize: 15,
-        fontWeight: "500"
+        fontFamily: Fonts.SourceSansProSemiBold
     },
 })

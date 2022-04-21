@@ -4,6 +4,7 @@ import { Images } from '../../Res/Images';
 import { colors } from '../../Res/Colors';
 import { InputText } from '../../components/common';
 import { Button } from '../../components/common';
+import { Fonts } from '../../Res';
 
 
 const Login = ({ navigation }) => {
@@ -63,17 +64,18 @@ const styles = StyleSheet.create({
   text: {
     color: colors.blue,
     fontSize: 29,
-    fontWeight: 'bold'
+    fontFamily:Fonts.SourceSansProBold
+    
   },
   img: {
     alignSelf: "center",
     marginTop: 42
   },
   txt: {
-    color: colors.gray,
     fontSize: 14,
     marginTop: 10,
-    color: colors.textlightgray
+    color: colors.textlightgray,
+    fontFamily:Fonts.SourceSansProRegular
 
   },
   forTxt: {
@@ -81,19 +83,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 22,
     textAlign: 'center',
-    fontWeight: "500"
-  },
+fontFamily:Fonts.SourceSansProSemiBold  
+},
   newTxt: {
     color: '#1C1C1C',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily:Fonts.SourceSansProRegular
 
   },
   regTxt: {
     color: '#35469E',
     fontSize: 18,
-    fontWeight: 'bold',
-
+fontFamily: Fonts.SourceSansProBold
   },
   last: {
     borderTopColor: colors.bordergray, borderTopWidth: 1, paddingVertical: 14

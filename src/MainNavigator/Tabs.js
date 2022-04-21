@@ -7,6 +7,7 @@ import Settings from '../Screens/Dashboard/Settings';
 import { Images } from '../Res/Images';
 import { colors } from '../Res/Colors';
 import Merchant from '../Screens/Dashboard/Merchant';
+import { Fonts } from '../Res';
 
 
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ export default function BottomTabs() {
                         tabBarInactiveTintColor: '#FFFFFF',
                         tabBarActiveBackgroundColor:colors.darkblue,
                         tabBarStyle: {
+    
                             backgroundColor: '#35469E',
                             elevation: 0, // for Android
                             shadowOffset: {
@@ -30,7 +32,7 @@ export default function BottomTabs() {
                             },
                         alignItems:"center",justifyContent:"center",
                         },
-                         tabBarLabelStyle:{paddingBottom:3,fontSize:11}
+                         tabBarLabelStyle:{paddingBottom:3,fontSize:11,fontFamily:Fonts.SourceSansProRegular}
                     }}>
                     <Tab.Screen
                         name="Wallet"

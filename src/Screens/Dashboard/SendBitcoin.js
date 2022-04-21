@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, ScrollView, Image, TextInput,StatusBar } from 'react-native';
 import { Button, CustomHeader } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -29,8 +30,8 @@ const SendBitcoin = ({ navigation }) => {
                             <Text style={styles.text}>Recipient</Text>
                             <View style={{ flexDirection: 'row', alignItems: "center", marginTop: 6 }}>
                                 <View style={styles.view4}>
-                                    <TextInput style={{ flex: 1, marginLeft: 14, fontSize: 18 }}
-                                        placeholder={"Paste or scan address"}></TextInput>
+                                    <TextInput style={{ flex: 1, marginLeft: 14, fontFamily:Fonts.SourceSansProRegular, fontSize: 18 }}
+                                        placeholder={"Paste or scan address"} placeholderTextColor={colors.gray} ></TextInput>
                                 </View>
                                 <View style={styles.view5}>
                                     <Image source={Images.scan2}
@@ -42,13 +43,13 @@ const SendBitcoin = ({ navigation }) => {
                             <Text style={styles.text}>Amount</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6, alignItems: "center" }}>
                                 <View style={styles.view2}>
-                                    <TextInput style={styles.text3} placeholder={"0"}
+                                    <TextInput style={styles.text3} placeholder={"0"} placeholderTextColor={colors.blue}
                                         keyboardType={"numbers-and-punctuation"} />
                                     <Text style={styles.text6}>BTC</Text>
                                 </View>
                                 <Image source={Images.arrow} />
                                 <View style={styles.view2}>
-                                    <TextInput style={styles.text3} placeholder={"0"}
+                                    <TextInput style={styles.text3} placeholder={"0"} placeholderTextColor={colors.blue}
                                         keyboardType={"numbers-and-punctuation"} />
                                     <Text style={styles.text6}>USD</Text>
                                 </View>
@@ -70,7 +71,7 @@ const SendBitcoin = ({ navigation }) => {
                             <Button onPress={() => navigation.navigate('ConfirmSend')}
                                 text={'Continue'}
                                 styling={{ height: 52 }}
-                                textstyle={{ fontSize: 16, fontWeight: "600" }}
+                                textstyle={{ fontSize: 16, }}
                             />
                         </View>
                     </View>
@@ -89,12 +90,12 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colors.black,
-        fontWeight: "600",
+        fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 15,
     },
     text2: {
         color: colors.black,
-        fontWeight: 'bold',
+        fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 16,
         marginTop: 15
 
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
         borderColor: colors.black,
         borderWidth: 1,
         borderRadius: 6,
-        marginTop: 6
+        marginTop: 6,
     },
     view2: {
         height: 45,
@@ -170,31 +171,34 @@ const styles = StyleSheet.create({
     },
     text3: {
         color: colors.blue,
-        fontWeight: '600',
+        fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 18,
         paddingHorizontal: 5,
         flex: 1
     },
     text7: {
         color: colors.blue,
-        fontWeight: '600',
+        fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 18,
         marginLeft: 6,
     },
     text4: {
         color: colors.white,
-        fontWeight: 'bold',
+
+        fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 16,
         marginTop: 20,
     },
     text5: {
         color: colors.black,
         fontSize: 12,
-        fontWeight: '600'
+        fontFamily:Fonts.SourceSansProSemiBold,
     },
     text6: {
         color: colors.textlightgray,
         fontSize: 18,
+        fontFamily:Fonts.SourceSansProRegular
+
     },
     img: {
         height: 21,

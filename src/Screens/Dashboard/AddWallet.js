@@ -3,6 +3,7 @@ import { SafeAreaView, View, StyleSheet, Image, TouchableOpacity, Text,StatusBar
 import { Images } from '../../Res/Images';
 import { CustomHeader } from '../../components/common/Header';
 import { colors } from '../../Res/Colors';
+import { Fonts } from '../../Res';
 
 
 const AddWallet = ({ navigation }) => {
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     text: {
         color: '#212F75',
         fontSize: 19,
-        fontWeight: 'bold',
+        fontFamily: Fonts.SourceSansProBold
 
     },
     last: {

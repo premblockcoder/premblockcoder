@@ -4,6 +4,7 @@ import { Text, SafeAreaView, View, StyleSheet, FlatList,StatusBar} from 'react-n
 import { Button } from "../../components/common";
 import { CustomHeader } from "../../components/common/Header";
 import { TokenList } from "../../components/TokenList";
+import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
 import { Images } from "../../Res/Images";
 
@@ -105,7 +106,6 @@ const styles = StyleSheet.create({
     btntext:{
         color:colors.borderblue,
         fontSize:16,
-        fontWeight:"600"
-    }
+fontFamily:Fonts.SourceSansProBold    }
    
 })

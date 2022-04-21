@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, TextInput } from 'react-native';
 import { Button, CustomHeader } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 
 const PrivateKey = ({ navigation, route }) => {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colors.black,
-        fontWeight: "600",
+fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 16,
         marginTop: 26,
         lineHeight:24

@@ -7,6 +7,7 @@ import {
   View,
   Image
 } from 'react-native';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 
 
@@ -38,5 +39,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     color: colors.white,
+    fontFamily: Fonts.SourceSansProSemiBold
   },
 });

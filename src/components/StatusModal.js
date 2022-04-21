@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, View, StyleSheet, Image, Modal } from 'react-native';
 import { Images } from '../Res/Images';
 import { colors } from '../Res/Colors';
+import { Fonts } from '../Res';
 
 
 export const StatusModal = ({ navigation, setModalVisible, Visible, }) => {
@@ -74,17 +75,22 @@ const styles = StyleSheet.create({
     text: {
         color: colors.black,
         marginTop: 12,
-        fontSize: 19
+        fontSize: 19,
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     text2: {
         color: colors.black,
         marginTop: 3,
         fontSize: 15,
-        color: colors.textlightgray
+        color: colors.textlightgray,
+        fontFamily:Fonts.SourceSansProSemiBold
+
     },
     text3: {
         fontSize: 13,
-        color: colors.textlightgray
+        color: colors.textlightgray,
+        fontFamily:Fonts.SourceSansProSemiBold
+
     },
     text5: {
         color:colors.white,
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
     text4: {
         color: colors.lightblack,
         fontSize: 13,
-        fontWeight: "300"
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     last: {
         flexDirection: 'row',
@@ -113,7 +119,7 @@ const styles = StyleSheet.create({
 
     Text: {
         color: colors.extralightblack,
-        fontWeight: '500',
+fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 15
     },
     resbtn: {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, ScrollView,StatusBar } from 'react-native';
 import { Button, CustomHeader,  InputText } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colors.black,
-        fontWeight: 'bold',
+        fontFamily:Fonts.SourceSansProSemiBold,
         fontSize: 16,
 
     },
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     btntext: {
         color: colors.borderblue,
         fontSize: 16,
-        fontWeight: "600"
+        fontFamily:Fonts.SourceSansProBold
     },
     last: {
         flex: 1,

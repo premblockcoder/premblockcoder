@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, TextInput, Image,StatusBar } from 'react-native';
 import {  CustomHeader, } from '../../components/common';
+import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         marginLeft: 12,
-        fontWeight: '500',
+fontFamily:Fonts.SourceSansProSemiBold,
         color: colors.black
     },
     imgs: {

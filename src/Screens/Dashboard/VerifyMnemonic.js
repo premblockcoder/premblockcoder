@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, StatusBar } from 'react-native';
 import { Button, CustomHeader } from '../../components/common';
+import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -19,7 +20,7 @@ const VerifyMnemonic = ({ navigation }) => {
     );
     return (
         <>
-         <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
+            <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
                 <CustomHeader text={"Verify Mnemonic"} back />
@@ -43,7 +44,7 @@ const VerifyMnemonic = ({ navigation }) => {
                         <Button onPress={() => navigation.navigate('Wallet')}
                             styling={styles.resbtn}
                             text={'Verify'}
-                            textstyle={{fontSize:16,fontWeight:"600"}}
+                            textstyle={{ fontSize: 16, }}
                         />
                     </View>
                 </View>
@@ -63,12 +64,13 @@ const styles = StyleSheet.create({
     text: {
         color: colors.blue,
         fontSize: 19,
-        fontWeight: "700"
+        fontFamily: Fonts.SourceSansProBold
     },
     text3: {
         color: colors.black,
         textAlign: 'center',
         fontSize: 16,
+        fontFamily: Fonts.SourceSansProRegular
     },
     box: {
         height: 99,
@@ -84,28 +86,18 @@ const styles = StyleSheet.create({
         color: colors.medtextgray,
         fontSize: 15,
         marginTop: 7,
-        textAlign: "center"
+        textAlign: "center",
+        fontFamily: Fonts.SourceSansProRegular
     },
     resbtn: {
         marginBottom: 34,
-        height:52,
-        borderRadius:6,
-        backgroundColor:colors.darkblue
+        height: 52,
+        borderRadius: 6,
+        backgroundColor: colors.darkblue
     },
-    text4: {
-        color: colors.gray,
-        textAlign: 'center',
-        fontSize: 16,
-        marginTop: 10,
-        marginLeft: 13
-
-    },
+   
     img: {
         marginTop: 7
     },
-    text5: {
-        color: colors.blue,
-        fontSize: 16,
-        fontWeight: 'bold'
-    }
+   
 })

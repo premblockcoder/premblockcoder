@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, Image,StatusBar } from 'react-native';
 import { Button, CustomHeader, Header } from '../../components/common';
+import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -68,12 +69,13 @@ const styles = StyleSheet.create({
         color: colors.borderblue,
         fontSize: 19,
         marginTop: 21,
-        fontWeight: 'bold'
+        fontFamily:Fonts.SourceSansProBold
     },
     text3: {
         color: colors.black,
         textAlign: 'center',
         fontSize: 16,
+        fontFamily:Fonts.SourceSansProRegular
     },
     box: {
         height: 46,
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 15,
         marginTop: 7,
+        fontFamily:Fonts.SourceSansProRegular
     },
     resbtn: {
         borderColor: colors.white,
@@ -103,7 +106,8 @@ const styles = StyleSheet.create({
     text4: {
         color: colors.extragray,
         fontSize: 16,
-        marginLeft: 13
+        marginLeft: 13,
+        fontFamily:Fonts.SourceSansProRegular
 
     },
     btn: {
@@ -115,8 +119,7 @@ const styles = StyleSheet.create({
     btntext: {
         color: colors.borderblue,
         fontSize: 16,
-        fontWeight: "600"
-    },
+fontFamily:Fonts.SourceSansProBold    },
     last: {
         flex: 1,
         justifyContent: "flex-end",

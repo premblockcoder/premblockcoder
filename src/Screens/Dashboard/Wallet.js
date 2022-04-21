@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native';
 import { QRModal } from '../../components/QRModal';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -52,15 +53,15 @@ const Wallet = ({ navigation }) => {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image source={item.image} />
                     <View style={{ paddingStart: 10 }}>
-                        <Text style={{ fontSize: 18, color: colors.black }}>{item.coin} </Text>
-                        <Text style={{ fontSize: 13, color: colors.textlightgray, lineHeight: 20 }}> {item.date} </Text>
+                        <Text style={{ fontSize: 18, fontFamily:Fonts.SourceSansProSemiBold, color: colors.black }}>{item.coin} </Text>
+                        <Text style={{ fontSize: 13, color: colors.textlightgray, fontFamily:Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.date} </Text>
                     </View>
                 </View>
                 <View>
-                    <Text style={{ fontSize: 18, color: colors.black }}>{item.quantity} </Text>
+                    <Text style={{ fontSize: 18,fontFamily:Fonts.SourceSansProSemiBold, color: colors.black }}>{item.quantity} </Text>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={{ fontSize: 13, color: colors.textlightgray, lineHeight: 20 }}> {item.usdPrice} </Text>
-                        <Text style={{ fontSize: 13, color: index % 2 ? colors.green : colors.red, lineHeight: 20 }}> {item.Price2} </Text>
+                        <Text style={{ fontSize: 13, color: colors.textlightgray, fontFamily:Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.usdPrice} </Text>
+                        <Text style={{ fontSize: 13, color: index % 2 ? colors.green : colors.red, fontFamily:Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.Price2} </Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -142,11 +143,13 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 22,
-        color: colors.white
+        color: colors.white,
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     txt: {
         color: colors.white,
-        fontSize: 11
+        fontSize: 11,
+        fontFamily:Fonts.SourceSansProRegular
     },
     header: {
         flexDirection: "row",
@@ -163,12 +166,12 @@ const styles = StyleSheet.create({
     curr: {
         color: colors.white,
         fontSize: 18,
-        fontWeight: "300"
+        fontFamily:Fonts.SourceSansProLight
     },
     price: {
         fontSize: 45,
         color: colors.white,
-        fontWeight: "300",
+        fontFamily:Fonts.SourceSansProLight,
         marginTop: 5
     },
     secondview: {
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
     textcode: {
         color: colors.white,
         fontSize: 13,
-        fontWeight: "300"
+        fontFamily:Fonts.SourceSansProLight
     },
     sendview: {
         flexDirection: "row", width: "100%", justifyContent: "space-evenly", marginTop: 33
@@ -192,7 +195,8 @@ const styles = StyleSheet.create({
     sendtext: {
         fontSize: 16,
         marginTop: 8,
-        color: colors.white
+        color: colors.white,
+        fontFamily:Fonts.SourceSansProRegular
     },
     lastview: {
         flex: 1,
@@ -206,7 +210,7 @@ const styles = StyleSheet.create({
         marginTop: 22,
         marginStart: 14,
         fontSize: 22,
-        fontWeight: "bold",
+        fontFamily:Fonts.SourceSansProBold,
         color: colors.lightblack
     }
 

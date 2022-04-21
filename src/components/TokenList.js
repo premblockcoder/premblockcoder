@@ -9,6 +9,7 @@ import {
     Image,
     Switch
 } from 'react-native';
+import { Fonts } from '../Res';
 import { colors } from '../Res/Colors';
 
 export const TokenList = ({ item }) => {
@@ -51,13 +52,13 @@ const styles = StyleSheet.create({
     cointext: {
         color: colors.black,
         fontSize: 18,
-        fontWeight: '700',
-
+fontFamily:Fonts.SourceSansProSemiBold
     },
     quantitytext: {
         color: colors.textlightgray,
         fontSize: 13,
-        marginTop: 4
+        marginTop: 4,
+        fontFamily:Fonts.SourceSansProRegular
     },
 
 })

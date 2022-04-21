@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity,StatusBar } from 'react-native';
 import { CustomHeader } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     text: {
         color: colors.black,
         fontSize: 19,
-        fontWeight: "bold",
+fontFamily:Fonts.SourceSansProBold,
         textAlign: 'center',
         marginTop: 29
     },
@@ -67,8 +68,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 10,
         lineHeight: 23,
-        fontWeight: "500"
-
+fontFamily:Fonts.SourceSansProSemiBold
     },
     resbtn: {
         borderColor: colors.white,
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
         color: colors.blue,
         fontSize: 16,
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontFamily:Fonts.SourceSansProBold,
+
     },
 })

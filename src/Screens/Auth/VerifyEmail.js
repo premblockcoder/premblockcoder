@@ -10,6 +10,7 @@ import {
     useBlurOnFulfill,
     useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import { Fonts } from '../../Res';
 
 const VerifyEmail = ({ navigation }) => {
     const [resend, setresend] = useState(false)
@@ -68,7 +69,7 @@ const VerifyEmail = ({ navigation }) => {
                                 style={[styles.resendtxt, { opacity: resend ? 0.4 : 1 }]}>
                                 <Text style={{
                                     color: '#FFFFFF', fontSize: 14,
-                                    fontWeight: 'bold',
+                                    fontFamily:Fonts.SourceSansProRegular
                                 }}>Resend</Text>
                             </TouchableOpacity>
                         </View>
@@ -94,14 +95,14 @@ const styles = StyleSheet.create({
         color: colors.blue,
         marginTop: 46,
         fontSize: 29,
-        fontWeight: 'bold'
+        fontFamily:Fonts.SourceSansProBold
     },
     txt: {
         color: colors.textlightgray,
         fontSize: 14,
         marginTop: 10,
-        lineHeight: 24
-
+        lineHeight: 24,
+fontFamily: Fonts.SourceSansProRegular
     },
     cell: {
         width: 40,
@@ -126,8 +127,7 @@ const styles = StyleSheet.create({
     newtxt: {
         color: colors.textlightgray,
         fontSize: 12,
-        fontWeight: "bold"
-    },
+fontFamily:Fonts.SourceSansProRegular   },
     resendtxt: {
         backgroundColor: colors.green,
         borderRadius: 17,

@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 
 export const InputText = ({
@@ -44,6 +45,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   view: {
-    flex: 1, fontSize: 16, color: colors.darktextgray
+    flex: 1, fontSize: 16, 
+    color: colors.darktextgray,
+fontFamily: Fonts.SourceSansProRegular
   }
 });

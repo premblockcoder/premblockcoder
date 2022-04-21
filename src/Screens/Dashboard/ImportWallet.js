@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity, StyleSheet, } from 'react-native';
 import { CustomHeader } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 
 
@@ -20,7 +21,7 @@ const ImportWallet = ({ navigation }) => {
                         <Text style={styles.privatetext}>Private Key</Text>
                     </TouchableOpacity>
                     <Text style={styles.text2}>or</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('PrivateKey',{ type: "MnemonicPhrase" })}
+                    <TouchableOpacity onPress={() => navigation.navigate('PrivateKey', { type: "MnemonicPhrase" })}
                         style={[styles.view, { marginTop: 32 }]}>
                         <Text style={styles.privatetext}>Mnemonic Phrase</Text>
                     </TouchableOpacity>
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
         color: colors.gray,
         fontSize: 15,
         marginTop: 50,
-        color: colors.medtextgray
+        color: colors.medtextgray,
+        fontFamily: Fonts.SourceSansProRegular
     },
     view: {
         height: 64,
@@ -60,11 +62,12 @@ const styles = StyleSheet.create({
     privatetext: {
         fontSize: 21,
         color: colors.borderblue,
-        fontWeight: "600",
+        fontFamily: Fonts.SourceSansProSemiBold
     },
     text2: {
         color: colors.medtextgray,
         fontSize: 15,
-        marginTop: 23
+        marginTop: 23,
+        fontFamily: Fonts.SourceSansProRegular
     },
 })

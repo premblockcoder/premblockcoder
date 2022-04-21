@@ -5,6 +5,7 @@ import { CustomHeader } from '../../components/common/Header';
 import { colors } from '../../Res/Colors';
 import { StatusModal } from '../../components/StatusModal';
 import { QRModal } from '../../components/QRModal';
+import { Fonts } from '../../Res';
 
 const BitcoinDetail = ({ navigation, route }) => {
     const [active, setsctive] = useState("All")
@@ -105,7 +106,8 @@ const BitcoinDetail = ({ navigation, route }) => {
                         { backgroundColor: active !== "All" ? colors.white : colors.skyblue }]}
                             onPress={() => setsctive("All")} >
                             <Text style={[styles.btntext,
-                            { color: active !== "All" ? colors.black : colors.white }]}> All </Text>
+                            { color: active !== "All" ? colors.black : colors.white, fontFamily:Fonts.SourceSansProSemiBold
+                        }]}> All </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.btn,
                         { backgroundColor: active !== "Sent" ? colors.white : colors.skyblue }]}
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
         fontSize: 39,
         marginTop: 7,
         color: colors.white,
-        fontWeight: "300"
+fontFamily:Fonts.SourceSansProLight
     },
     btnview: {
         flexDirection: "row",
@@ -207,20 +209,28 @@ const styles = StyleSheet.create({
     },
     sent: {
         fontSize: 15,
-        color: colors.black
+        color: colors.black,
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     status: {
         fontSize: 13,
         color: colors.textlightgray,
-        marginLeft: 4
+        marginLeft: 4,
+        fontFamily:Fonts.SourceSansProRegular
+
+
     },
     btc: {
         fontSize: 12,
-        color: colors.black
+        color: colors.black,
+        fontFamily:Fonts.SourceSansProSemiBold
+
     },
     Amount: {
         fontSize: 11,
-        color: colors.textlightgray
+        color: colors.textlightgray,
+        fontFamily:Fonts.SourceSansProRegular
+
     },
     dot: {
         width: 8, height: 8, borderRadius: 10
@@ -248,7 +258,9 @@ const styles = StyleSheet.create({
     sendtext: {
         fontSize: 16,
         top: 8,
-        color: colors.white
+        color: colors.white,
+        fontFamily:Fonts.SourceSansProRegular
+
     },
 
 

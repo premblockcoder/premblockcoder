@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, StatusBar, FlatList, Switch } from 'react-native';
 import { CustomHeader } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 const Settings = ({ navigation }) => {
@@ -142,7 +143,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         color: colors.extradarkgray,
-        marginTop: 5
+        marginTop: 5,
+        fontFamily:Fonts.SourceSansProRegular
 
     },
     icon: {
@@ -161,18 +163,19 @@ const styles = StyleSheet.create({
     heading: {
         color: colors.extralightblack,
         fontSize: 16,
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     Text: {
         color: colors.extralightblack,
         fontSize: 16,
-        fontWeight: "300"
-
+fontFamily:Fonts.SourceSansProRegular
     },
     Text2: {
         flex: 1,
         color: colors.extralightblack,
         fontSize: 16,
-        marginLeft: 17
+        marginLeft: 17,
+        fontFamily:Fonts.SourceSansProSemiBold
 
     },
     img: {

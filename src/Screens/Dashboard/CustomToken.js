@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, ScrollView, Image, StatusBar } from 'react-native';
 import { Button, Button2, CustomHeader, Header, InputText } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
@@ -8,7 +9,7 @@ import { Images } from '../../Res/Images';
 const CustomToken = ({ navigation }) => {
     return (
         <>
-         <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
+            <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
                 <CustomHeader text={"Add Custom Token"} back />
@@ -40,17 +41,17 @@ const CustomToken = ({ navigation }) => {
                             <View style={{ marginTop: 20 }}>
                                 <Text style={styles.text}>Name</Text>
                                 <InputText placeholder={"Enter token name"}
-                                    inputstying={styles.input1}  placeholderTextColor={colors.textlightgray} />
+                                    inputstying={styles.input1} placeholderTextColor={colors.textlightgray} />
                             </View>
                             <View style={{ marginTop: 20 }}>
                                 <Text style={styles.text}>Symbol</Text>
                                 <InputText inputstying={styles.input1}
-                                    placeholder={"Enter token name"}  placeholderTextColor={colors.textlightgray} />
+                                    placeholder={"Enter token name"} placeholderTextColor={colors.textlightgray} />
                             </View>
                             <View style={{ marginTop: 20 }}>
                                 <Text style={styles.text}>Decimal</Text>
                                 <InputText inputstying={styles.input1} placeholder={"Enter token name"}
-                                 placeholderTextColor={colors.textlightgray} />
+                                    placeholderTextColor={colors.textlightgray} />
                             </View>
                         </View>
                         <View style={{ paddingHorizontal: 20, marginTop: 32 }}>
@@ -75,12 +76,12 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colors.black,
-        fontWeight: 'bold',
+        fontFamily: Fonts.SourceSansProSemiBold,
         fontSize: 16
     },
     text2: {
         color: colors.black,
-        fontWeight: 'bold',
+        fontFamily: Fonts.SourceSansProSemiBold,
         fontSize: 16,
 
     },
@@ -117,19 +118,21 @@ const styles = StyleSheet.create({
     },
     text3: {
         color: colors.blue,
-        fontWeight: "600",
+        fontFamily: Fonts.SourceSansProSemiBold,
         fontSize: 16,
         marginRight: 17
 
     },
     text4: {
         color: colors.white,
-        fontWeight: 'bold',
+        fontFamily: Fonts.SourceSansProSemiBold,
         fontSize: 16,
     },
     text5: {
         color: colors.white,
         fontSize: 16,
+        fontFamily: Fonts.SourceSansProSemiBold,
+
     },
     Image: {
         height: 24,

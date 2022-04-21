@@ -11,6 +11,7 @@ import {
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 import { useNavigation } from '@react-navigation/native';
+import { Fonts } from '../../Res';
 
 export const CustomHeader = ({ text, textstyle, back,right }) => {
   const navigation = useNavigation();
@@ -37,7 +38,8 @@ const styles = StyleSheet.create({
   title: {
     color: colors.white,
     fontSize: 20,
-    marginLeft: 11
+    marginLeft: 11,
+ 
   },
   view: {
     height: 44,
