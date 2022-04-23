@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, StatusBar, FlatList, Switch } from 'react-native';
 import { CustomHeader } from '../../components/common';
+import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 
-const notification = ({ navigation }) => {
+const Notification = ({ navigation }) => {
     const [value, setValue] = useState(false);
  
     const Data2 = [
@@ -55,7 +56,7 @@ const notification = ({ navigation }) => {
     )
 }
 
-export default notification
+export default Notification
 
 const NotificationCom = ({ item }) => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -90,13 +91,14 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         color: colors.extradarkgray,
-        marginTop:5
+        marginTop:5,
+        fontFamily:Fonts.SourceSansProRegular
 
     },
     icon: {
         height: 20,
         width: 20,
-        tintColor:colors.gray
+        tintColor:colors.extradarkgray
     },
     view: {
         borderBottomWidth: 1,
@@ -109,6 +111,7 @@ const styles = StyleSheet.create({
     heading: {
         color: colors.extralightblack,
         fontSize: 16,
+        fontFamily:Fonts.SourceSansProSemiBold
     },
     Text: {
         color: colors.extralightblack,

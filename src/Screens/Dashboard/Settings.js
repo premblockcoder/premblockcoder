@@ -4,8 +4,9 @@ import { CustomHeader } from '../../components/common';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
+import AntDesign from 'react-native-vector-icons/AntDesign'
+
 const Settings = ({ navigation }) => {
-    const [value, setValue] = useState(false);
     const Data = [
         {
             id: 1,

@@ -6,21 +6,11 @@
  * @flow strict-local
  */
 
-import React, { Component } from 'react';
-import {
-  View,
-  Image
-} from 'react-native';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Onboarding from '../Screens/Auth/onboarding.js';
-import Login from '../Screens/Auth/Login.js';
-import Register from '../Screens/Auth/Register.js';
-import VerifyEmail from '../Screens/Auth/VerifyEmail.js';
-import ForgotPassword from '../Screens/Auth/ForgotPassword.js';
 import BottomTabs from './Tabs.js';
 import AddToken from '../Screens/Dashboard/AddToken.js';
-import AddWallet from '../Screens/Dashboard/AddWallet.js';
 import GenerateWallet from '../Screens/Dashboard/GenerateWallet.js';
 import ImportWallet from '../Screens/Dashboard/ImportWallet.js';
 import RecoveryPharse from '../Screens/Dashboard/RecoveryPharse.js';
@@ -31,42 +21,21 @@ import BitcoinDetail from '../Screens/Dashboard/BitcoinDetail.js';
 import SendBitcoin from '../Screens/Dashboard/SendBitcoin.js';
 import ConfirmSend from '../Screens/Dashboard/ConfirmSend.js';
 import CompleteTrans from '../Screens/Dashboard/CompleteTrans.js';
-import notification from '../Screens/Dashboard/notification.js';
 import Scanner from '../Screens/Dashboard/Scanner.js';
 import ChangePassword from '../Screens/Dashboard/ChangePasword.js';
 import PinView from '../Screens/Dashboard/PinView.js';
+import Notification from '../Screens/Dashboard/notification.js';
 
 const Stack = createNativeStackNavigator();
 
-const Main = () => {
+const Dashboard = () => {
 
   return (
-    <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='onboarding'
+        initialRouteName='BottomTabs'
          screenOptions={{
           headerShown: false
         }} >
-        <Stack.Screen
-          name="onboarding"
-          component={Onboarding}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-        />
-        <Stack.Screen
-          name="Register"
-          component={Register}
-        />
-        <Stack.Screen
-          name="VerifyEmail"
-          component={VerifyEmail}
-        />
-        <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPassword}
-        />
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabs}
@@ -74,10 +43,6 @@ const Main = () => {
         <Stack.Screen
           name="AddToken"
           component={AddToken}
-        />
-        <Stack.Screen
-          name="AddWallet"
-          component={AddWallet}
         />
         <Stack.Screen
           name="GenerateWallet"
@@ -121,7 +86,7 @@ const Main = () => {
         />
           <Stack.Screen
           name="notification"
-          component={notification}
+          component={Notification}
         />
          <Stack.Screen
           name="Scanner"
@@ -136,8 +101,7 @@ const Main = () => {
           component={PinView}
         />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 
-export default Main;
+export default Dashboard;

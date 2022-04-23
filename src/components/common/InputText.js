@@ -14,7 +14,9 @@ export const InputText = ({
   rightimg,
   placeholderTextColor,
   secureTextEntry,
-  inputstying }) => (
+  inputstying,
+  onChangeText
+}) => (
   <>
     <View
       style={[styles.input, inputstying]}>
@@ -23,6 +25,7 @@ export const InputText = ({
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
         secureTextEntry={secureTextEntry}
+        onChangeText={onChangeText}
       />
       {
         showright &&
@@ -45,8 +48,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   view: {
-    flex: 1, fontSize: 16, 
+    flex: 1, fontSize: 16,
     color: colors.darktextgray,
-fontFamily: Fonts.SourceSansProRegular
+    fontFamily: Fonts.SourceSansProRegular
   }
 });

@@ -57,7 +57,7 @@ const Merchant = ({ navigation }) => {
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.list} >
             <View style={{ flexDirection: 'row',alignItems:"center" }}>
-                <Image source={item.img} />
+                <Image source={item.img}  style={{width:38,height:38}}/>
                 <Text style={styles.text}>{item.name}</Text>
             </View>
             <View style={{ flexDirection: 'row',alignItems:"center" }}>

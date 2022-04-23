@@ -5,6 +5,7 @@ import { CustomHeader } from '../../components/common';
 import { Fonts } from '../../Res';
 import { colors} from '../../Res/Colors';
 import { Images } from '../../Res/Images';
+import Feather from 'react-native-vector-icons/Feather'
 
 const TransactionHistory = () => {
     const Data = [
@@ -14,7 +15,7 @@ const TransactionHistory = () => {
             status: "Pending",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.send2
+            img: 'arrow-up-right'
         },
         {
             id: 2,
@@ -22,7 +23,7 @@ const TransactionHistory = () => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Recevied
+            img: 'download'
         },
         {
             id: 3,
@@ -30,7 +31,7 @@ const TransactionHistory = () => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Recevied
+            img: 'download'
         },
         {
             id: 4,
@@ -38,7 +39,7 @@ const TransactionHistory = () => {
             status: "Cancel",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Deposit
+            img: 'credit-card'
         },
         {
             id: 5,
@@ -46,7 +47,7 @@ const TransactionHistory = () => {
             status: "Pending",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Recevied
+            img: 'download'
         },
         {
             id: 6,
@@ -54,7 +55,7 @@ const TransactionHistory = () => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.send2
+            img: 'arrow-up-right'
         },
         {
             id: 7,
@@ -62,7 +63,7 @@ const TransactionHistory = () => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.send2
+            img: 'arrow-up-right'
         },
         {
             id: 8,
@@ -70,7 +71,7 @@ const TransactionHistory = () => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.send2
+            img: 'arrow-up-right'
         },
         {
             id: 9,
@@ -78,21 +79,23 @@ const TransactionHistory = () => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.send2
+            img: 'arrow-up-right'
         }, {
             id: 10,
             bitcoinstatus: "Deposit Bitcoin",
             status: "Cancel",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Deposit
+            img: 'credit-card'
         },
     ]
 
     const render = (item) => {
         return (
             <TouchableOpacity style={styles.flatlist}>
-                <Image source={item.img} />
+                <Feather name={item.img}
+                    color={colors.blue} size={15}
+                    style={{ borderWidth: 1, padding: 6, borderRadius: 15, borderColor: colors.blue }} />
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <Text style={styles.sent}>{item.bitcoinstatus} </Text>

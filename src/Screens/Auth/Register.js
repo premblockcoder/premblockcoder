@@ -1,18 +1,46 @@
-import React from 'react';
-import { Text, SafeAreaView, View, StyleSheet, Image, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { Text, SafeAreaView, View, StyleSheet, Image, ScrollView, TouchableOpacity, StatusBar, } from 'react-native';
 import { Images } from '../../Res/Images';
 import { colors } from '../../Res/Colors';
 import { InputText } from '../../components/common';
 import { Button } from '../../components/common';
 import { Fonts } from '../../Res';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import axios from 'axios';
 
 
 const Register = ({ navigation }) => {
+    const [user, setuser] = useState({
+        name: '', email: '', password: '', confirmpassword: ''
+    })
+
+    const _register = () => {
+        if (!user.name == "" || !user.email == "" || !user.password == "") {
+            axios.post('http://192.168.1.23:4000/api/v1/auth/register', {
+                fullName: user.name,
+                emailId: user.email,
+                password: user.password,
+                confirmPassword: user.confirmpassword
+            })
+                .then((res) => {
+                    console.log(res?.data,"resregister"); 
+                    navigation.navigate('VerifyEmail')
+                })
+                .catch((error) => {
+                    console.log({error});
+                });           
+        }
+        else {
+            alert("Enter Detail")
+        }
+    }
+    console.log(user)
+
     return (
         <>
             <StatusBar backgroundColor={colors.white} barStyle={"dark-content"} />
-            <SafeAreaView style={{ flex: 1, backgroundColor: colors.white, }}>
-                <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
+            <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
+                <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: colors.white }}>
                     <Image source={Images.art1}
                         style={styles.img} />
                     <View style={styles.containter}>
@@ -22,18 +50,22 @@ const Register = ({ navigation }) => {
                         </View>
                         <View style={{ marginTop: 22 }}>
                             <InputText placeholder={"Full Name"}
-                                placeholderTextColor={colors.darktextgray} />
+                                placeholderTextColor={colors.darktextgray}
+                                onChangeText={(t) => setuser({ ...user, name: t })} />
                             <InputText placeholder={"Email Address"}
                                 placeholderTextColor={colors.darktextgray}
-                                inputstying={{ marginTop: 14 }} />
+                                inputstying={{ marginTop: 14 }}
+                                onChangeText={(t) => setuser({ ...user, email: t })} />
                             <InputText placeholder={"Password"}
                                 placeholderTextColor={colors.darktextgray}
                                 inputstying={{ marginTop: 14 }}
-                                secureTextEntry />
+                                secureTextEntry
+                                onChangeText={(t) => setuser({ ...user, password: t })} />
                             <InputText placeholder={"Confirm Password"}
                                 placeholderTextColor={colors.darktextgray}
                                 inputstying={{ marginTop: 14 }}
-                                secureTextEntry />
+                                secureTextEntry
+                                onChangeText={(t) => setuser({ ...user, confirmpassword: t })} />
                         </View>
                         <View style={{ marginTop: 20 }}>
                             <Text style={styles.title}> I agree to our <Text style={styles.titletxt}>Terms of Services <Text style={styles.title}>and </Text><Text style={styles.titletxt}>Privacy{"\n"} Policy.</Text>
@@ -41,20 +73,19 @@ const Register = ({ navigation }) => {
                             </Text>
                         </View>
                         <View style={{ marginTop: 20 }}>
-                            <Button onPress={() => navigation.navigate('VerifyEmail')}
+                            <Button onPress={() => _register()}
                                 styling={styles.logbtn}
                                 text={"Continue"}>
                             </Button>
                         </View>
                     </View>
-                </ScrollView>
-                <View style={styles.last}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <Text style={styles.newTxt}>Joined us before? <Text style={styles.regTxt}>Login </Text> </Text>
-                    </TouchableOpacity>
-                </View>
+                    <View style={styles.last}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                            <Text style={styles.newTxt}>Joined us before? <Text style={styles.regTxt}>Login </Text> </Text>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAwareScrollView>
             </SafeAreaView>
-
         </>
     )
 }
@@ -108,6 +139,7 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.SourceSansProSemiBold
     },
     last: {
-        borderTopColor: colors.bordergray, borderTopWidth: 1, paddingVertical: 14
+        borderTopColor: colors.bordergray,
+        borderTopWidth: 1, paddingVertical: 14, marginTop: 40
     }
 })

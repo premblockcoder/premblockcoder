@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, StyleSheet, Image, TouchableOpacity, Text, FlatList ,StatusBar} from 'react-native';
+import { SafeAreaView, View, StyleSheet, Image, TouchableOpacity, Text, FlatList, StatusBar } from 'react-native';
 import { Images } from '../../Res/Images';
 import { CustomHeader } from '../../components/common/Header';
 import { colors } from '../../Res/Colors';
 import { StatusModal } from '../../components/StatusModal';
 import { QRModal } from '../../components/QRModal';
 import { Fonts } from '../../Res';
+import Feather from 'react-native-vector-icons/Feather'
 
 const BitcoinDetail = ({ navigation, route }) => {
     const [active, setsctive] = useState("All")
@@ -20,7 +21,7 @@ const BitcoinDetail = ({ navigation, route }) => {
             status: "Pending",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.send2
+            img: 'arrow-up-right'
         },
         {
             id: 2,
@@ -28,7 +29,7 @@ const BitcoinDetail = ({ navigation, route }) => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Recevied
+            img: 'download'
         },
         {
             id: 3,
@@ -36,7 +37,7 @@ const BitcoinDetail = ({ navigation, route }) => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Recevied
+            img: 'download'
         },
         {
             id: 4,
@@ -44,7 +45,7 @@ const BitcoinDetail = ({ navigation, route }) => {
             status: "Cancel",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Deposit
+            img: 'credit-card'
         },
         {
             id: 5,
@@ -52,7 +53,7 @@ const BitcoinDetail = ({ navigation, route }) => {
             status: "Pending",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.Recevied
+            img: 'download'
         },
         {
             id: 6,
@@ -60,14 +61,16 @@ const BitcoinDetail = ({ navigation, route }) => {
             status: "Success",
             BTC: "-0.00142263 BTC",
             amount: "-$12.50",
-            img: Images.send2
+            img: 'arrow-up-right'
         },
     ]
 
     const render = (item) => {
         return (
             <TouchableOpacity style={styles.flatlist} onPress={() => setModalVisible(true)}>
-                <Image source={item.img} />
+                <Feather name={item.img}
+                    color={colors.blue} size={15}
+                    style={{ borderWidth: 1, padding: 6, borderRadius: 15, borderColor: colors.blue }} />
                 <View style={{ flex: 1, paddingHorizontal: 15 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <Text style={styles.sent}>{item.bitcoinstatus} </Text>
@@ -93,7 +96,7 @@ const BitcoinDetail = ({ navigation, route }) => {
 
     return (
         <>
-         <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
+            <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.blue }}>
                 <CustomHeader text={coinname || "Bitcoin"} back />
                 <View style={styles.container}>
@@ -106,8 +109,9 @@ const BitcoinDetail = ({ navigation, route }) => {
                         { backgroundColor: active !== "All" ? colors.white : colors.skyblue }]}
                             onPress={() => setsctive("All")} >
                             <Text style={[styles.btntext,
-                            { color: active !== "All" ? colors.black : colors.white, fontFamily:Fonts.SourceSansProSemiBold
-                        }]}> All </Text>
+                            {
+                                color: active !== "All" ? colors.black : colors.white, fontFamily: Fonts.SourceSansProSemiBold
+                            }]}> All </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.btn,
                         { backgroundColor: active !== "Sent" ? colors.white : colors.skyblue }]}
@@ -181,7 +185,7 @@ const styles = StyleSheet.create({
         fontSize: 39,
         marginTop: 7,
         color: colors.white,
-fontFamily:Fonts.SourceSansProLight
+        fontFamily: Fonts.SourceSansProLight
     },
     btnview: {
         flexDirection: "row",
@@ -210,26 +214,26 @@ fontFamily:Fonts.SourceSansProLight
     sent: {
         fontSize: 15,
         color: colors.black,
-        fontFamily:Fonts.SourceSansProSemiBold
+        fontFamily: Fonts.SourceSansProSemiBold
     },
     status: {
         fontSize: 13,
         color: colors.textlightgray,
         marginLeft: 4,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
 
 
     },
     btc: {
         fontSize: 12,
         color: colors.black,
-        fontFamily:Fonts.SourceSansProSemiBold
+        fontFamily: Fonts.SourceSansProSemiBold
 
     },
     Amount: {
         fontSize: 11,
         color: colors.textlightgray,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
 
     },
     dot: {
@@ -259,7 +263,7 @@ fontFamily:Fonts.SourceSansProLight
         fontSize: 16,
         top: 8,
         color: colors.white,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
 
     },
 

@@ -21,6 +21,7 @@ export const Images = {
    copy:require('../assets/paste.png'),
    send:require('../assets/send.png'),
    receive:require('../assets/receive.png'),
+   receive2x:require('../assets/Received2x.png'),
    buy:require('../assets/buy.png'),
    BTC:require('../assets/BTC.png'),
    eth:require('../assets/eth.png'),

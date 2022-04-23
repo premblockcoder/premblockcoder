@@ -1,20 +1,20 @@
 import React from 'react';
-import { Text, SafeAreaView, View, StyleSheet, ScrollView,StatusBar } from 'react-native';
-import { Button, CustomHeader,  InputText } from '../../components/common';
+import { Text, SafeAreaView, View, StyleSheet, ScrollView, StatusBar } from 'react-native';
+import { Button, CustomHeader, InputText } from '../../components/common';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
-import { Images } from '../../Res/Images';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const GenerateWallet = ({ navigation }) => {
 
     return (
         <>
-           <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
+            <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
                 <CustomHeader text={"Generate Wallet"} back />
-                <ScrollView style={{ flex: 1 }}>
+                <KeyboardAwareScrollView style={{flex:1}} >
                     <View style={styles.containter}>
                         <View>
                             <View style={styles.view}>
@@ -35,13 +35,13 @@ const GenerateWallet = ({ navigation }) => {
                             </View>
                         </View>
                     </View>
-                </ScrollView>
+                </KeyboardAwareScrollView>
                 <View style={styles.last}>
                     <Button
                         text={'Next'}
                         styling={styles.btn}
                         textstyle={styles.btntext}
-                        onPress={()=> navigation.navigate('RecoveryPharse')}
+                        onPress={() => navigation.navigate('RecoveryPharse')}
                     />
                 </View>
             </SafeAreaView>
@@ -54,11 +54,10 @@ const styles = StyleSheet.create({
     containter: {
         flex: 1,
         paddingHorizontal: 20,
-        backgroundColor: colors.white,
     },
     text: {
         color: colors.black,
-        fontFamily:Fonts.SourceSansProSemiBold,
+        fontFamily: Fonts.SourceSansProSemiBold,
         fontSize: 16,
 
     },
@@ -83,11 +82,9 @@ const styles = StyleSheet.create({
     btntext: {
         color: colors.borderblue,
         fontSize: 16,
-        fontFamily:Fonts.SourceSansProBold
+        fontFamily: Fonts.SourceSansProBold
     },
     last: {
-        flex: 1,
-        justifyContent: "flex-end",
         paddingBottom: 34,
         paddingHorizontal: 20,
     }

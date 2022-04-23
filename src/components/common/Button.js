@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 
 export const Button = ({
@@ -22,7 +23,7 @@ export const Button = ({
     style={[styles.container, styling]}
     onPress={onPress}>
     <Text style={[styles.title, textstyle]}> {text} </Text>
-    <Image source={img}  style={{marginTop:2}}/>
+    <AntDesign name={img} color={colors.white} size={20} style={{ top: 1 }} />
   </TouchableOpacity>
 );
 
@@ -33,8 +34,8 @@ const styles = StyleSheet.create({
     height: 49,
     backgroundColor: colors.blue,
     borderRadius: 7,
-    flexDirection:"row",
-    width:"100%",
+    flexDirection: "row",
+    width: "100%",
   },
   title: {
     fontSize: 18,

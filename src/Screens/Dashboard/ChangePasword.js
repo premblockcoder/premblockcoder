@@ -35,7 +35,7 @@ const ChangePassword = ({ navigation }) => {
                             </View>
                         </View>
                         <View style={{ paddingHorizontal: 20, marginTop: 32 }}>
-                            <Button onPress={() => navigation.navigate('Login')}
+                            <Button onPress={() => navigation.goBack()}
                                 styling={{ height: 52 }}
                                 text={'Submit'}
                                 textstyle={{ fontSize: 16, fontWeight: "600" }}

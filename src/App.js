@@ -9,30 +9,23 @@
 import React, { Component, useEffect } from 'react';
 import {
   SafeAreaView,
-  View, StatusBar
+  View
 } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Main from './MainNavigator/navigation.js';
-import SplashScreen from 'react-native-splash-screen'
+import Main from './MainNavigator/Main'
+import { Provider } from 'react-redux'
+// import Store from './redux/store';
 
-
+// const store = Store()
 const App = () => {
-
-  useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 1000);
-
-  }, [])
 
   return (
     <>
-      <SafeAreaProvider>
+      {/* <Provider store={store} > */}
         <Main />
-      </SafeAreaProvider>
-
+      {/* </Provider> */}
 
     </>
+
 
   );
 }
