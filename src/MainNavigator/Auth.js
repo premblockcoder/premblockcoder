@@ -5,6 +5,7 @@ import Login from '../Screens/Auth/Login';
 import Register from '../Screens/Auth/Register';
 import VerifyEmail from '../Screens/Auth/VerifyEmail';
 import ForgotPassword from '../Screens/Auth/ForgotPassword';
+import ChangePassword from '../Screens/Dashboard/ChangePasword';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -35,6 +36,10 @@ const Auth = () => {
                 <AuthStack.Screen
                     name="ForgotPassword"
                     component={ForgotPassword}
+                />
+                <AuthStack.Screen
+                    name="ChangePassword"
+                    component={ChangePassword}
                 />
             </AuthStack.Navigator>
         </>

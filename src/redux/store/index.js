@@ -1,7 +1,7 @@
 import { applyMiddleware, } from 'redux'
 import thunk from 'redux-thunk'
 import { configureStore } from '@reduxjs/toolkit'
-import { createDevTools} from '@redux-devtools/core'
+import { createDevTools } from '@redux-devtools/core'
 import reducers from '../reducers'
 
 import axios from 'axios'
@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
 
 const client = axios.create({
-  baseURL: 'http://112.196.76.181:8686/everyday-angel-backend/public/api/v1/',
+  baseURL: 'http://13.126.156.148:5000/api/v1/',
   headers: {
     accept: 'application/json',
     // 'content-type': 'application/x-www-form-urlencoded',
@@ -22,6 +22,7 @@ const client = axios.create({
 client.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('access_token')
+    console.log(token,"token")
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
@@ -72,39 +73,39 @@ const httpHandleError = error => {
   if (error.status == 500) {
     Toast.show({
       type: 'error',
-      text1: error.data.message,
+      text1: error.data.error.message.message,
     })
   }
-
-  if (error.status == 422) {
-    if (error.data && error.data.message) {
-      if (typeof error.data.message == 'object') {
+  //422
+  if (error.status == 400) {
+    if (error.data && error.data.error.message) {
+      if (typeof error.data.error.message === 'object') {
         var firstKey = ''
-        for (var key in error.data.message) {
+        for (var key in error.data.error.message) {
           firstKey = key
           break
         }
 
-        if (error.data.message[firstKey]) {
+        if (error.data.error.message[firstKey]) {
           Toast.show({
             type: 'error',
             text1: 'Validation failed',
-            text2: error.data.message[firstKey][0],
+            text2: error.data.error.message[firstKey][0],
             text2NumberOfLines: 2
           })
-        } else if (error.data.message[firstKey]) {
+        } else if (error.data.error.message[firstKey]) {
           Toast.show({
             type: 'error',
             text1: 'Validation failed',
-            text2: error.data.message[firstKey],
+            text2: error.data.error.message[firstKey],
             text2NumberOfLines: 2
           })
         }
-      } else if (typeof error.data.message == 'string') {
+      } else if (typeof error.data.error.message === 'string') {
         Toast.show({
           type: 'error',
           text1: 'Validation failed',
-          text2: error.data.message,
+          text2: error.data.error.message,
           text2NumberOfLines: 2
         })
       }
@@ -118,22 +119,11 @@ const httpHandleError = error => {
   }
 }
 
-/**
- * Prepare the Redux Store
- */
-const composedMiddlewares = applyMiddleware(thunk)
-
 const createStoreWithMiddleware = applyMiddleware(
   axiosMiddleware(client, middlewareConfig),
   thunk,
-)(configureStore)
+)(configureStore);
 
-const storeEnhancers = createDevTools({
-  name: 'TricePay',
-})(composedMiddlewares)
+const Store = createStoreWithMiddleware({ reducer: reducers }, undefined);
 
-const Store = () => {
-  return createStoreWithMiddleware(reducers, undefined,composedMiddlewares)
-}
-
-export default Store
+export default Store;

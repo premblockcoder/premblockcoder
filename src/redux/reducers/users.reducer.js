@@ -19,6 +19,30 @@ const usersReducer = (state = initialState, action) => {
     case failure(userConstants.SIGN_UP):
       return { ...state, isRequesting: false }
 
+    case userConstants.VERIFY_EMAIL:
+      return { ...state, isRequesting: true }
+    case success(userConstants.VERIFY_EMAIL):
+    case failure(userConstants.VERIFY_EMAIL):
+      return { ...state, isRequesting: false }
+
+    case userConstants.RESEND_CODE:
+      return { ...state, isRequesting: false }
+    case success(userConstants.RESEND_CODE):
+    case failure(userConstants.RESEND_CODE):
+      return { ...state, isRequesting: false }
+
+      case userConstants.FORGOT_PASSWORD:
+      return { ...state, isRequesting: true }
+    case success(userConstants.FORGOT_PASSWORD):
+    case failure(userConstants.FORGOT_PASSWORD):
+      return { ...state, isRequesting: false } 
+
+      case userConstants.UPDATE_PASSWORD:
+        return { ...state, isRequesting: true }
+      case success(userConstants.UPDATE_PASSWORD):
+      case failure(userConstants.UPDATE_PASSWORD):
+        return { ...state, isRequesting: false } 
+
     case userConstants.CHANGE_PASSWORD:
       return { ...state, isRequesting: true }
     case success(userConstants.CHANGE_PASSWORD):

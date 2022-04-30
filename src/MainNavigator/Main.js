@@ -6,6 +6,7 @@ import Auth from './Auth';
 import Dashboard from './Dashboard';
 import SplashScreen from 'react-native-splash-screen'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Toast from 'react-native-toast-message'
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +16,7 @@ const Main = () => {
 
     const processInitialAction = async () => {
         const token = await AsyncStorage.getItem('access_token')
-        console.log(token)
+        console.log(token,"token")
         setDefaultRoute(token ? 'Dashboard' : 'Auth')
 
         setIsChecked(true)
@@ -45,7 +46,7 @@ const Main = () => {
                     isReadyRef.current = true
                 }}>
                 <Stack.Navigator
-                    initialRouteName={'Auth'}
+                    initialRouteName={defaultRoute}
                     screenOptions={{
                         headerShown: false
                     }}>
@@ -59,6 +60,7 @@ const Main = () => {
                     />
                 </Stack.Navigator>
             </NavigationContainer>
+            <Toast />
         </>
     )
 }

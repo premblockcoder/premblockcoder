@@ -1,6 +1,10 @@
 export const API_URLS = {
-  LOGIN: 'login',
-  SIGN_UP: 'register',
+  LOGIN: 'auth/login',
+  SIGN_UP: 'auth/register',
+  VERIFY_EMAIL:'member/verifycode', 
+  RESEND_CODE:'member/resendCode',
+  FORGOT_PASSWORD:'auth/forgetpassword',
+  UPDATE_PASSWORD:'member/updatepassword',
   FCM_SUBSCRIBE: 'push/subscribe',
   CHANGE_PASSWORD: 'change-password',
   MY_POSTED_NEEDS: '/needs/my-posted-needs',

@@ -124,8 +124,9 @@ const Wallet = ({ navigation }) => {
                         <Text style={styles.title}> My Portfolio </Text>
                         <FlatList
                             data={Data}
-                            renderItem={({ item, index }) => renderlist(item, index)} />
-
+                            renderItem={({ item, index }) => renderlist(item, index)} 
+                            keyExtractor={item => item.id }
+                            />
                     </View>
                 </View>
                 <QRModal Visible={QRVisible} setModalVisible={setQRVisible} />
@@ -200,7 +201,6 @@ const styles = StyleSheet.create({
     },
     lastview: {
         flex: 1,
-        borderWidth: 1,
         marginTop: 22,
         backgroundColor: colors.white,
         borderTopStartRadius: 30,

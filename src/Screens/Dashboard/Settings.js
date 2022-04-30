@@ -4,7 +4,8 @@ import { CustomHeader } from '../../components/common';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as RootNavigation from '../../MainNavigator/RootNavigation'
 
 const Settings = ({ navigation }) => {
     const Data = [
@@ -42,10 +43,13 @@ const Settings = ({ navigation }) => {
     ];
     const on_click = (item) => {
         if (item.heading == 'Change Password') {
-             navigation.navigate('ChangePassword')
+            navigation.navigate('ChangePassword')
         }
         else if (item.heading == 'Enable 2FA') {
             navigation.navigate('Scanner')
+        }
+        else if (item.heading == 'Profile Information') {
+            navigation.navigate('MyProfile')
         }
     }
 
@@ -92,8 +96,11 @@ const Settings = ({ navigation }) => {
                             />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-
+                    <TouchableOpacity
+                        onPress={() => {
+                            AsyncStorage.clear()
+                            navigation.navigate('Auth', { screen: 'Login', });
+                        }}>
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, paddingVertical: 17, borderBottomColor: "#CAC8DA34", }}>
                             <Image source={Images.logout}
                                 style={styles.img}
@@ -145,7 +152,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: colors.extradarkgray,
         marginTop: 5,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
 
     },
     icon: {
@@ -164,19 +171,19 @@ const styles = StyleSheet.create({
     heading: {
         color: colors.extralightblack,
         fontSize: 16,
-        fontFamily:Fonts.SourceSansProSemiBold
+        fontFamily: Fonts.SourceSansProSemiBold
     },
     Text: {
         color: colors.extralightblack,
         fontSize: 16,
-fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
     },
     Text2: {
         flex: 1,
         color: colors.extralightblack,
         fontSize: 16,
         marginLeft: 17,
-        fontFamily:Fonts.SourceSansProSemiBold
+        fontFamily: Fonts.SourceSansProSemiBold
 
     },
     img: {

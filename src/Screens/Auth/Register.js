@@ -1,45 +1,92 @@
-import React, { useState } from 'react';
-import { Text, SafeAreaView, View, StyleSheet, Image, ScrollView, TouchableOpacity, StatusBar, } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, StatusBar, } from 'react-native';
 import { Images } from '../../Res/Images';
 import { colors } from '../../Res/Colors';
 import { InputText } from '../../components/common';
 import { Button } from '../../components/common';
 import { Fonts } from '../../Res';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import axios from 'axios';
-
+import { useDispatch, useSelector } from 'react-redux'
+import Loader from '../../components/common/Loader';
+import Toast from 'react-native-toast-message';
+import { registerUser } from '../../redux/actions/users.actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register = ({ navigation }) => {
+    const isLoading = useSelector(state => state.users.isRequesting)
+    const dispatch = useDispatch()
     const [user, setuser] = useState({
-        name: '', email: '', password: '', confirmpassword: ''
+        fullName: '', emailId: '', password: '', confirmPassword: ''
     })
 
-    const _register = () => {
-        if (!user.name == "" || !user.email == "" || !user.password == "") {
-            axios.post('http://192.168.1.23:4000/api/v1/auth/register', {
-                fullName: user.name,
-                emailId: user.email,
-                password: user.password,
-                confirmPassword: user.confirmpassword
+    const signupUser = () => {
+        if (!user.fullName) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter name.',
             })
-                .then((res) => {
-                    console.log(res?.data,"resregister"); 
-                    navigation.navigate('VerifyEmail')
+            return
+        }
+        if (!user.emailId) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter email.',
+            })
+            return
+        }
+        if (Helper.isEmailValid(user.emailId)) {
+            Toast.show({
+                type: 'error',
+                text1: 'email not correct.',
+            })
+            return
+        }
+        if (!user.password) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter password.',
+            })
+            return
+        }
+        if (user.password.length < 6) {
+            Toast.show({
+                type: 'error',
+                text1: 'please enter a password of at least 6 characters.'
+            })
+            return
+        }
+        if (!user.confirmPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter confirm password.',
+            })
+            return
+        }
+        if (user.password != user.confirmPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'password mismatch.',
+            })
+            return
+        }
+        dispatch(registerUser(user)).then(res => {
+            console.log(res, "res==============")
+            if (res) {
+                AsyncStorage.setItem('access_token', res?.data)
+                Toast.show({
+                    type: 'success',
+                    text1: res?.message,
                 })
-                .catch((error) => {
-                    console.log({error});
-                });           
-        }
-        else {
-            alert("Enter Detail")
-        }
+                navigation.navigate('VerifyEmail')
+            }
+        })
     }
-    console.log(user)
 
     return (
         <>
             <StatusBar backgroundColor={colors.white} barStyle={"dark-content"} />
             <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
+                <Loader isLoading={isLoading} />
                 <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: colors.white }}>
                     <Image source={Images.art1}
                         style={styles.img} />
@@ -51,11 +98,11 @@ const Register = ({ navigation }) => {
                         <View style={{ marginTop: 22 }}>
                             <InputText placeholder={"Full Name"}
                                 placeholderTextColor={colors.darktextgray}
-                                onChangeText={(t) => setuser({ ...user, name: t })} />
+                                onChangeText={(t) => setuser({ ...user, fullName: t })} />
                             <InputText placeholder={"Email Address"}
                                 placeholderTextColor={colors.darktextgray}
                                 inputstying={{ marginTop: 14 }}
-                                onChangeText={(t) => setuser({ ...user, email: t })} />
+                                onChangeText={(t) => setuser({ ...user, emailId: t })} />
                             <InputText placeholder={"Password"}
                                 placeholderTextColor={colors.darktextgray}
                                 inputstying={{ marginTop: 14 }}
@@ -65,7 +112,7 @@ const Register = ({ navigation }) => {
                                 placeholderTextColor={colors.darktextgray}
                                 inputstying={{ marginTop: 14 }}
                                 secureTextEntry
-                                onChangeText={(t) => setuser({ ...user, confirmpassword: t })} />
+                                onChangeText={(t) => setuser({ ...user, confirmPassword: t })} />
                         </View>
                         <View style={{ marginTop: 20 }}>
                             <Text style={styles.title}> I agree to our <Text style={styles.titletxt}>Terms of Services <Text style={styles.title}>and </Text><Text style={styles.titletxt}>Privacy{"\n"} Policy.</Text>
@@ -73,7 +120,7 @@ const Register = ({ navigation }) => {
                             </Text>
                         </View>
                         <View style={{ marginTop: 20 }}>
-                            <Button onPress={() => _register()}
+                            <Button onPress={signupUser}
                                 styling={styles.logbtn}
                                 text={"Continue"}>
                             </Button>
@@ -91,6 +138,12 @@ const Register = ({ navigation }) => {
 }
 export default Register
 
+export class Helper {
+    static isEmailValid(email) {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return reg.test(email) == 0;
+    }
+}
 
 const styles = StyleSheet.create({
     containter: {

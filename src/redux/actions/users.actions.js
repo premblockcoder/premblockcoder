@@ -26,6 +26,38 @@ export const beginSignupUser = data => ({
   },
 })
 
+export const beginVerifyemail = data => ({
+  type: userConstants.VERIFY_EMAIL,
+  payload: {
+    request: {
+      url: API_URLS.VERIFY_EMAIL,
+      method: 'post',
+      data,
+    },
+  },
+})
+export const resendcode = data => ({
+  type: userConstants.RESEND_CODE,
+  payload: {
+    request: {
+      url: API_URLS.RESEND_CODE,
+      method: 'post',
+      data,
+    },
+  },
+})
+
+export const beginforgotPassword = data => ({
+  type: userConstants.FORGOT_PASSWORD,
+  payload: {
+    request: {
+      url: API_URLS.FORGOT_PASSWORD,
+      method: 'post',
+      data,
+    },
+  },
+})
+
 export const beginUpdateUser = data => ({
   type: userConstants.UPDATE_USER,
   payload: {
@@ -42,6 +74,17 @@ export const beginChangePassword = data => ({
   payload: {
     request: {
       url: API_URLS.CHANGE_PASSWORD,
+      method: 'post',
+      data,
+    },
+  },
+})
+
+export const beginupdatePassword = data => ({
+  type: userConstants.UPDATE_PASSWORD,
+  payload: {
+    request: {
+      url: API_URLS.UPDATE_PASSWORD,
       method: 'post',
       data,
     },
@@ -83,6 +126,53 @@ export function registerUser(params) {
   return async dispatch => {
     try {
       const response = await dispatch(beginSignupUser(params))
+      if (response.payload) {
+        const { data } = response.payload
+        return data
+      }
+
+      throw response
+    } catch (error) {
+      throw error.response
+    }
+  }
+}
+
+export function verifyemail(params) {
+  return async dispatch => {
+    try {
+      const response = await dispatch(beginVerifyemail(params))
+      if (response.payload) {
+        const { data } = response.payload
+        return data
+      }
+
+      throw response
+    } catch (error) {
+      throw error.response
+    }
+  }
+}
+export function forgotPassword(params) {
+  return async dispatch => {
+    try {
+      const response = await dispatch(beginforgotPassword(params))
+      if (response.payload) {
+        const { data } = response.payload
+        return data
+      }
+
+      throw response
+    } catch (error) {
+      throw error.response
+    }
+  }
+}
+
+export function updatePassword(params) {
+  return async dispatch => {
+    try {
+      const response = await dispatch(beginupdatePassword(params))
       if (response.payload) {
         const { data } = response.payload
         return data

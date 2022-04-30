@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, StyleSheet, Image, TouchableOpacity, Text, FlatList, StatusBar } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Image, TouchableOpacity, Text, FlatList, StatusBar, ScrollView } from 'react-native';
 import { Images } from '../../Res/Images';
 import { CustomHeader } from '../../components/common/Header';
 import { colors } from '../../Res/Colors';
@@ -57,6 +57,14 @@ const BitcoinDetail = ({ navigation, route }) => {
         },
         {
             id: 6,
+            bitcoinstatus: "Sent Bitcoin",
+            status: "Success",
+            BTC: "-0.00142263 BTC",
+            amount: "-$12.50",
+            img: 'arrow-up-right'
+        },
+        {
+            id: 7,
             bitcoinstatus: "Sent Bitcoin",
             status: "Success",
             BTC: "-0.00142263 BTC",
@@ -132,13 +140,13 @@ const BitcoinDetail = ({ navigation, route }) => {
                             { color: active !== "Deposit" ? colors.black : colors.white }]}> Deposit </Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
-                        <FlatList
-                            data={Data}
-                            renderItem={({ item }) => render(item)}
-                            keyExtractor={(item) => item.id}
-                            contentContainerStyle={styles.con} />
-                    </View>
+                    <FlatList
+                        data={Data}
+                        renderItem={({ item }) => render(item)}
+                        keyExtractor={(item) => item.id}
+                        contentContainerStyle={styles.con}
+
+                    />
                     <View style={styles.last}>
                         <View style={styles.sendview}>
                             <TouchableOpacity style={{ alignItems: "center" }}
@@ -257,7 +265,7 @@ const styles = StyleSheet.create({
         bottom: 18
     },
     con: {
-        marginTop: 18, borderTopWidth: 1, borderTopColor: colors.borderlightgray
+        marginTop: 18, borderTopWidth: 1, borderTopColor: colors.borderlightgray,paddingBottom:30
     },
     sendtext: {
         fontSize: 16,

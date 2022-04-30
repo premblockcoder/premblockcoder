@@ -50,5 +50,6 @@ export const Images = {
    share:require('../assets/share.png'),
    logout:require('../assets/logout.png'),
    phone:require('../assets/phone.png'),
+   dummyprofile:require('../assets/dummy-profile.png')
 
 }

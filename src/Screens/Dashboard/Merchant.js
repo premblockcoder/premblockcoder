@@ -75,7 +75,9 @@ const Merchant = ({ navigation }) => {
                 <CustomHeader text={"Merchants"} back />
                 <View style={styles.containter}>
                     <View style={styles.box}>
-                        <TextInput placeholder={"Search"} />
+                        <TextInput placeholder={"Search"}
+                         placeholderTextColor={colors.textlightgray}
+                         style={{color:colors.black}} />
                         <Image source={Images.search}
                             style={styles.img}
                         />
@@ -86,6 +88,7 @@ const Merchant = ({ navigation }) => {
                             renderItem={renderItem}
                             keyExtractor={item => item.id}
                             contentContainerStyle={{ marginTop: 26 }}
+                            showsVerticalScrollIndicator={false}
                         />
                     </View>
                 </View>

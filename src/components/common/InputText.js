@@ -15,7 +15,8 @@ export const InputText = ({
   placeholderTextColor,
   secureTextEntry,
   inputstying,
-  onChangeText
+  onChangeText,
+  keyboardType
 }) => (
   <>
     <View
@@ -26,6 +27,9 @@ export const InputText = ({
         placeholderTextColor={placeholderTextColor}
         secureTextEntry={secureTextEntry}
         onChangeText={onChangeText}
+        autoCapitalize={"none"}
+        keyboardType={keyboardType}
+
       />
       {
         showright &&

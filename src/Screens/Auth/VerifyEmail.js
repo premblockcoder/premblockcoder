@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 import { ScrollView } from 'react-native';
 import { Button } from '../../components/common';
@@ -11,9 +11,13 @@ import {
     useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import { Fonts } from '../../Res';
+import { useDispatch, useSelector } from 'react-redux'
+import { verifyemail, resendcode } from '../../redux/actions/users.actions';
+import Toast from 'react-native-toast-message';
+import { CommonActions } from '@react-navigation/native';
+import Loader from '../../components/common/Loader';
 
 const VerifyEmail = ({ navigation }) => {
-    const [resend, setresend] = useState(false)
     const [value, setValue] = useState('');
     const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -21,11 +25,71 @@ const VerifyEmail = ({ navigation }) => {
         setValue,
     });
     const CELL_COUNT = 6;
+    const isLoading = useSelector(state => state.users.isRequesting)
+    const dispatch = useDispatch()
+    const param = { otp: value }
+    const [initialTime, setInitialTime] = useState(0);
+    const [startTimer, setStartTimer] = useState(false);
+
+
+    const reSend = () => {
+        setInitialTime(15);
+        setStartTimer(true);
+        dispatch(resendcode()).then(res => {
+         console.log(res,"resend")  
+        })
+    };
+    useEffect(() => {
+        if (initialTime > 0) {
+            setTimeout(() => {
+                setInitialTime(initialTime - 1);
+            }, 1000);
+        }
+
+        if (initialTime === 0 && startTimer) {
+            setStartTimer(false);
+        }
+    }, [initialTime, startTimer]);
+
+
+    const _Verify = () => {
+        if (!value) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter email code.',
+            })
+            return
+        }
+        dispatch(verifyemail(param)).then(res => {
+            if (res) {
+                Toast.show({
+                    type: 'success',
+                    text1: res?.message,
+                })
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            {
+                                name: 'Dashboard',
+                                params: {
+                                    type: 'register',
+                                  },
+                            },
+
+                        ],
+                    })
+                )
+            }
+        })
+    }
+
 
     return (
         <>
             <StatusBar backgroundColor={colors.white} barStyle={"dark-content"} />
             <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+                <Loader isLoading={isLoading} />
                 <ScrollView style={{ flex: 1 }} >
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 70 }}>
                         <Image source={Images.art2}
@@ -52,24 +116,25 @@ const VerifyEmail = ({ navigation }) => {
                                         key={index}
                                         style={[styles.cell, isFocused && styles.focusCell]}
                                         onLayout={getCellOnLayoutHandler(index)}>
-                                        {symbol || (isFocused ? <Cursor /> : null)}
+                                        {symbol || (isFocused ? <Cursor /> : null)}  
                                     </Text>
                                 )}
                             />
                         </View>
-                        <View style={{ marginTop: 32 }}>
-                            <Button onPress={() => navigation.navigate('Login')}
+                        <View
+                            style={{ marginTop: 32 }}>
+                            <Button onPress={_Verify}
                                 styling={styles.logbtn}
                                 text={"Continue"}>
                             </Button>
                         </View>
                         <View style={styles.last} >
-                            <Text style={styles.newtxt}>Resend code after 1:52 </Text>
-                            <TouchableOpacity onPress={() => setresend(!resend)}
-                                style={[styles.resendtxt, { opacity: resend ? 0.4 : 1 }]}>
+                            <Text style={styles.newtxt}>Resend code after {initialTime}</Text>
+                            <TouchableOpacity onPress={reSend}
+                                style={[styles.resendtxt, { opacity: startTimer ? 0.5 : 1 }]} disabled={startTimer}  >
                                 <Text style={{
                                     color: '#FFFFFF', fontSize: 14,
-                                    fontFamily:Fonts.SourceSansProRegular
+                                    fontFamily: Fonts.SourceSansProRegular
                                 }}>Resend</Text>
                             </TouchableOpacity>
                         </View>
@@ -95,23 +160,14 @@ const styles = StyleSheet.create({
         color: colors.blue,
         marginTop: 46,
         fontSize: 29,
-        fontFamily:Fonts.SourceSansProBold
+        fontFamily: Fonts.SourceSansProBold
     },
     txt: {
         color: colors.textlightgray,
         fontSize: 14,
         marginTop: 10,
         lineHeight: 24,
-fontFamily: Fonts.SourceSansProRegular
-    },
-    cell: {
-        width: 40,
-        height: 40,
-        lineHeight: 38,
-        fontSize: 24,
-        borderWidth: 2,
-        borderColor: '#00000030',
-        textAlign: 'center',
+        fontFamily: Fonts.SourceSansProRegular
     },
     input: {
         height: 49,
@@ -127,7 +183,8 @@ fontFamily: Fonts.SourceSansProRegular
     newtxt: {
         color: colors.textlightgray,
         fontSize: 12,
-fontFamily:Fonts.SourceSansProRegular   },
+        fontFamily: Fonts.SourceSansProRegular
+    },
     resendtxt: {
         backgroundColor: colors.green,
         borderRadius: 17,
@@ -161,6 +218,7 @@ fontFamily:Fonts.SourceSansProRegular   },
         borderRadius: 5,
         borderColor: '#B9B9B9',
         textAlign: 'center',
+        color:colors.black
     },
     focusCell: {
         borderColor: '#000',

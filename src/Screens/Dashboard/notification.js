@@ -48,6 +48,7 @@ const Notification = ({ navigation }) => {
                             renderItem={({ item }) => <NotificationCom item={item} />}
                             keyExtractor={item => item.id}
                             contentContainerStyle={{marginTop:10}}
+                            showsVerticalScrollIndicator={false}
                         />
                     </View>
                 </View>
