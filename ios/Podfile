@@ -24,6 +24,9 @@ target 'TricePay' do
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
+
+  pod 'RNQrcodeNative', :path => '../node_modules/react-native-qr-generator'
+
   target 'TricePayTests' do
     inherit! :complete
     # Pods for testing

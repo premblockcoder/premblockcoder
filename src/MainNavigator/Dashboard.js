@@ -7,7 +7,6 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabs from './Tabs.js';
 import AddToken from '../Screens/Dashboard/AddToken.js';
@@ -23,24 +22,35 @@ import ConfirmSend from '../Screens/Dashboard/ConfirmSend.js';
 import CompleteTrans from '../Screens/Dashboard/CompleteTrans.js';
 import Scanner from '../Screens/Dashboard/Scanner.js';
 import ChangePassword from '../Screens/Dashboard/ChangePasword.js';
-import PinView from '../Screens/Dashboard/PinView.js';
 import Notification from '../Screens/Dashboard/notification.js';
-import ConfirmPin from '../Screens/Dashboard/Confirmpin.js';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import MyProfile from '../Screens/Dashboard/EditProfile/index.js';
+import Enable2FA from '../Screens/Dashboard/Enable2FA/index.js';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Pin from '../Screens/Dashboard/Pin.js';
 
 const Stack = createNativeStackNavigator();
 
-const Dashboard = ({ route }) => {
-
+const Dashboard = ({ route, navigation }) => {
   const [defaultRoute, setDefaultRoute] = useState('')
   const [isChecked, setIsChecked] = useState(false)
-  const { type } = route?.params || {}
 
-  const processInitialAction = () => {
-    console.log(type, "type")
-    setDefaultRoute(type == 'login' ? 'BottomTabs' : type == 'register' ? 'PinView' : undefined ? 'BottomTabs' : null)
-    setIsChecked(true)
+
+  const processInitialAction = async () => {
+    const enable2FA = await AsyncStorage.getItem('2FA_check')
+    const verify_user = await AsyncStorage.getItem('verify_user')
+ 
+    if (JSON.parse(enable2FA)) {
+      if (JSON.parse(verify_user)) {
+        setDefaultRoute('Pin')
+        setIsChecked(true)
+      }
+      setDefaultRoute('Enable2FA')
+      setIsChecked(true)
+    }
+    else {
+      setDefaultRoute('Pin')
+      setIsChecked(true)
+    }
   }
 
   useEffect(() => {
@@ -117,17 +127,16 @@ const Dashboard = ({ route }) => {
         component={ChangePassword}
       />
       <Stack.Screen
-        name="PinView"
-        component={PinView}
-      />
-      <Stack.Screen
-        name="ConfirmPin"
-        component={ConfirmPin}
-        options={{ animation: "none" }}
-      />
-      <Stack.Screen
         name="MyProfile"
         component={MyProfile}
+      />
+      <Stack.Screen
+        name="Enable2FA"
+        component={Enable2FA}
+      />
+      <Stack.Screen
+        name="Pin"
+        component={Pin}
       />
     </Stack.Navigator>
   );

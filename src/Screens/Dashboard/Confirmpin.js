@@ -10,7 +10,7 @@ import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const PinView = ({ navigation, route }) => {
+const ConfirmPin = ({ navigation, route }) => {
     const pinView = useRef(null)
     const [showRemoveButton, setShowRemoveButton] = useState(false)
     const [enteredPin, setEnteredPin] = useState({ pin: "", confirm: "" })
@@ -89,15 +89,17 @@ const PinView = ({ navigation, route }) => {
                                 })
                                 navigation.dispatch(
                                     CommonActions.reset({
-                                        index: 0,
-                                        routes: [
-                                            {
-                                                name: 'BottomTabs'
-                                            },
-
-                                        ],
+                                      index: 0,
+                                      routes: [
+                                        {
+                                          name: 'Dashboard',
+                                          params: {
+                                            type: 'register',
+                                          },
+                                        },
+                                      ],
                                     })
-                                )
+                                  )
                             }
                         }
                         // if (key === "three") {
@@ -111,7 +113,7 @@ const PinView = ({ navigation, route }) => {
         </>
     )
 }
-export default PinView
+export default ConfirmPin
 
 const styles = StyleSheet.create({
     containter: {

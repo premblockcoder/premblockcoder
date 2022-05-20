@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import { Button, CustomHeader, InputText } from '../../components/common';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { generateMnemonics } from '../../Utils';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 
 const GenerateWallet = ({ navigation }) => {
+    const [userwallet, setuserwallet] = useState({ name: '', password: '', confirmPassword: '' })
+
+    const _next = () => {
+        if (!userwallet.name) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter name.',
+            })
+            return
+        }
+        if (!userwallet.password) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter password.',
+            })
+            return
+        }
+        if (!userwallet.confirmPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter confirm password.',
+            })
+            return
+        }
+        if (userwallet.confirmPassword != userwallet.password) {
+            Toast.show({
+                type: 'error',
+                text1: 'password mismatch.',
+            })
+            return
+        }
+        generateMnemonics()
+        AsyncStorage.setItem('Gen_wallet_user_data', JSON.stringify(userwallet))
+        navigation.navigate('RecoveryPharse')
+    }
 
     return (
         <>
@@ -14,23 +52,27 @@ const GenerateWallet = ({ navigation }) => {
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
                 <CustomHeader text={"Generate Wallet"} back />
-                <KeyboardAwareScrollView style={{flex:1}} >
+                <KeyboardAwareScrollView style={{ flex: 1 }} >
                     <View style={styles.containter}>
                         <View>
                             <View style={styles.view}>
                                 <Text style={styles.text}>Name</Text>
                                 <InputText inputstying={styles.input}
-                                    placeholder={"Wallet 1"} placeholderTextColor={colors.black} />
+                                    placeholder={"Wallet 1"} placeholderTextColor={colors.black}
+                                    onChangeText={(t) => setuserwallet({ ...userwallet, name: t })} />
                             </View>
                             <View style={[styles.view, { marginTop: 15 }]}>
                                 <Text style={styles.text}>Password</Text>
                                 <InputText inputstying={styles.input}
-                                    placeholder={"Password"} secureTextEntry placeholderTextColor={colors.black} />
+                                    placeholder={"Password"} secureTextEntry placeholderTextColor={colors.black}
+                                    onChangeText={(t) => setuserwallet({ ...userwallet, password: t })} />
                             </View>
                             <View style={[styles.view, { marginTop: 15 }]}>
                                 <Text style={styles.text}>Confirm Password</Text>
                                 <InputText inputstying={styles.input}
-                                    placeholder={"Confirm Password"} secureTextEntry placeholderTextColor={colors.black}
+                                    placeholder={"Confirm Password"}
+                                    secureTextEntry placeholderTextColor={colors.black}
+                                    onChangeText={(t) => setuserwallet({ ...userwallet, confirmPassword: t })}
                                 />
                             </View>
                         </View>
@@ -41,7 +83,7 @@ const GenerateWallet = ({ navigation }) => {
                         text={'Next'}
                         styling={styles.btn}
                         textstyle={styles.btntext}
-                        onPress={() => navigation.navigate('RecoveryPharse')}
+                        onPress={_next}
                     />
                 </View>
             </SafeAreaView>

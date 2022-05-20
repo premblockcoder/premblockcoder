@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, ScrollView, StatusBar, } from 'react-native';
+import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
 import { Images } from '../../Res/Images';
 import { colors } from '../../Res/Colors';
 import { InputText } from '../../components/common';
@@ -15,15 +15,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Login = ({ navigation }) => {
+  const { width } = Dimensions.get("window");
+  const { height } = Dimensions.get("window");
   const [user, setuser] = useState({
-    emailId: '', password: '',
+    email: '', password: '',
   })
 
   const isLoading = useSelector(state => state.users.isRequesting)
   const dispatch = useDispatch()
 
   const _loginUser = () => {
-    if (!user.emailId) {
+    if (!user.email) {
       Toast.show({
         type: 'error',
         text1: 'Please enter email.',
@@ -39,11 +41,13 @@ const Login = ({ navigation }) => {
     }
     dispatch(loginUser(user)).then(res => {
       if (res) {
-      AsyncStorage.setItem('access_token', res?.data)
-      // const user = {
-      //   ...res,
-      // }
-      // AsyncStorage.setItem('user', JSON.stringify(user))
+        AsyncStorage.setItem('access_token', res?.accessToken)
+        AsyncStorage.setItem('2FA_check', JSON.stringify(res?.required2FACheck))
+        AsyncStorage.setItem('refresh_Access_Token', res?.refreshAccessToken)
+        const user = {
+          ...res?.userInfo[0]
+        }
+        AsyncStorage.setItem('user', JSON.stringify(user))
         Toast.show({
           type: 'success',
           text1: res?.message,
@@ -58,7 +62,6 @@ const Login = ({ navigation }) => {
                   type: 'login',
                 },
               },
-
             ],
           })
         )
@@ -72,7 +75,9 @@ const Login = ({ navigation }) => {
       <StatusBar backgroundColor={colors.white} barStyle={"dark-content"} />
       <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF', }}>
         <Loader isLoading={isLoading} />
-        <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: colors.white }}>
+        <KeyboardAwareScrollView 
+        style={{ backgroundColor: colors.white, width: width, height: height }}
+        showsVerticalScrollIndicator={false}>
           <Image source={Images.art3}
             style={styles.img} />
           <View style={styles.containter}>
@@ -83,7 +88,7 @@ const Login = ({ navigation }) => {
             <View style={{ marginTop: 26 }}>
               <InputText placeholder={"Email Address"} placeholderTextColor={colors.darktextgray}
                 showright rightimg={Images.at}
-                onChangeText={(t) => setuser({ ...user, emailId: t })} />
+                onChangeText={(t) => setuser({ ...user, email: t })} />
               <InputText placeholder={"Password"} placeholderTextColor={colors.darktextgray}
                 showright rightimg={Images.lock}
                 secureTextEntry

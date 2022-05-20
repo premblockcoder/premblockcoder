@@ -16,25 +16,40 @@ const Register = ({ navigation }) => {
     const isLoading = useSelector(state => state.users.isRequesting)
     const dispatch = useDispatch()
     const [user, setuser] = useState({
-        fullName: '', emailId: '', password: '', confirmPassword: ''
+        name: '', email: '', password: '', confirmPassword: '', referralCode: ''
     })
+    const [olduser, setolduser] = useState()
+
+    const getData = async () => {
+        try {
+            const user = await AsyncStorage.getItem('user')
+            const data = JSON.parse(user)
+            setolduser(data)
+        } catch (e) {
+            // error reading value
+        }
+    }
+    useEffect(() => {
+        getData()
+    }, [])
+
 
     const signupUser = () => {
-        if (!user.fullName) {
+        if (!user.name) {
             Toast.show({
                 type: 'error',
                 text1: 'Please enter name.',
             })
             return
         }
-        if (!user.emailId) {
+        if (!user.email) {
             Toast.show({
                 type: 'error',
                 text1: 'Please enter email.',
             })
             return
         }
-        if (Helper.isEmailValid(user.emailId)) {
+        if (Helper.isEmailValid(user.email)) {
             Toast.show({
                 type: 'error',
                 text1: 'email not correct.',
@@ -70,9 +85,16 @@ const Register = ({ navigation }) => {
             return
         }
         dispatch(registerUser(user)).then(res => {
-            console.log(res, "res==============")
+            console.log(res, 'register =======')
             if (res) {
-                AsyncStorage.setItem('access_token', res?.data)
+                if (res?.user[0]?.id !== olduser?.id) {
+                    AsyncStorage.removeItem('Pin')
+                    AsyncStorage.removeItem('refresh_Access_Token')
+                    AsyncStorage.removeItem('access_token')
+                    AsyncStorage.removeItem('verify_user')
+                    AsyncStorage.removeItem('2FA_check')
+                }
+                AsyncStorage.setItem('access_token', res?.accessToken)
                 Toast.show({
                     type: 'success',
                     text1: res?.message,
@@ -98,11 +120,11 @@ const Register = ({ navigation }) => {
                         <View style={{ marginTop: 22 }}>
                             <InputText placeholder={"Full Name"}
                                 placeholderTextColor={colors.darktextgray}
-                                onChangeText={(t) => setuser({ ...user, fullName: t })} />
+                                onChangeText={(t) => setuser({ ...user, name: t })} />
                             <InputText placeholder={"Email Address"}
                                 placeholderTextColor={colors.darktextgray}
                                 inputstying={{ marginTop: 14 }}
-                                onChangeText={(t) => setuser({ ...user, emailId: t })} />
+                                onChangeText={(t) => setuser({ ...user, email: t })} />
                             <InputText placeholder={"Password"}
                                 placeholderTextColor={colors.darktextgray}
                                 inputstying={{ marginTop: 14 }}
@@ -113,6 +135,10 @@ const Register = ({ navigation }) => {
                                 inputstying={{ marginTop: 14 }}
                                 secureTextEntry
                                 onChangeText={(t) => setuser({ ...user, confirmPassword: t })} />
+                            <InputText placeholder={"Referral Code"}
+                                placeholderTextColor={colors.darktextgray}
+                                inputstying={{ marginTop: 14 }}
+                                onChangeText={(t) => setuser({ ...user, referralCode: t })} />
                         </View>
                         <View style={{ marginTop: 20 }}>
                             <Text style={styles.title}> I agree to our <Text style={styles.titletxt}>Terms of Services <Text style={styles.title}>and </Text><Text style={styles.titletxt}>Privacy{"\n"} Policy.</Text>

@@ -1,47 +1,130 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, StatusBar } from 'react-native';
 import { Button, CustomHeader } from '../../components/common';
 import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
-import { Images } from '../../Res/Images';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from 'react-native-toast-message';
+import { loadWalletFromMnemonics } from "../../Utils";
+import Loader from "../../components/common/Loader";
 
 
-const VerifyMnemonic = ({ navigation }) => {
-    const Data = ['gift', 'device', 'admit', 'modify', 'between',
-        'flock', 'chat', 'frog', 'jacket', 'shoot', 'history',
-    ];
-
-    const renderItem = ({ item }) => (
-        <TouchableOpacity style={{ flexDirection: "row", margin: 8 }} >
-            <View style={{ borderWidth: 1, borderColor: colors.bordergray, borderRadius: 6, paddingVertical: 7, paddingHorizontal: 15 }}>
-                <Text style={styles.text3}>{item}</Text>
-            </View>
-        </TouchableOpacity>
+const VerifyMnemonic = ({ navigation, route }) => {
+    const { array } = route?.params || {}
+    const [shuffle, setShuffle] = useState(
+        [...array].sort(() => 0.5 - Math.random())
     );
+    const [result, setResult] = useState([]);
+    const [isLoading, SetisLoading] = useState(false)
+    console.log(isLoading, "loading")
+    console.log(array, "originalarray")
+
+
+    const checkIfResultIsValid = async () => {
+        if (result.length) {
+            const res = result.every((valueFromShuffle, index) => {
+                return (valueFromShuffle === array[index])
+            })
+            if (!!res) {
+                loadWalletFromMnemonics(array)
+                Toast.show({
+                    type: "success",
+                    text1: 'mnemonics matched success.',
+                })
+                navigation.navigate('Wallet')
+            }
+            else {
+                Toast.show({
+                    type: "error",
+                    text1: 'mnemonics not matched to original order.',
+                })
+            }
+        }
+        else {
+            Toast.show({
+                type: "error",
+                text1: 'mnemonics not found.',
+            })
+
+        }
+    }
+
+    const handleSelect = (e) => {
+        const f = [...shuffle];
+        const targetIndex = f.indexOf(e);
+        f.splice(targetIndex, 1);
+        setShuffle(f);
+        setResult([...result, e]);
+    };
+
+    const handleUnSelect = (e) => {
+        const f = [...result];
+        const targetIndex = f.indexOf(e);
+        f.splice(targetIndex, 1);
+        setResult(f);
+        setShuffle([...shuffle, e]);
+    };
+
+    const renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity style={{ flexDirection: "row", margin: 5 }}
+                onPress={() => handleSelect(item)} >
+                <View style={{ borderWidth: 1, borderColor: colors.bordergray, borderRadius: 6, paddingVertical: 7, paddingHorizontal: 13 }}>
+                    <Text style={styles.text3}>{item}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <>
             <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+                <Loader isLoading={isLoading} />
                 <CustomHeader text={"Verify Mnemonic"} back />
                 <View style={styles.containter}>
-                    <View style={{ marginTop: 21, alignItems: "center" }}>
+                    <TouchableOpacity style={{
+                        marginTop: 21,
+                        alignItems: "center",
+                        paddingHorizontal: 20,
+                    }}>
                         <Text style={styles.text}>Verify you recovery phrase</Text>
                         <Text style={styles.text2}>Please click the mnemonics by original {"\n"} order</Text>
-                    </View>
+                    </TouchableOpacity>
                     <View style={styles.box}>
-                    </View>
-                    <View>
                         <FlatList
-                            data={Data}
-                            renderItem={renderItem}
-                            keyExtractor={item => item.id}
+                            data={result}
+                            renderItem={({ item }) => {
+                                return (
+                                    <TouchableOpacity style={{
+                                        borderWidth: 1,
+                                        borderColor: colors.bordergray,
+                                        borderRadius: 6, paddingVertical: 7,
+                                        paddingHorizontal: 13,
+                                        alignSelf: "center",
+                                        margin: 4
+                                    }}
+                                        onPress={() => handleUnSelect(item)} >
+                                        <Text style={styles.text3}>{item}</Text>
+                                    </TouchableOpacity>
+                                )
+                            }}
+                            keyExtractor={(index) => String(index)}
                             numColumns={4}
-                            contentContainerStyle={{ marginTop: 20 }}
+                            contentContainerStyle={{ alignSelf: "center", marginTop: 10 }}
                         />
                     </View>
-                    <View style={{ flex: 1, justifyContent: "flex-end" }}>
-                        <Button onPress={() => navigation.navigate('Wallet')}
+                    <FlatList
+                        data={shuffle}
+                        renderItem={renderItem}
+                        keyExtractor={(index) => String(index)}
+                        numColumns={4}
+                        contentContainerStyle={{ marginTop: 20, alignItems: "center" }}
+                    />
+                    <View style={{ justifyContent: "flex-end", width: "100%" }}>
+                        <Button
+                            onPress={() => checkIfResultIsValid()}
                             styling={styles.resbtn}
                             text={'Verify'}
                             textstyle={{ fontSize: 16, }}
@@ -58,7 +141,8 @@ const styles = StyleSheet.create({
     containter: {
         flex: 1,
         backgroundColor: colors.white,
-        paddingHorizontal: 20
+        paddingHorizontal: 13,
+        alignItems: "center"
     },
 
     text: {
@@ -73,14 +157,13 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.SourceSansProRegular
     },
     box: {
-        height: 99,
+        height: 160,
         width: "100%",
         borderWidth: 1,
         marginBottom: 20,
         borderColor: colors.bordergray,
         marginTop: 13,
-        borderRadius: 3
-
+        borderRadius: 3,
     },
     text2: {
         color: colors.medtextgray,
@@ -95,9 +178,9 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         backgroundColor: colors.darkblue
     },
-   
+
     img: {
         marginTop: 7
     },
-   
+
 })

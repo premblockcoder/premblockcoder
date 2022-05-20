@@ -5,13 +5,14 @@ import { colors } from "../../Res/Colors"
 import { Images } from '../../Res/Images';
 import Feather from 'react-native-vector-icons/Feather'
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const PinView = ({ navigation }) => {
+const PinView = ({ navigation, route }) => {
   const pinView = useRef(null)
   const [showRemoveButton, setShowRemoveButton] = useState(false)
   const [enteredPin, setEnteredPin] = useState({ pin: "", confirm: "" })
   const [showCompletedButton, setShowCompletedButton] = useState(false)
+  const { type } = route?.params || {}
+ 
 
   useEffect(() => {
     if (enteredPin.pin.length > 0) {
@@ -68,12 +69,12 @@ const PinView = ({ navigation }) => {
             color: "#FFF",
           }}
           onButtonPress={key => {
-            console.log({key}, "keyy")
+            console.log({ key }, "keyy")
             if (key === "custom_left") {
               pinView.current.clear()
             }
             if (key === "custom_right") {
-                navigation.navigate('ConfirmPin',{pin : enteredPin.pin})
+                navigation.navigate('ConfirmPin', { pin: enteredPin.pin })
             }
             // if (key === "three") {
             //   alert("You can't use 3")

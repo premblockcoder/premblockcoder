@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, TextInput } from 'react-native';
 import { Button, CustomHeader } from '../../components/common';
 import { Fonts } from '../../Res';
@@ -6,6 +6,7 @@ import { colors } from '../../Res/Colors';
 
 const PrivateKey = ({ navigation, route }) => {
     const { type } = route?.params
+    const [key, setkey] = useState('')
 
     return (
         <>
@@ -16,14 +17,15 @@ const PrivateKey = ({ navigation, route }) => {
                     <View>
                         <Text style={styles.text}>{type === "PrivateKey" ? "Enter Private Key" : "Please enter mnemonic phrases and separated them by a space"} </Text>
                         <TextInput
-                            style={styles.view} multiline={true} placeholder={"Enter Key"} >
+                            style={styles.view} multiline={true} placeholder={"Enter Key"}
+                            onChangeText={(k) => setkey(k)}  >
                         </TextInput>
                         <View style={{ marginTop: 34 }}>
                             <Button
                                 text={'Start Import'}
-                                styling={{ backgroundColor: colors.darkblue,height:52 }}
+                                styling={{ backgroundColor: colors.darkblue, height: 52 }}
                                 textstyle={{ fontSize: 16, fontWeight: "600" }}
-                                onPress={()=> navigation.navigate('Wallet') }
+                                onPress={() => navigation.navigate('Wallet')}
                             />
                         </View>
                     </View>
@@ -41,10 +43,10 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colors.black,
-fontFamily:Fonts.SourceSansProSemiBold,
+        fontFamily: Fonts.SourceSansProSemiBold,
         fontSize: 16,
         marginTop: 26,
-        lineHeight:24
+        lineHeight: 24
     },
 
     view: {

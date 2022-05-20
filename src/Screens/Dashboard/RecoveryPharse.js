@@ -1,20 +1,32 @@
-import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, Image,StatusBar } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, Image, StatusBar } from 'react-native';
 import { Button, CustomHeader, Header } from '../../components/common';
 import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Clipboard from '@react-native-clipboard/clipboard';
+import Toast from 'react-native-toast-message';
 
 
 const RecoveryPharse = ({ navigation }) => {
+    const [Array, setArray] = useState()
 
+    useEffect(() => {
+        const data = AsyncStorage.getItem('Mnemonic')
+        data.then(e => setArray(JSON.parse(e)))
+    }, [])
 
-    const Data = [
-        'chat', 'frog', 'jacket', 'shoot', 'history', 'between',
-        'flock', 'gift', 'device', 'admit', 'toss', 'modify'];
+    const copyToClipboard = () => {
+        let newarr = Array?.map(e => e)
+        Clipboard.setString(newarr.toString())
+        Toast.show({
+            text1: 'Copied..',
+        })
+    };
 
     const renderItem = (item) => (
-        <TouchableOpacity style={{ flexDirection: "row", margin: 8 }} >
+        <TouchableOpacity style={{ flexDirection: "row", margin: 5 }} >
             <View style={{ borderWidth: 1, borderColor: colors.bordergray, borderRadius: 6, paddingVertical: 7, paddingHorizontal: 15 }}>
                 <Text style={styles.text3}>{item}</Text>
             </View>
@@ -22,7 +34,7 @@ const RecoveryPharse = ({ navigation }) => {
     );
     return (
         <>
-         <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
+            <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }}></SafeAreaView>
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
                 <CustomHeader text={"Recovery Pharse"} back />
@@ -33,25 +45,25 @@ const RecoveryPharse = ({ navigation }) => {
                     </View>
                     <View>
                         <FlatList
-                            data={Data}
+                            data={Array}
                             renderItem={({ item }) => renderItem(item)}
-                            keyExtractor={(item, index) => item.id}
                             numColumns={4}
                             contentContainerStyle={{ marginTop: 6, paddingHorizontal: 15 }}
                         />
                     </View>
-                    <View style={styles.box}>
+                    <TouchableOpacity style={styles.box}
+                        onPress={copyToClipboard}>
                         <Image source={Images.copy} style={{ tintColor: colors.extragray }} />
                         <Text style={styles.text4}>Copy all words</Text>
-                    </View>
+                    </TouchableOpacity>
                     <View style={styles.last}>
-                    <Button
-                        text={'Next'}
-                        styling={styles.btn}
-                        textstyle={styles.btntext}
-                         onPress={()=> navigation.navigate('VerifyMnemonic')}
-                    />
-                </View> 
+                        <Button
+                            text={'Next'}
+                            styling={styles.btn}
+                            textstyle={styles.btntext}
+                            onPress={() => navigation.navigate('VerifyMnemonic', { array: Array })}
+                        />
+                    </View>
                 </View>
             </SafeAreaView>
         </>
@@ -69,13 +81,13 @@ const styles = StyleSheet.create({
         color: colors.borderblue,
         fontSize: 19,
         marginTop: 21,
-        fontFamily:Fonts.SourceSansProBold
+        fontFamily: Fonts.SourceSansProBold
     },
     text3: {
         color: colors.black,
         textAlign: 'center',
         fontSize: 16,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
     },
     box: {
         height: 46,
@@ -95,7 +107,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 15,
         marginTop: 7,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
     },
     resbtn: {
         borderColor: colors.white,
@@ -107,7 +119,7 @@ const styles = StyleSheet.create({
         color: colors.extragray,
         fontSize: 16,
         marginLeft: 13,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
 
     },
     btn: {
@@ -119,7 +131,8 @@ const styles = StyleSheet.create({
     btntext: {
         color: colors.borderblue,
         fontSize: 16,
-fontFamily:Fonts.SourceSansProBold    },
+        fontFamily: Fonts.SourceSansProBold
+    },
     last: {
         flex: 1,
         justifyContent: "flex-end",

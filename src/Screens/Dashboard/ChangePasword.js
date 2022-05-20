@@ -6,7 +6,8 @@ import { colors } from '../../Res/Colors';
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/common/Loader';
 import Toast from 'react-native-toast-message';
-import { updatePassword } from '../../redux/actions/users.actions';
+import { changePassword, updatePassword, } from '../../redux/actions/users.actions';
+import { genOtp_forProfile } from '../../redux/actions/needs.actions';
 
 
 
@@ -14,6 +15,18 @@ const ChangePassword = ({ navigation, route }) => {
     const isLoading = useSelector(state => state.users.isRequesting)
     const dispatch = useDispatch()
     const [user, setuser] = useState({ otp: "", password: '', confirmPassword: "" })
+    const { type } = route?.params || {}
+    const [showotp, setshowotp] = useState(false)
+    console.log(type, "type")
+
+    const _submit = () => {
+        if (type == 'changepassword') {
+            _updatePassword()
+        }
+        else {
+            _changePassword()
+        }
+    }
 
     const _changePassword = () => {
         if (!user.otp) {
@@ -51,7 +64,7 @@ const ChangePassword = ({ navigation, route }) => {
             })
             return
         }
-        dispatch(updatePassword(user)).then(res => {
+        dispatch(changePassword(user)).then(res => {
             if (res) {
                 Toast.show({
                     type: 'success',
@@ -60,6 +73,60 @@ const ChangePassword = ({ navigation, route }) => {
                 navigation.navigate('Login')
             }
         })
+    }
+
+    const _updatePassword = () => {
+        if (!user.password) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter password.',
+            })
+            return
+        }
+        if (!user.confirmPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'Please enter confirm password.',
+            })
+            return
+        }
+        if (user.password.length < 6) {
+            Toast.show({
+                type: 'error',
+                text1: 'please enter a password of at least 6 characters.'
+            })
+            return
+        }
+        if (user.password != user.confirmPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'password mismatch.',
+            })
+            return
+        }
+        if (!showotp || !user.otp) {
+            dispatch(genOtp_forProfile()).then(res => {
+                setshowotp(true)
+                Toast.show({
+                    text1: res?.payload?.data?.message,
+                })
+            })
+            return
+        }
+        else {
+            dispatch(updatePassword(user)).then(res => {
+                console.log(res, "update password")
+                if (res) {
+                    Toast.show({
+                        type: 'success',
+                        text1: res?.message,
+                        
+                    })
+                    navigation.goBack()
+                }
+            })
+
+        }
     }
 
     return (
@@ -72,14 +139,15 @@ const ChangePassword = ({ navigation, route }) => {
                 <View style={{ flex: 1 }}>
                     <ScrollView style={{ flex: 1 }}>
                         <View style={styles.containter}>
-
-                            <View style={{ marginTop: 40 }}>
-                                <Text style={styles.text}>Enter Email OTP</Text>
-                                <InputText placeholder={"Enter OTP"} placeholderTextColor={colors.gray}
-                                    keyboardType={"number-pad"}
-                                    onChangeText={(t) => setuser({ ...user, otp: t })}
-                                />
-                            </View>
+                            {type == 'changepassword' ? null :
+                                <View style={{ marginTop: 40 }}>
+                                    <Text style={styles.text}>Enter Email OTP</Text>
+                                    <InputText placeholder={"Enter OTP"} placeholderTextColor={colors.gray}
+                                        keyboardType={"number-pad"}
+                                        onChangeText={(t) => setuser({ ...user, otp: t })}
+                                    />
+                                </View>
+                            }
                             <View style={{ marginTop: 20 }}>
                                 <Text style={styles.text}>New Password</Text>
                                 <InputText placeholder={"Enter new password"}
@@ -96,9 +164,18 @@ const ChangePassword = ({ navigation, route }) => {
                                     secureTextEntry
                                 />
                             </View>
+                            {showotp ?
+                                <View style={{ marginTop: 20 }}>
+                                    <Text style={styles.text}>Enter Email OTP</Text>
+                                    <InputText placeholder={"Enter OTP"} placeholderTextColor={colors.gray}
+                                        keyboardType={"number-pad"}
+                                        onChangeText={(t) => setuser({ ...user, otp: t })}
+                                    />
+                                </View> : null
+                            }
                         </View>
                         <View style={{ paddingHorizontal: 20, marginTop: 32 }}>
-                            <Button onPress={_changePassword}
+                            <Button onPress={_submit}
                                 styling={{ height: 52 }}
                                 text={'Submit'}
                                 textstyle={{ fontSize: 16, fontWeight: "600" }}

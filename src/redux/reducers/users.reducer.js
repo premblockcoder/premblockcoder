@@ -31,17 +31,17 @@ const usersReducer = (state = initialState, action) => {
     case failure(userConstants.RESEND_CODE):
       return { ...state, isRequesting: false }
 
-      case userConstants.FORGOT_PASSWORD:
+    case userConstants.FORGOT_PASSWORD:
       return { ...state, isRequesting: true }
     case success(userConstants.FORGOT_PASSWORD):
     case failure(userConstants.FORGOT_PASSWORD):
-      return { ...state, isRequesting: false } 
+      return { ...state, isRequesting: false }
 
-      case userConstants.UPDATE_PASSWORD:
-        return { ...state, isRequesting: true }
-      case success(userConstants.UPDATE_PASSWORD):
-      case failure(userConstants.UPDATE_PASSWORD):
-        return { ...state, isRequesting: false } 
+    case userConstants.UPDATE_PASSWORD:
+      return { ...state, isRequesting: true }
+    case success(userConstants.UPDATE_PASSWORD):
+    case failure(userConstants.UPDATE_PASSWORD):
+      return { ...state, isRequesting: false }
 
     case userConstants.CHANGE_PASSWORD:
       return { ...state, isRequesting: true }
@@ -53,6 +53,12 @@ const usersReducer = (state = initialState, action) => {
       return { ...state, isRequesting: true }
     case success(userConstants.UPDATE_USER):
     case failure(userConstants.UPDATE_USER):
+      return { ...state, isRequesting: false }
+
+    case userConstants.Generate_Access_Token_From_Refresh_Token:
+      return { ...state, isRequesting: true }
+    case success(userConstants.Generate_Access_Token_From_Refresh_Token):
+    case failure(userConstants.Generate_Access_Token_From_Refresh_Token):
       return { ...state, isRequesting: false }
 
     case userConstants.SHOW_LOADER:

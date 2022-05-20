@@ -8,5 +8,5 @@ export const userConstants = {
   FORGOT_PASSWORD:'USERS/FORGOTPASSWORD',
   UPDATE_PASSWORD:'USERS/UPDATEPASSWORD',
   UPDATE_USER: 'USERS/UPDATE_USER',
-
+  Generate_Access_Token_From_Refresh_Token:'USERS/Generate_Access_Token_From_Refresh_Token'
 }

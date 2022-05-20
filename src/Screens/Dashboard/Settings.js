@@ -1,13 +1,56 @@
-import React, { useState } from 'react';
-import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, StatusBar, FlatList, Switch } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, SafeAreaView, View, StyleSheet, Image, TouchableOpacity, StatusBar, FlatList, Switch, Share } from 'react-native';
 import { CustomHeader } from '../../components/common';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as RootNavigation from '../../MainNavigator/RootNavigation'
+import { getProfile } from '../../redux/actions/needs.actions';
+import { useDispatch, } from 'react-redux'
+import Toast from 'react-native-toast-message';
 
 const Settings = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const [profile, setprofile] = useState()
+
+    const getInitialData = async () => {
+        dispatch(getProfile()).then(res => {
+            const user = res?.payload?.data?.user
+            user.map(i => setprofile(i))
+        })
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getInitialData()
+        });
+        return unsubscribe;
+
+    }, [navigation])
+
+
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                message: profile?.referralCode,
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    console.log(result.activityType)
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+
+                // dismissed
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
     const Data = [
         {
             id: 1,
@@ -43,13 +86,24 @@ const Settings = ({ navigation }) => {
     ];
     const on_click = (item) => {
         if (item.heading == 'Change Password') {
-            navigation.navigate('ChangePassword')
+            navigation.navigate('ChangePassword', { type: 'changepassword' })
         }
         else if (item.heading == 'Enable 2FA') {
-            navigation.navigate('Scanner')
+            if (profile?.is2faEnabled == 1) {
+                Toast.show({
+                    type: "error",
+                    text1: "you have already enable 2FA",
+                })
+            }
+            else {
+                navigation.navigate('Scanner')
+            }
         }
         else if (item.heading == 'Profile Information') {
             navigation.navigate('MyProfile')
+        }
+        else if (item.heading == 'Refer to Friends') {
+            onShare()
         }
     }
 
@@ -65,6 +119,7 @@ const Settings = ({ navigation }) => {
             <Image source={Images.arrowright} style={{ tintColor: colors.black }} />
         </TouchableOpacity>
     );
+
     return (
         <>
             <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
@@ -84,7 +139,7 @@ const Settings = ({ navigation }) => {
                         <Text style={styles.Text}>NOTIFICATIONS</Text>
 
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('notification')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('notification', { notification: profile })}>
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, paddingVertical: 17, borderBottomColor: "#CAC8DA34", }}>
                             <Image source={Images.bell}
                                 style={styles.img}
@@ -98,7 +153,9 @@ const Settings = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
-                            AsyncStorage.clear()
+                            AsyncStorage.removeItem('access_token')
+                            AsyncStorage.removeItem('refresh_Access_Token')
+                            AsyncStorage.removeItem('verify_user')
                             navigation.navigate('Auth', { screen: 'Login', });
                         }}>
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, paddingVertical: 17, borderBottomColor: "#CAC8DA34", }}>

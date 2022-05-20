@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, SafeAreaView, View, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, SafeAreaView, View, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar, Keyboard } from 'react-native';
 import { ScrollView } from 'react-native';
 import { Button } from '../../components/common';
 import { colors } from '../../Res/Colors';
@@ -16,8 +16,9 @@ import { verifyemail, resendcode } from '../../redux/actions/users.actions';
 import Toast from 'react-native-toast-message';
 import { CommonActions } from '@react-navigation/native';
 import Loader from '../../components/common/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const VerifyEmail = ({ navigation }) => {
+const VerifyEmail = ({ navigation, route }) => {
     const [value, setValue] = useState('');
     const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -27,18 +28,28 @@ const VerifyEmail = ({ navigation }) => {
     const CELL_COUNT = 6;
     const isLoading = useSelector(state => state.users.isRequesting)
     const dispatch = useDispatch()
-    const param = { otp: value }
     const [initialTime, setInitialTime] = useState(0);
     const [startTimer, setStartTimer] = useState(false);
+    const [token, settoken] = useState()
+    const t = AsyncStorage.getItem('access_token')
+    t.then((e) => { settoken(e) })
+    console.log(token,"token")
 
+    const param = { otp: value, id: token }
 
     const reSend = () => {
         setInitialTime(15);
         setStartTimer(true);
         dispatch(resendcode()).then(res => {
-         console.log(res,"resend")  
+            if (res) {
+                Toast.show({
+                    type: 'success',
+                    text1: res?.payload?.data?.message,
+                })
+            }
         })
     };
+
     useEffect(() => {
         if (initialTime > 0) {
             setTimeout(() => {
@@ -51,7 +62,6 @@ const VerifyEmail = ({ navigation }) => {
         }
     }, [initialTime, startTimer]);
 
-
     const _Verify = () => {
         if (!value) {
             Toast.show({
@@ -62,24 +72,13 @@ const VerifyEmail = ({ navigation }) => {
         }
         dispatch(verifyemail(param)).then(res => {
             if (res) {
+                AsyncStorage.setItem('access_token', res?.accessToken)
+                AsyncStorage.setItem('refresh_Access_Token', res?.refreshAccessToken)
                 Toast.show({
                     type: 'success',
                     text1: res?.message,
                 })
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            {
-                                name: 'Dashboard',
-                                params: {
-                                    type: 'register',
-                                  },
-                            },
-
-                        ],
-                    })
-                )
+                navigation.navigate('PinView', { type: "verify" })
             }
         })
     }
@@ -110,13 +109,14 @@ const VerifyEmail = ({ navigation }) => {
                                 cellCount={CELL_COUNT}
                                 rootStyle={styles.codeFieldRoot}
                                 keyboardType="number-pad"
+                                onSubmitEditing={Keyboard.dismiss}
                                 textContentType="oneTimeCode"
                                 renderCell={({ index, symbol, isFocused }) => (
                                     <Text
                                         key={index}
                                         style={[styles.cell, isFocused && styles.focusCell]}
                                         onLayout={getCellOnLayoutHandler(index)}>
-                                        {symbol || (isFocused ? <Cursor /> : null)}  
+                                        {symbol || (isFocused ? <Cursor /> : null)}
                                     </Text>
                                 )}
                             />
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: '#B9B9B9',
         textAlign: 'center',
-        color:colors.black
+        color: colors.black
     },
     focusCell: {
         borderColor: '#000',

@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native';
 import { QRModal } from '../../components/QRModal';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Toast from 'react-native-toast-message';
+
 
 const Wallet = ({ navigation }) => {
     const [QRVisible, setQRVisible] = useState(false);
+    const [walletaddress, setwalletaddress] = useState('')
+
+    useEffect(() => {
+        const Address = AsyncStorage.getItem('wallet_address')
+        Address.then(a => setwalletaddress(a))
+    }, [walletaddress])
+
+    const copyToClipboard = () => {
+        Clipboard.setString(walletaddress);
+        Toast.show({
+            text1: 'Copied..',
+        })
+    };
+
     const Data = [
         {
+            id: 1,
             coin: 'Bitcoin',
             date: '0.5 BTC',
             quantity: '$42,285.50',
@@ -20,6 +39,7 @@ const Wallet = ({ navigation }) => {
 
         },
         {
+            id: 2,
             coin: 'Etherium',
             date: '0.23 ETH',
             quantity: '$2,342.40',
@@ -29,6 +49,7 @@ const Wallet = ({ navigation }) => {
 
         },
         {
+            id: 3,
             coin: 'Tether',
             date: '0.5 USDT',
             quantity: '$1,333.50',
@@ -37,6 +58,7 @@ const Wallet = ({ navigation }) => {
             Price2: '-4.43%',
         },
         {
+            id: 4,
             coin: 'Etherium',
             date: '0.23 ETH',
             quantity: '$2,342.40',
@@ -53,15 +75,15 @@ const Wallet = ({ navigation }) => {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image source={item.image} />
                     <View style={{ paddingStart: 10 }}>
-                        <Text style={{ fontSize: 18, fontFamily:Fonts.SourceSansProSemiBold, color: colors.black }}>{item.coin} </Text>
-                        <Text style={{ fontSize: 13, color: colors.textlightgray, fontFamily:Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.date} </Text>
+                        <Text style={{ fontSize: 18, fontFamily: Fonts.SourceSansProSemiBold, color: colors.black }}>{item.coin} </Text>
+                        <Text style={{ fontSize: 13, color: colors.textlightgray, fontFamily: Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.date} </Text>
                     </View>
                 </View>
                 <View>
-                    <Text style={{ fontSize: 18,fontFamily:Fonts.SourceSansProSemiBold, color: colors.black }}>{item.quantity} </Text>
+                    <Text style={{ fontSize: 18, fontFamily: Fonts.SourceSansProSemiBold, color: colors.black }}>{item.quantity} </Text>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={{ fontSize: 13, color: colors.textlightgray, fontFamily:Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.usdPrice} </Text>
-                        <Text style={{ fontSize: 13, color: index % 2 ? colors.green : colors.red, fontFamily:Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.Price2} </Text>
+                        <Text style={{ fontSize: 13, color: colors.textlightgray, fontFamily: Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.usdPrice} </Text>
+                        <Text style={{ fontSize: 13, color: index % 2 ? colors.green : colors.red, fontFamily: Fonts.SourceSansProRegular, lineHeight: 20 }}> {item.Price2} </Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -84,11 +106,11 @@ const Wallet = ({ navigation }) => {
                         <View style={styles.scan}>
                             <TouchableOpacity onPress={() => navigation.navigate('AddWallet')}>
                                 <Image
-                                    source={Images.plus} style={{ marginRight: 10,height:26,width:26, marginBottom: 4 }} />
+                                    source={Images.plus} style={{ marginRight: 10, height: 26, width: 26, marginBottom: 4 }} />
                             </TouchableOpacity>
-                            <Image source={Images.scanner} style={{ marginRight: 10 ,height:24,width:24,}} />
+                            <Image source={Images.scanner} style={{ marginRight: 10, height: 24, width: 24, }} />
                             <TouchableOpacity onPress={() => navigation.navigate('AddToken')}>
-                                <Image source={Images.add} style={{height:24,width:24,}} />
+                                <Image source={Images.add} style={{ height: 24, width: 24, }} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -96,10 +118,12 @@ const Wallet = ({ navigation }) => {
                         <Text style={styles.curr}>Current Balance </Text>
                         <Text style={styles.price}>$2,302.45 </Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
-                            <View style={styles.code}>
-                                <Text style={styles.textcode}> Dx5154...daDc </Text>
+                            <View style={[styles.code, { maxWidth: 120 }]}>
+                                <Text style={styles.textcode} numberOfLines={1}>{walletaddress}</Text>
                             </View>
-                            <Image source={Images.copy} style={{ marginLeft: 5 }} />
+                            <TouchableOpacity onPress={copyToClipboard}>
+                                <Image source={Images.copy} style={{ marginLeft: 5 }} />
+                            </TouchableOpacity>
                             <Image source={Images.setting} style={{ marginLeft: 6 }} />
 
                         </View>
@@ -124,9 +148,9 @@ const Wallet = ({ navigation }) => {
                         <Text style={styles.title}> My Portfolio </Text>
                         <FlatList
                             data={Data}
-                            renderItem={({ item, index }) => renderlist(item, index)} 
-                            keyExtractor={item => item.id }
-                            />
+                            renderItem={({ item, index }) => renderlist(item, index)}
+                            keyExtractor={item => item.id}
+                        />
                     </View>
                 </View>
                 <QRModal Visible={QRVisible} setModalVisible={setQRVisible} />
@@ -135,6 +159,7 @@ const Wallet = ({ navigation }) => {
     )
 
 }
+
 export default Wallet
 
 const styles = StyleSheet.create({
@@ -145,12 +170,12 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 22,
         color: colors.white,
-        fontFamily:Fonts.SourceSansProSemiBold
+        fontFamily: Fonts.SourceSansProSemiBold
     },
     txt: {
         color: colors.white,
         fontSize: 11,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
     },
     header: {
         flexDirection: "row",
@@ -167,12 +192,12 @@ const styles = StyleSheet.create({
     curr: {
         color: colors.white,
         fontSize: 18,
-        fontFamily:Fonts.SourceSansProLight
+        fontFamily: Fonts.SourceSansProLight
     },
     price: {
         fontSize: 45,
         color: colors.white,
-        fontFamily:Fonts.SourceSansProLight,
+        fontFamily: Fonts.SourceSansProLight,
         marginTop: 5
     },
     secondview: {
@@ -183,12 +208,12 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darkblue,
         borderRadius: 20,
         paddingHorizontal: 19,
-        paddingVertical: 5
+        paddingVertical: 5,
     },
     textcode: {
         color: colors.white,
         fontSize: 13,
-        fontFamily:Fonts.SourceSansProLight
+        fontFamily: Fonts.SourceSansProLight,
     },
     sendview: {
         flexDirection: "row", width: "100%", justifyContent: "space-evenly", marginTop: 33
@@ -197,7 +222,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 8,
         color: colors.white,
-        fontFamily:Fonts.SourceSansProRegular
+        fontFamily: Fonts.SourceSansProRegular
     },
     lastview: {
         flex: 1,
@@ -210,7 +235,7 @@ const styles = StyleSheet.create({
         marginTop: 22,
         marginStart: 14,
         fontSize: 22,
-        fontFamily:Fonts.SourceSansProBold,
+        fontFamily: Fonts.SourceSansProBold,
         color: colors.lightblack
     }
 

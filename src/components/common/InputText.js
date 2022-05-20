@@ -16,7 +16,9 @@ export const InputText = ({
   secureTextEntry,
   inputstying,
   onChangeText,
-  keyboardType
+  keyboardType,
+  value,
+  onChange
 }) => (
   <>
     <View
@@ -29,6 +31,8 @@ export const InputText = ({
         onChangeText={onChangeText}
         autoCapitalize={"none"}
         keyboardType={keyboardType}
+        value={value}
+        onChange={onChange}
 
       />
       {

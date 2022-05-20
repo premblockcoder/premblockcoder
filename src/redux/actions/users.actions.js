@@ -91,9 +91,21 @@ export const beginupdatePassword = data => ({
   },
 })
 
+export const beginGenAccessToken = data => ({
+  type: userConstants.Generate_Access_Token_From_Refresh_Token,
+  payload: {
+    request: {
+      url: API_URLS.Generate_Access_Token_From_Refresh_Token,
+      method: 'post',
+      data,
+    },
+  },
+})
+
 export const showLoader = data => ({
   type: userConstants.SHOW_LOADER,
 })
+
 
 export const setToken = data => ({
   type: userConstants.SET_TOKEN,
@@ -185,7 +197,7 @@ export function updatePassword(params) {
   }
 }
 
-export function updateUser(params) {
+export function updateProfile(params) {
   return async dispatch => {
     try {
       const response = await dispatch(beginUpdateUser(params))
@@ -205,6 +217,22 @@ export function changePassword(params) {
   return async dispatch => {
     try {
       const response = await dispatch(beginChangePassword(params))
+      if (response.payload) {
+        const { data } = response.payload
+        return data
+      }
+
+      throw response
+    } catch (error) {
+      throw error.response
+    }
+  }
+}
+
+export function genAccessToken(params) {
+  return async dispatch => {
+    try {
+      const response = await dispatch(beginGenAccessToken(params))
       if (response.payload) {
         const { data } = response.payload
         return data

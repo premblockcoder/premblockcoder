@@ -1,18 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, StatusBar, TouchableOpacity, Image } from 'react-native'
+import { View, StatusBar, TouchableOpacity, Image, ActivityIndicator, Text } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Picker } from '@react-native-picker/picker'
 import styles from './styles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateUser } from '~/redux/actions/users.actions'
 import Toast from 'react-native-toast-message'
 import { Button, CustomHeader, InputText, } from '../../../components/common'
 import Loader from '../../../components/common/Loader'
-import ImagePicker from 'react-native-image-crop-picker'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { colors, Images } from '../../../Res'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { genOtp_forProfile, getProfile, uploadImage } from '../../../redux/actions/needs.actions'
+import { showLoader, updateProfile } from '../../../redux/actions/users.actions'
+import { PermissionsAndroid } from 'react-native';
+import FastImage from 'react-native-fast-image'
+
 
 const MyProfile = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -22,18 +26,23 @@ const MyProfile = ({ navigation }) => {
   const [signupData, setSignupData] = useState({
     name: '',
     email: '',
+    image: '',
+    pickerimg: '',
+    otp: ''
   })
+  const [load, setload] = useState(false)
+  const [showotp, setshowotp] = useState(false)
+  const [onEmail, setonEmail] = useState(false)
 
   const getInitialData = async () => {
-    let user = await AsyncStorage.getItem('user')
-
-    user = JSON.parse(user)
-
-    setSignupData({
-      ...signupData,
-      name: user.name,
-      email: user.email,
-      logo: user.logo,
+    dispatch(getProfile()).then(res => {
+      const user = res?.payload?.data?.user
+      setSignupData({
+        ...signupData,
+        name: user[0]?.name,
+        email: user[0]?.email,
+        image: user[0]?.image,
+      })
     })
   }
 
@@ -41,40 +50,135 @@ const MyProfile = ({ navigation }) => {
     getInitialData()
   }, [])
 
-  // const updateProfile = () => {
-  //   let data = {...signupData}
-  //   if(data.logo.startsWith('http')) delete data.logo
-  //   dispatch(updateUser(signupData)).then(async res => {
-  //     Toast.show({
-  //       type: 'success',
-  //       text1: 'Your profile has been updated successfully.',
-  //       text1NumberOfLines: 2,
-  //     })
-  //     const modifiedUserData = {
-  //       ...res.result.details,
-  //       logo: res.result.base_path + '/' + res.result.details.logo
-  //     }
-  //     let user = await AsyncStorage.getItem('user')
-  //     user = JSON.parse(user)
-  //     user = { ...user, ...modifiedUserData }
-  //     console.log('user', user)
-  //     AsyncStorage.setItem('user', JSON.stringify(user))
-  //     navigation.goBack()
-  //   })
-  // }
-
-  const openCamera = () => {
-    ImagePicker.openCamera({
-      includeBase64: true,
-      cropping: true,
-      compressImageQuality: 0.8,
-    }).then(image => {
-      if (!image) return
-      setSignupData({
-        ...signupData,
-        logo: 'data:image/jpeg;base64,' + image.data,
+  const _updateProfile = () => {
+    return (
+      onEmail ? _withEmail() : _withoutEmail()
+    )
+  }
+  const _withEmail = async () => {
+    if (!showotp) {
+      dispatch(genOtp_forProfile()).then(res => {
+        setshowotp(true)
+        Toast.show({
+          text1: res?.payload?.data?.message,
+        })
       })
-    })
+      return
+    }
+    if (!signupData.otp) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter email otp.',
+      })
+      return
+    }
+    else {
+      const file = {
+        uri: Platform.OS === 'ios' ? `file:///${signupData?.pickerimg.uri}` : signupData?.pickerimg.uri,
+        type: signupData?.pickerimg.type || '',
+        name: signupData?.pickerimg.fileName || ''
+      };
+      const form = new FormData();
+      form.append("file", file);
+      dispatch(showLoader())
+      if (signupData.pickerimg) {
+        dispatch(uploadImage(form)).then(async (res) => {
+          await dispatch(updateProfile({ ...signupData, image: res.path })).then(async res => {
+            Toast.show({
+              text1: res.message,
+            })
+          })
+          navigation.goBack()
+        })
+      }
+      else {
+        dispatch(updateProfile({ ...signupData })).then(res => {
+          Toast.show({
+            text1: res?.message,
+          })
+        })
+        navigation.goBack()
+      }
+    }
+  }
+
+  const _withoutEmail = () => {
+    const file = {
+      uri: Platform.OS === 'ios' ? `file:///${signupData?.pickerimg.uri}` : signupData?.pickerimg.uri,
+      type: signupData?.pickerimg.type || '',
+      name: signupData?.pickerimg.fileName || ''
+    };
+    const form = new FormData();
+    form.append("file", file);
+    dispatch(showLoader())
+    if (signupData.pickerimg) {
+      dispatch(uploadImage(form)).then(async (res) => {
+        await dispatch(updateProfile({ ...signupData, image: res.path })).then(async res => {
+          Toast.show({
+            text1: res.message,
+          })
+        })
+        navigation.goBack()
+      })
+    }
+    else {
+      dispatch(updateProfile({ ...signupData })).then(res => {
+        Toast.show({
+          text1: res?.message,
+        })
+      })
+      navigation.goBack()
+    }
+  }
+
+  const options = {
+    mediaType: 'photo',
+    quality: 0.8,
+    maxWidth: 0,
+    maxHeight: 0,
+    includeBase64: false,
+    selectionLimit: 1,
+    saveToPhotos: false,
+    includeExtra: false,
+    presentationStyle: 'pageSheet'
+  }
+  const openCamera = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "App Camera Permission",
+          message: "App needs access to your camera ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("Camera permission given");
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.log(err,);
+    }
+    launchCamera(options, (res) => {
+      console.log('Response = ', res);
+      if (res.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (res.error) {
+        console.log('ImagePicker Error: ', res.error);
+      }
+    }).
+      then(img => {
+        if (!img) return
+        img.assets.map((i) => {
+          setSignupData({
+            ...signupData,
+            pickerimg: i,
+          })
+        })
+      })
   }
 
   const chooseImages = () => {
@@ -83,17 +187,16 @@ const MyProfile = ({ navigation }) => {
   }
 
   const chooseImagesFromGallery = async () => {
-    ImagePicker.openPicker({
-      includeBase64: true,
-      cropping: true,
-      compressImageQuality: 0.8,
-    }).then(image => {
-      if (!image) return
-      setSignupData({
-        ...signupData,
-        logo: 'data:image/jpeg;base64,' + image.data,
+    launchImageLibrary(options).
+      then(img => {
+        if (!img) return
+        img.assets.map((i) => {
+          setSignupData({
+            ...signupData,
+            pickerimg: i,
+          })
+        })
       })
-    })
   }
 
   return (
@@ -118,12 +221,21 @@ const MyProfile = ({ navigation }) => {
                 height: 100,
                 borderWidth: 0.3,
                 borderColor: '#999899',
+                backgroundColor: load ? colors.borderlightgray : null
               }}>
-              {signupData.logo ? (
-                <Image
-                  source={{ uri: signupData.logo }}
-                  borderRadius={50}
-                  style={{ width: 100, height: 100 }}></Image>
+              {signupData?.pickerimg || signupData?.image ? (
+                <>
+                  <FastImage
+                    source={{ uri: signupData?.pickerimg?.uri || signupData?.image }}
+                    style={{ width: 100, height: 100, borderRadius: 50, }}
+                    onLoadStart={() => setload(true)}
+                    onLoadEnd={() => setload(false)}
+                  />
+                  <ActivityIndicator size={30}
+                    color={colors.white}
+                    style={{ position: "absolute", bottom: 0, top: 0, right: 0, left: 0 }}
+                    animating={load} />
+                </>
               ) : (
                 <Image
                   source={Images.dummyprofile}
@@ -134,7 +246,7 @@ const MyProfile = ({ navigation }) => {
                 <Ionicons name='md-add-circle-sharp'
                   size={35}
                   color={colors.blue}
-                   />
+                />
               </TouchableOpacity>
             </TouchableOpacity>
 
@@ -148,7 +260,7 @@ const MyProfile = ({ navigation }) => {
                 })
               }}
               placeholder={'Full Name'}
-              editable={false}
+              placeholderTextColor={colors.textlightgray}
             />
             <InputText
               inputstying={[styles.input]}
@@ -160,12 +272,18 @@ const MyProfile = ({ navigation }) => {
                 })
               }}
               placeholder={'Email'}
-              editable={false}
+              placeholderTextColor={colors.textlightgray}
+              onChange={() => setonEmail(true)}
             />
+            {showotp ?
+              <InputText placeholder={"Enter OTP"} placeholderTextColor={colors.gray}
+                keyboardType={"number-pad"}
+                onChangeText={(t) => setSignupData({ ...signupData, otp: t })}
+              /> : null}
             <Button
-              onPress={() => alert("g")}
+              onPress={_updateProfile}
               text={'Update Profile'}
-              styling={{ marginTop:10}}
+              styling={{ marginTop: 10 }}
             />
           </KeyboardAwareScrollView>
           <Picker

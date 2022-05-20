@@ -6,25 +6,27 @@
  * @flow strict-local
  */
 
- import React, { Component, useEffect } from 'react';
- import {
-   SafeAreaView,
-   View
- } from 'react-native';
- import Main from './MainNavigator/Main'
- import { Provider } from 'react-redux'
- import Store from './redux/store';
- 
- const store = Store
- const App = () => {
- 
-   return (
-     <Provider store={store} >
-       <Main />
-     </Provider>
-   );
- }
- 
- export default App;
- 
- 
+import React, { Component, useEffect, useState } from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text
+} from 'react-native';
+import Main from './MainNavigator/Main'
+import { LogBox } from 'react-native';
+import Ether from './Utils';
+
+LogBox.ignoreAllLogs();
+
+
+
+const App = ({ navigation }) => {
+  return (
+    <>
+      <Main />
+    </>
+  );
+}
+
+export default App;
+

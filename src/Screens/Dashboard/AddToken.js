@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, StyleSheet, FlatList,StatusBar} from 'react-native';
+import { Text, SafeAreaView, View, StyleSheet, FlatList, StatusBar } from 'react-native';
 import { Button } from "../../components/common";
 import { CustomHeader } from "../../components/common/Header";
 import { TokenList } from "../../components/TokenList";
@@ -13,30 +13,34 @@ const AddToken = ({ navigation }) => {
     const Data = [
 
         {
+            id: 1,
             coin: 'Bitcoin',
             quantity: '0.5 BTC',
             image: Images.BTC,
         },
         {
+            id: 2,
             coin: 'Etherium',
             quantity: '0.23 ETH',
             image: Images.eth,
         },
         {
+            id: 3,
             coin: 'Tether',
             quantity: '0.5 USD',
             image: Images.tether,
         },
         {
+            id: 4,
             coin: 'BNB',
             quantity: '0.23 BNB',
             image: Images.eth,
         },
     ];
-   
+
     return (
         <>
-         <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
+            <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
                 <View style={{ flex: 1, backgroundColor: colors.white }}>
@@ -45,10 +49,10 @@ const AddToken = ({ navigation }) => {
                         text={"Add Token"} />
                     <FlatList
                         data={Data}
-                        renderItem={({item}) => <TokenList item={item} /> }
+                        renderItem={({ item }) => <TokenList item={item} />}
                         keyExtractor={item => item.id}
                     />
-                    <View style={{ paddingHorizontal: 20,paddingBottom:33, }}>
+                    <View style={{ paddingHorizontal: 20, paddingBottom: 33, }}>
                         <Button
                             onPress={() => navigation.navigate('CustomToken')}
                             text={'Add Custom Token'}
@@ -97,15 +101,16 @@ const styles = StyleSheet.create({
         fontSize: 13,
         marginTop: 4
     },
-    btn:{
-        backgroundColor:colors.white,
-        borderWidth:2,
-        borderColor:colors.borderblue,
-        
+    btn: {
+        backgroundColor: colors.white,
+        borderWidth: 2,
+        borderColor: colors.borderblue,
+
     },
-    btntext:{
-        color:colors.borderblue,
-        fontSize:16,
-fontFamily:Fonts.SourceSansProBold    }
-   
+    btntext: {
+        color: colors.borderblue,
+        fontSize: 16,
+        fontFamily: Fonts.SourceSansProBold
+    }
+
 })

@@ -12,17 +12,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
 
 const client = axios.create({
-  baseURL: 'http://13.126.156.148:5000/api/v1/',
+  baseURL: 'http://3.109.13.154:3000/',
+  // 'https://03d6-2401-4900-1c2a-2728-5854-2a59-20fa-4934.ngrok.io',
   headers: {
     accept: 'application/json',
-    // 'content-type': 'application/x-www-form-urlencoded',
+    //  'content-type': 'application/x-www-form-urlencoded',
   },
 })
+
+
 
 client.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('access_token')
-    console.log(token,"token")
+    console.log(token, "token")
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
@@ -73,39 +76,54 @@ const httpHandleError = error => {
   if (error.status == 500) {
     Toast.show({
       type: 'error',
-      text1: error.data.error.message.message,
+      text1: error.data.error,
+    })
+    RootNavigation.navigate('Auth', { screen: 'Login' })
+  }
+
+  if (error.status == 422) {
+    Toast.show({
+      type: 'error',
+      text1: error.data.error,
+    })
+  }
+
+  if (error.status == 401) {
+    Toast.show({
+      type: 'error',
+      text1: error.data.error,
     })
   }
   //422
   if (error.status == 400) {
-    if (error.data && error.data.error.message) {
-      if (typeof error.data.error.message === 'object') {
+    if (error.data && error.data.error) {
+      if (typeof error.data.error === 'object') {
         var firstKey = ''
-        for (var key in error.data.error.message) {
+        for (var key in error.data.error) {
           firstKey = key
           break
         }
 
-        if (error.data.error.message[firstKey]) {
+        if (error.data.error[firstKey]) {
           Toast.show({
             type: 'error',
             text1: 'Validation failed',
-            text2: error.data.error.message[firstKey][0],
+            text2: error.data.error[firstKey][0],
             text2NumberOfLines: 2
           })
-        } else if (error.data.error.message[firstKey]) {
+        } else if (error.data.error[firstKey]) {
           Toast.show({
             type: 'error',
             text1: 'Validation failed',
-            text2: error.data.error.message[firstKey],
+            text2: error.data.error[firstKey],
             text2NumberOfLines: 2
           })
         }
-      } else if (typeof error.data.error.message === 'string') {
+      } else if (typeof error.data.error === 'string') {
         Toast.show({
           type: 'error',
           text1: 'Validation failed',
-          text2: error.data.error.message,
+          text2: error.data.error,
           text2NumberOfLines: 2
         })
       }

@@ -1,11 +1,46 @@
-import React from 'react';
-import { Text, TouchableOpacity, View, StyleSheet, Image, Modal } from 'react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View, StyleSheet, Image, Modal, Share } from 'react-native';
 import { Fonts } from '../Res';
 import { colors } from '../Res/Colors';
 import { Images } from '../Res/Images';
-
+import Clipboard from '@react-native-clipboard/clipboard';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import QRCode from 'react-native-qrcode-svg';
 
 export const QRModal = ({ setModalVisible, Visible, }) => {
+    const [walletaddress, setwalletaddress] = useState('')
+    const Address = AsyncStorage.getItem('wallet_address')
+    Address.then(a => setwalletaddress(a))
+
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                message: walletaddress,
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    console.log(result.activityType)
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+
+                // dismissed
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    const copyToClipboard = () => {
+        Clipboard.setString(walletaddress);
+        Toast.show({
+            text1: 'Copied..',
+        })
+    };
+
     return (
         <>
             <Modal
@@ -33,10 +68,10 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
                                 />
                             </TouchableOpacity>
                         </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 12 }}>
-                            <Image
-                                style={{ height: 212, width: 212, }}
-                                source={Images.qr}
+                        <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 15 }}>
+                            <QRCode
+                                value={walletaddress || '0'}
+                                size={170}
                             />
                         </View>
                         <View style={{
@@ -46,13 +81,14 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
                             paddingVertical: 11,
                             borderTopWidth: 1, borderTopColor: colors.bordergray,
                             justifyContent: "space-between"
-
                         }}>
-                            <Text style={styles.text3}>1GLrWy2GuZi8rg7nT6dAJrW8kxJZZ6dHks</Text>
-                            <Image
-                                source={Images.copy}
-                                style={{ tintColor: colors.extradarkgray }}
-                            />
+                            <Text style={styles.text3}>{walletaddress}</Text>
+                            <TouchableOpacity onPress={copyToClipboard}>
+                                <Image
+                                    source={Images.copy}
+                                    style={{ tintColor: colors.extradarkgray }}
+                                />
+                            </TouchableOpacity>
                         </View>
                         <View style={{
                             flexDirection: 'row',
@@ -61,10 +97,15 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
                             borderTopWidth: 1, borderTopColor: colors.bordergray,
                             alignItems: "center"
                         }}>
-                            <Image
-                                source={Images.share}
-                            />
-                            <Text style={styles.text4}>Share this</Text>
+                            <TouchableOpacity style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                            }} onPress={onShare}>
+                                <Image
+                                    source={Images.share}
+                                />
+                                <Text style={styles.text4}>Share this</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

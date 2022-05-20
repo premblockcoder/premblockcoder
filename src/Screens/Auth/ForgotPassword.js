@@ -14,10 +14,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ForgotPassword = ({ navigation }) => {
   const isLoading = useSelector(state => state.users.isRequesting)
   const dispatch = useDispatch()
-  const [user, setuser] = useState({ emailId: "" })
+  const [user, setuser] = useState({ email: "" })
 
   const _forgot = () => {
-    if (!user.emailId) {
+    if (!user.email) {
       Toast.show({
         type: 'error',
         text1: 'Please enter email.',
@@ -25,9 +25,8 @@ const ForgotPassword = ({ navigation }) => {
       return
     }
     dispatch(forgotPassword(user)).then(res => {
-      console.log(res.data,"forgot token")
+      console.log(res,"forgot token")
       if (res) {
-        AsyncStorage.setItem('access_token', res?.data)
         Toast.show({
           type: 'success',
           text1: res?.message,
@@ -56,7 +55,7 @@ const ForgotPassword = ({ navigation }) => {
               <InputText placeholder={"Email Address"}
                 placeholderTextColor={colors.gray}
                 showright rightimg={Images.at}
-                onChangeText={(t) => setuser({ ...user, emailId: t })}
+                onChangeText={(t) => setuser({ ...user, email: t })}
               />
               <View style={{ marginTop: 42 }}>
                 <Button onPress={_forgot}
