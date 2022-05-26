@@ -27,6 +27,8 @@ target 'TricePay' do
 
   pod 'RNQrcodeNative', :path => '../node_modules/react-native-qr-generator'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'TricePayTests' do
     inherit! :complete
     # Pods for testing

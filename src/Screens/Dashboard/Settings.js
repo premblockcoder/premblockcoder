@@ -156,6 +156,7 @@ const Settings = ({ navigation }) => {
                             AsyncStorage.removeItem('access_token')
                             AsyncStorage.removeItem('refresh_Access_Token')
                             AsyncStorage.removeItem('verify_user')
+                            AsyncStorage.removeItem('Gen_wallet_user_data')
                             navigation.navigate('Auth', { screen: 'Login', });
                         }}>
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, paddingVertical: 17, borderBottomColor: "#CAC8DA34", }}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet, Image, Modal, Share } from 'react-native';
 import { Fonts } from '../Res';
 import { colors } from '../Res/Colors';
@@ -7,16 +7,31 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QRCode from 'react-native-qrcode-svg';
+import { useNavigation,useFocusEffect } from '@react-navigation/native';
+
+
 
 export const QRModal = ({ setModalVisible, Visible, }) => {
     const [walletaddress, setwalletaddress] = useState('')
-    const Address = AsyncStorage.getItem('wallet_address')
-    Address.then(a => setwalletaddress(a))
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const Address = AsyncStorage.getItem('Gen_wallet_user_data')
+        Address.then(a => setwalletaddress(JSON.parse(a)))
+    }, [])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            const Address = AsyncStorage.getItem('Gen_wallet_user_data')
+            Address.then(a => setwalletaddress(JSON.parse(a)))
+        });
+        return unsubscribe;
+    }, [navigation])
 
     const onShare = async () => {
         try {
             const result = await Share.share({
-                message: walletaddress,
+                message:walletaddress.address,
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -35,7 +50,7 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
     };
 
     const copyToClipboard = () => {
-        Clipboard.setString(walletaddress);
+        Clipboard.setString(walletaddress.address);
         Toast.show({
             text1: 'Copied..',
         })
@@ -70,19 +85,19 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 15 }}>
                             <QRCode
-                                value={walletaddress || '0'}
+                                value={walletaddress?.address || '0'}
                                 size={170}
                             />
                         </View>
                         <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            paddingHorizontal: 15,
+                            paddingHorizontal: 10,
                             paddingVertical: 11,
                             borderTopWidth: 1, borderTopColor: colors.bordergray,
                             justifyContent: "space-between"
                         }}>
-                            <Text style={styles.text3}>{walletaddress}</Text>
+                            <Text style={styles.text3}>{walletaddress?.address}</Text>
                             <TouchableOpacity onPress={copyToClipboard}>
                                 <Image
                                     source={Images.copy}

@@ -9,17 +9,42 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 
 
+
 const Wallet = ({ navigation }) => {
     const [QRVisible, setQRVisible] = useState(false);
     const [walletaddress, setwalletaddress] = useState('')
+    const [keyarray, setkeyarray] = useState([])
 
     useEffect(() => {
-        const Address = AsyncStorage.getItem('wallet_address')
-        Address.then(a => setwalletaddress(a))
-    }, [walletaddress])
+        const Address = AsyncStorage.getItem('Gen_wallet_user_data')
+        Address.then(a => setwalletaddress(JSON.parse(a)))
+    }, [])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            const Address = AsyncStorage.getItem('Gen_wallet_user_data')
+            Address.then(a => setwalletaddress(JSON.parse(a)))
+        });
+        return unsubscribe;
+    }, [navigation])
+
+    // const muti_Address = async () => {
+    //     const a = await AsyncStorage.getItem('Gen_wallet_user_data')
+
+    //     const json = JSON.parse(a)
+    //     console.log(json?.address, "address------")
+    //     if (json?.address) {
+    //         setkeyarray(oldArray => [...oldArray,json.address])
+    //     }
+    //     console.log(keyarray, "multiarray----")
+    //     AsyncStorage.setItem('multi', JSON.stringify(keyarray))
+    // }
+    // useEffect(() => {
+    //     muti_Address()
+    // }, [])
 
     const copyToClipboard = () => {
-        Clipboard.setString(walletaddress);
+        Clipboard.setString(walletaddress?.address);
         Toast.show({
             text1: 'Copied..',
         })
@@ -30,8 +55,8 @@ const Wallet = ({ navigation }) => {
             id: 1,
             coin: 'Bitcoin',
             date: '0.5 BTC',
-            quantity: '$42,285.50',
-            usdPrice: '-$399',
+            quantity: '$0',
+            usdPrice: '-$0',
             Price: '-4.43%',
             Disc: 'My Portfolio',
             image: Images.BTC,
@@ -42,8 +67,8 @@ const Wallet = ({ navigation }) => {
             id: 2,
             coin: 'Etherium',
             date: '0.23 ETH',
-            quantity: '$2,342.40',
-            usdPrice: '+$129',
+            quantity: '$0',
+            usdPrice: '+$0',
             image: Images.eth,
             Price2: '+7.16%',
 
@@ -52,8 +77,8 @@ const Wallet = ({ navigation }) => {
             id: 3,
             coin: 'Tether',
             date: '0.5 USDT',
-            quantity: '$1,333.50',
-            usdPrice: '-$399',
+            quantity: '$0',
+            usdPrice: '-$0',
             image: Images.tether,
             Price2: '-4.43%',
         },
@@ -61,8 +86,8 @@ const Wallet = ({ navigation }) => {
             id: 4,
             coin: 'Etherium',
             date: '0.23 ETH',
-            quantity: '$2,342.40',
-            usdPrice: '+$129',
+            quantity: '$0',
+            usdPrice: '+$0',
             image: Images.eth,
             Price2: '+7.16%',
         },
@@ -116,10 +141,10 @@ const Wallet = ({ navigation }) => {
                     </View>
                     <View style={styles.secondview}>
                         <Text style={styles.curr}>Current Balance </Text>
-                        <Text style={styles.price}>$2,302.45 </Text>
+                        <Text style={styles.price}>$0</Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
                             <View style={[styles.code, { maxWidth: 120 }]}>
-                                <Text style={styles.textcode} numberOfLines={1}>{walletaddress}</Text>
+                                <Text style={styles.textcode} numberOfLines={1}>{walletaddress?.address}</Text>
                             </View>
                             <TouchableOpacity onPress={copyToClipboard}>
                                 <Image source={Images.copy} style={{ marginLeft: 5 }} />
@@ -138,7 +163,8 @@ const Wallet = ({ navigation }) => {
                                 <Image source={Images.receive} />
                                 <Text style={styles.sendtext}> Receive </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ alignItems: "center" }}>
+                            <TouchableOpacity style={{ alignItems: "center" }}
+                                onPress={() => navigation.navigate('crypto_currencies')}>
                                 <Image source={Images.buy} />
                                 <Text style={styles.sendtext}> Buy </Text>
                             </TouchableOpacity>

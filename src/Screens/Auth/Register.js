@@ -93,6 +93,7 @@ const Register = ({ navigation }) => {
                     AsyncStorage.removeItem('access_token')
                     AsyncStorage.removeItem('verify_user')
                     AsyncStorage.removeItem('2FA_check')
+                    AsyncStorage.removeItem('Gen_wallet_user_data')
                 }
                 AsyncStorage.setItem('access_token', res?.accessToken)
                 Toast.show({

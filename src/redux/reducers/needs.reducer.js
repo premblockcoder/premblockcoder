@@ -5,7 +5,7 @@ const initialState = {
   isRequesting: false,
   list: [],
   categoriesList: [],
-  isverify2FA:false
+  isverify2FA: false
 }
 
 const needsReducer = (state = initialState, action) => {
@@ -35,38 +35,50 @@ const needsReducer = (state = initialState, action) => {
     case failure(needsConstants.PROMOTIONAL_NOTIFICATION_STATUS):
       return { ...state, isRequesting: false }
 
-      case needsConstants.UPLOAD_IMAGE:
-        return { ...state, isRequesting: true }
-      case success(needsConstants.UPLOAD_IMAGE):
-      case failure(needsConstants.UPLOAD_IMAGE):
-        return { ...state, isRequesting: false } 
+    case needsConstants.UPLOAD_IMAGE:
+      return { ...state, isRequesting: true }
+    case success(needsConstants.UPLOAD_IMAGE):
+    case failure(needsConstants.UPLOAD_IMAGE):
+      return { ...state, isRequesting: false }
 
-        case needsConstants.GENERATE_2FA:
-        return { ...state, isRequesting: true }
-      case success(needsConstants.GENERATE_2FA):
-      case failure(needsConstants.GENERATE_2FA):
-        return { ...state, isRequesting: false }   
+    case needsConstants.GENERATE_2FA:
+      return { ...state, isRequesting: true }
+    case success(needsConstants.GENERATE_2FA):
+    case failure(needsConstants.GENERATE_2FA):
+      return { ...state, isRequesting: false }
 
-        case needsConstants.UPDATE_2FA:
-        return { ...state, isRequesting: true }
-      case success(needsConstants.UPDATE_2FA):
-      case failure(needsConstants.UPDATE_2FA):
-        return { ...state, isRequesting: false }     
+    case needsConstants.UPDATE_2FA:
+      return { ...state, isRequesting: true }
+    case success(needsConstants.UPDATE_2FA):
+    case failure(needsConstants.UPDATE_2FA):
+      return { ...state, isRequesting: false }
 
-        case needsConstants.VERIFY_2FA:
-          return { ...state, isRequesting: true }
-        case success(needsConstants.VERIFY_2FA):
-        case failure(needsConstants.VERIFY_2FA):
-          return { ...state, isRequesting: false }    
+    case needsConstants.VERIFY_2FA:
+      return { ...state, isRequesting: true }
+    case success(needsConstants.VERIFY_2FA):
+    case failure(needsConstants.VERIFY_2FA):
+      return { ...state, isRequesting: false }
 
-          case needsConstants.Generate_Otp_For_Profile:
-            return { ...state, isRequesting: true }
-          case success(needsConstants.Generate_Otp_For_Profile):
-          case failure(needsConstants.Generate_Otp_For_Profile):
-            return { ...state, isRequesting: false }     
+    case needsConstants.Generate_Otp_For_Profile:
+      return { ...state, isRequesting: true }
+    case success(needsConstants.Generate_Otp_For_Profile):
+    case failure(needsConstants.Generate_Otp_For_Profile):
+      return { ...state, isRequesting: false }
 
-          case needsConstants.VERIFY_USER_2FA:
-            return { ...state, isverify2FA: true }    
+    case needsConstants.Exchange_Crypto_Currencies:
+      return { ...state, isRequesting: true }
+    case success(needsConstants.Exchange_Crypto_Currencies):
+    case failure(needsConstants.Exchange_Crypto_Currencies):
+      return { ...state, isRequesting: false }
+
+    case needsConstants.Exchange_Transaction:
+      return { ...state, isRequesting: true }
+    case success(needsConstants.Exchange_Transaction):
+    case failure(needsConstants.Exchange_Transaction):
+      return { ...state, isRequesting: false }
+
+    case needsConstants.VERIFY_USER_2FA:
+      return { ...state, isverify2FA: true }
 
     // case needsConstants.GET_CATEGORIES: {
     //   return { ...state, isRequesting: true }

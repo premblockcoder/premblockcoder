@@ -80,6 +80,13 @@ const httpHandleError = error => {
     })
     RootNavigation.navigate('Auth', { screen: 'Login' })
   }
+  if (error.status == 403) {
+    Toast.show({
+      type: 'error',
+      text1: error.data.error,
+    })
+    RootNavigation.navigate('Auth', { screen: 'Login' })
+  }
 
   if (error.status == 422) {
     Toast.show({

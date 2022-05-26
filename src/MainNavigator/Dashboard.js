@@ -27,6 +27,9 @@ import MyProfile from '../Screens/Dashboard/EditProfile/index.js';
 import Enable2FA from '../Screens/Dashboard/Enable2FA/index.js';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Pin from '../Screens/Dashboard/Pin.js';
+import Crypto_currencies from '../Screens/Dashboard/Crypto_Currencies';
+import Transaction from '../Screens/Dashboard/Transactions.js';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -137,6 +140,14 @@ const Dashboard = ({ route, navigation }) => {
       <Stack.Screen
         name="Pin"
         component={Pin}
+      />
+        <Stack.Screen
+        name="crypto_currencies"
+        component={Crypto_currencies}
+      />
+         <Stack.Screen
+        name="Transaction"
+        component={Transaction}
       />
     </Stack.Navigator>
   );

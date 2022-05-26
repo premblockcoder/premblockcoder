@@ -16,10 +16,9 @@ export const API_URLS = {
   GENERATE_2FA: 'generate_2FA',
   UPDATE_2FA: 'update_2FA',
   VERIFY_2FA: "verify_2fa",
-  MY_POSTED_NEEDS: '/needs/my-posted-needs',
-  NEEDS_LIST: 'needs/list',
-  NEEDS_POST: 'needs/post',
   CATEGORIES: 'categories',
   UPDATE_PROFILE: 'edit_profile',
-  Generate_Otp_For_Profile: "generate_otp_for_profile"
+  Generate_Otp_For_Profile: "generate_otp_for_profile",
+  Exchange_Crypto_Currencies: 'exchange/fetch_available_crypto_currencies',
+  Exchange_Transaction: 'exchange/transaction'
 }

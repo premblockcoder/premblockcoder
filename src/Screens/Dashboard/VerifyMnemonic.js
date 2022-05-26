@@ -16,7 +16,6 @@ const VerifyMnemonic = ({ navigation, route }) => {
     );
     const [result, setResult] = useState([]);
     const [isLoading, SetisLoading] = useState(false)
-    console.log(isLoading, "loading")
     console.log(array, "originalarray")
 
 

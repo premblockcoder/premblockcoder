@@ -12,5 +12,8 @@ export const needsConstants = {
   UPDATE_2FA: 'USERS/UPDATE_2FA',
   VERIFY_2FA: 'USERS/VERIFY_2FA',
   VERIFY_USER_2FA: 'USERS/VERIFY_USER_2FA',
-  Generate_Otp_For_Profile:'USERS/Generate_Otp_For_Profile'
+  Generate_Otp_For_Profile: 'USERS/Generate_Otp_For_Profile',
+  Exchange_Crypto_Currencies: 'USERS/Exchange_Crypto_Currencies',
+  Exchange_Transaction:'USERS/Exchange_Transaction'
+
 }

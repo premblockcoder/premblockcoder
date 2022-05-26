@@ -106,9 +106,48 @@ export const genOtp_forProfile = data => ({
   },
 })
 
+export const crypto_Currencies = data => ({
+  type: needsConstants.Exchange_Crypto_Currencies,
+  payload: {
+    request: {
+      url: API_URLS.Exchange_Crypto_Currencies,
+      method: 'post',
+      data,
+    },
+  },
+})
+
+export const beginExchangeTrans = data => ({
+  type: needsConstants.Exchange_Transaction,
+  payload: {
+    request: {
+      url: API_URLS.Exchange_Transaction,
+      method: 'post',
+      data,
+    },
+  },
+})
+
 export const verifyUser2FA = data => ({
   type: needsConstants.VERIFY_USER_2FA,
 })
+
+export function exchange_Trans(params) {
+  return async dispatch => {
+    try {
+      const response = await dispatch(beginExchangeTrans(params))
+      if (response.payload) {
+        const { data } = response.payload
+        return data
+      }
+
+      throw response
+    } catch (error) {
+      console.log('action failed', error)
+      throw error.response
+    }
+  }
+}
 
 export function gen2FA(params) {
   return async dispatch => {
