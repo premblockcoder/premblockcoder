@@ -13,35 +13,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/common/Loader';
 import { WebView } from 'react-native-webview';
 import { Picker } from '@react-native-picker/picker'
+import Toast from 'react-native-toast-message';
 
 const Transaction = ({ navigation, route }) => {
     const isLoading = useSelector(state => state.needs.isRequesting)
     const dispatch = useDispatch()
-    const [walletaddress, setwalletaddress] = useState('')
     const [webUrl, setwebUrl] = useState()
     const [load, setload] = useState(false)
-    const { curr } = route.params || {}
+    const { curr, SelectedWallet, walletaddress } = route.params || {}
     const imagePickerRef = useRef()
     const [currency, setcurrency] = useState({
         fromCurrency: "USD",
         toCurrency: curr.ticker,
         fromAmount: "100",
         toNetwork: 'ETH',
-        payoutAddress: walletaddress.address,
+        payoutAddress: SelectedWallet || walletaddress[0]?.address,
         fromNetwork: ''
     })
 
     console.log(currency, 'currrent----')
 
-    useEffect(() => {
-        const Address = AsyncStorage.getItem('Gen_wallet_user_data')
-        Address.then(a => setwalletaddress(JSON.parse(a)))
-    }, [])
-
     const _continue = () => {
         dispatch(exchange_Trans(currency)).then(res => {
-            console.log(res?.result?.redirect_url)
-            setwebUrl(res?.result?.redirect_url)
+            Toast.show({
+                text1: res?.result?.message,
+                text1NumberOfLines:2
+            })
+            setwebUrl(res?.resultd?.redirect_url)
         })
     }
 
@@ -76,8 +74,8 @@ const Transaction = ({ navigation, route }) => {
                             </View>
                             <View style={{ marginTop: 20 }}>
                                 <Text style={styles.text}>Address</Text>
-                                <View style={[styles.view, { paddingHorizontal: 20 }]}>
-                                    <Text style={styles.text2}>{walletaddress?.address}</Text>
+                                <View style={[styles.view, { paddingHorizontal: 16 }]}>
+                                    <Text style={styles.text2}>{SelectedWallet || walletaddress[0]?.address}</Text>
                                 </View>
                             </View>
                             <View style={{ marginTop: 20 }}>
@@ -121,7 +119,7 @@ const Transaction = ({ navigation, route }) => {
                     <Picker.Item label={'Select Network'} value={''} />
                     {
                         curr.networks.map(item =>
-                            <Picker.Item label={item?.network} value={item?.network} />)
+                            <Picker.Item label={item?.network} value={item?.network} key={item} />)
                     }
                 </Picker>
             </SafeAreaView>

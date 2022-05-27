@@ -12,7 +12,7 @@ const FirstTab = () => {
     const [isChecked, setIsChecked] = useState(false)
 
     const processInitialAction = async () => {
-        const Address = await AsyncStorage.getItem('Gen_wallet_user_data')
+        const Address = await AsyncStorage.getItem('walletInfoList')
         setDefaultRoute(Address ? 'Wallet' : 'AddWallet')
         setIsChecked(true)
     }

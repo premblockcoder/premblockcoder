@@ -1,36 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, SafeAreaView, View, StyleSheet, FlatList, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
 import { Button, CustomHeader } from '../../components/common';
 import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
-import { loadWalletFromMnemonics } from "../../Utils";
+import { loadWalletFromMnemonics, saveWallet } from "../../Utils";
 import Loader from "../../components/common/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { add_Wallet } from "../../redux/actions/needs.actions";
 
 
 const VerifyMnemonic = ({ navigation, route }) => {
-    const { array } = route?.params || {}
+    const { array, walletname } = route?.params || {}
+
     const [shuffle, setShuffle] = useState(
         [...array].sort(() => 0.5 - Math.random())
     );
     const [result, setResult] = useState([]);
-    const [isLoading, SetisLoading] = useState(false)
+    // const [isLoading, SetisLoading] = useState(false)
+    const dispatch = useDispatch()
+    const isLoading = useSelector(state => state.needs.isRequesting)
+
     console.log(array, "originalarray")
 
 
+
     const checkIfResultIsValid = async () => {
+
         if (result.length) {
             const res = result.every((valueFromShuffle, index) => {
                 return (valueFromShuffle === array[index])
             })
             if (!!res) {
-                loadWalletFromMnemonics(array)
-                Toast.show({
-                    type: "success",
-                    text1: 'mnemonics matched success.',
-                })
-                navigation.navigate('Wallet')
+                try {
+                    const wallet = await loadWalletFromMnemonics(array, walletname)
+                    if (wallet) {
+                        Toast.show({
+                            type: "success",
+                            text1: 'mnemonics matched success.',
+                        })
+                        navigation.navigate('Wallet')
+                    }
+                }
+                catch (err) { console.log(err) }
             }
             else {
                 Toast.show({

@@ -11,10 +11,11 @@ import Loader from "../../components/common/Loader";
 import { SvgUri } from 'react-native-svg';
 
 
-const Crypto_currencies = ({ navigation }) => {
+const Crypto_currencies = ({ navigation, route }) => {
     const isLoading = useSelector(state => state.needs.isRequesting)
     const [currency, setcurrency] = useState()
     const dispatch = useDispatch()
+    const { SelectedWallet, walletaddress } = route?.params || {}
 
     const get_Currencies = () => {
         dispatch(crypto_Currencies()).then(res => {
@@ -29,7 +30,7 @@ const Crypto_currencies = ({ navigation }) => {
     const renderItem = (item) => {
         return (
             <TouchableOpacity style={styles.list}
-                onPress={() => navigation.navigate('Transaction', { curr: item })}  >
+                onPress={() => navigation.navigate('Transaction', { curr: item, SelectedWallet, walletaddress })}  >
                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
                     <SvgUri
                         uri={item.logo_url}

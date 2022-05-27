@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, View, StyleSheet, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { Text, SafeAreaView, View, StyleSheet, Image, FlatList, TouchableOpacity, StatusBar, } from 'react-native';
 import { QRModal } from '../../components/QRModal';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
@@ -7,44 +7,46 @@ import { Images } from '../../Res/Images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
-
+import { Picker } from '@react-native-picker/picker'
 
 
 const Wallet = ({ navigation }) => {
     const [QRVisible, setQRVisible] = useState(false);
     const [walletaddress, setwalletaddress] = useState('')
-    const [keyarray, setkeyarray] = useState([])
+    const imagePickerRef = useRef()
+    const [SelectedWallet, setSelected] = useState()
+    console.log(SelectedWallet, 'selected')
+    console.log(walletaddress, 'get state list ---')
+    //  AsyncStorage.removeItem('walletInfoList')  
 
-    useEffect(() => {
-        const Address = AsyncStorage.getItem('Gen_wallet_user_data')
-        Address.then(a => setwalletaddress(JSON.parse(a)))
-    }, [])
+    const fetchList = async () => {
+        const Address = await AsyncStorage.getItem('walletInfoList')
+        if (Address) {
+            const parsedList = JSON.parse(Address);
+            setwalletaddress(parsedList)
+        }
+    }
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            const Address = AsyncStorage.getItem('Gen_wallet_user_data')
-            Address.then(a => setwalletaddress(JSON.parse(a)))
+            fetchList()
         });
         return unsubscribe;
     }, [navigation])
 
-    // const muti_Address = async () => {
-    //     const a = await AsyncStorage.getItem('Gen_wallet_user_data')
+    useEffect(() => {
+        fetchList()
+    }, [])
 
-    //     const json = JSON.parse(a)
-    //     console.log(json?.address, "address------")
-    //     if (json?.address) {
-    //         setkeyarray(oldArray => [...oldArray,json.address])
-    //     }
-    //     console.log(keyarray, "multiarray----")
-    //     AsyncStorage.setItem('multi', JSON.stringify(keyarray))
-    // }
-    // useEffect(() => {
-    //     muti_Address()
-    // }, [])
+    useEffect(() => {
+    }, [walletaddress])
+
+    const choose = () => {
+        imagePickerRef.current.focus()
+    }
 
     const copyToClipboard = () => {
-        Clipboard.setString(walletaddress?.address);
+        Clipboard.setString(SelectedWallet || walletaddress[0]?.address);
         Toast.show({
             text1: 'Copied..',
         })
@@ -121,13 +123,14 @@ const Wallet = ({ navigation }) => {
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.blue }}>
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <View>
+                        <TouchableOpacity
+                            onPress={choose}>
                             <View style={styles.walletview}>
                                 <Text style={styles.text}>Wallet #1 </Text>
                                 <Image source={Images.arrows} style={{ marginLeft: 6 }} />
                             </View>
                             <Text style={styles.txt}> Main chain </Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={styles.scan}>
                             <TouchableOpacity onPress={() => navigation.navigate('AddWallet')}>
                                 <Image
@@ -144,7 +147,7 @@ const Wallet = ({ navigation }) => {
                         <Text style={styles.price}>$0</Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
                             <View style={[styles.code, { maxWidth: 120 }]}>
-                                <Text style={styles.textcode} numberOfLines={1}>{walletaddress?.address}</Text>
+                                <Text style={styles.textcode} numberOfLines={1}>{SelectedWallet || walletaddress[0]?.address}</Text>
                             </View>
                             <TouchableOpacity onPress={copyToClipboard}>
                                 <Image source={Images.copy} style={{ marginLeft: 5 }} />
@@ -164,7 +167,7 @@ const Wallet = ({ navigation }) => {
                                 <Text style={styles.sendtext}> Receive </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ alignItems: "center" }}
-                                onPress={() => navigation.navigate('crypto_currencies')}>
+                                onPress={() => navigation.navigate('crypto_currencies', { SelectedWallet, walletaddress })}>
                                 <Image source={Images.buy} />
                                 <Text style={styles.sendtext}> Buy </Text>
                             </TouchableOpacity>
@@ -179,7 +182,22 @@ const Wallet = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <QRModal Visible={QRVisible} setModalVisible={setQRVisible} />
+                <QRModal Visible={QRVisible} setModalVisible={setQRVisible}
+                    walletaddress={walletaddress} SelectedWallet={SelectedWallet} />
+                <Picker
+                    ref={imagePickerRef}
+                    style={{ display: 'none' }}
+                    selectedValue={''}
+                    onValueChange={(itemValue, itemIndex) => {
+                        setSelected(itemValue)
+                        console.log(itemIndex)
+                    }}>
+                    <Picker.Item label={'Select Wallet'} value={''} />
+                    {walletaddress ?
+                        walletaddress?.map(item =>
+                            <Picker.Item label={item?.walletName} value={item?.address} key={item} />) : null
+                    }
+                </Picker>
             </SafeAreaView>
         </>
     )

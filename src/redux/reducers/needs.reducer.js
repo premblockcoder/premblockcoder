@@ -80,6 +80,16 @@ const needsReducer = (state = initialState, action) => {
     case needsConstants.VERIFY_USER_2FA:
       return { ...state, isverify2FA: true }
 
+
+    case needsConstants.Add_Wallet: {
+      const data = action.payload
+      return { ...state, isRequesting: false, categoriesList: [...state.categoriesList, action.payload] }
+    }
+    case success(needsConstants.Add_Wallet):
+    case failure(needsConstants.Add_Wallet):
+      return { ...state, isRequesting: false }
+
+
     // case needsConstants.GET_CATEGORIES: {
     //   return { ...state, isRequesting: true }
     // }
@@ -90,8 +100,6 @@ const needsReducer = (state = initialState, action) => {
     // case failure(needsConstants.GET_CATEGORIES):
     //   return { ...state, isRequesting: false }
 
-    //  case needsConstants.SHOW_LOADER:
-    //    return { ...state, isRequesting: true }
 
     // case needsConstants.GET_NEEDS:
     //   return { ...state, isRequesting: true }

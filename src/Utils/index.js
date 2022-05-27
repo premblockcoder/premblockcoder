@@ -5,7 +5,7 @@ import "react-native-get-random-values"
 import "@ethersproject/shims"
 import { ethers } from 'ethers';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ActivityIndicator } from 'react-native'
+import { useSelector } from 'react-redux';
 
 
 export const generateMnemonics = () => {
@@ -14,31 +14,43 @@ export const generateMnemonics = () => {
 }
 
 
-export function loadWalletFromMnemonics(mnemonics,) {
+// export function loadWalletFromMnemonics(mnemonics,) {
+//   if (!(mnemonics instanceof Array) && typeof mnemonics !== 'string')
+//     throw new Error('invalid mnemonic');
+//   else if (mnemonics instanceof Array)
+//     mnemonics = mnemonics.join(' ');
+
+//   const wallet = Wallet.fromMnemonic(mnemonics)
+//   // if (!wallet) {
+//   //   <ActivityIndicator size={"large"} />
+//   // }
+//   console.log(wallet, "wallet ------")
+//   AsyncStorage.mergeItem('Gen_wallet_user_data', JSON.stringify(wallet))
+//   return wallet
+//   //  return new Wallet(privateKey, PROVIDER);
+// }
+
+export async function loadWalletFromMnemonics(mnemonics, walletName) {
   if (!(mnemonics instanceof Array) && typeof mnemonics !== 'string')
     throw new Error('invalid mnemonic');
   else if (mnemonics instanceof Array)
     mnemonics = mnemonics.join(' ');
 
-  const wallet = Wallet.fromMnemonic(mnemonics)
-  // if (!wallet) {
-  //   <ActivityIndicator size={"large"} />
-  // }
-  console.log(wallet, "wallet ------")
-  AsyncStorage.mergeItem('Gen_wallet_user_data', JSON.stringify(wallet))
-  return wallet
-  //  return new Wallet(privateKey, PROVIDER);
+  const { address } = Wallet.fromMnemonic(mnemonics);
+
+  if (address && walletName) {
+    const availableList = await AsyncStorage.getItem('walletInfoList');
+    let updatedList = [];
+
+    if (availableList) {
+      updatedList = [...JSON.parse(availableList)];
+    }
+    updatedList.push({ address, walletName });
+    await AsyncStorage.setItem('walletInfoList', JSON.stringify(updatedList))
+  }
+  return true;
+  // return new Wallet(address);
 }
-
-// export function loadWalletFromMnemonics(mnemonics) {
-//   if (!(mnemonics instanceof Array) && typeof mnemonics !== 'string')
-//       throw new Error('invalid mnemonic');
-//   else if (mnemonics instanceof Array)
-//       mnemonics = mnemonics.join(' ');
-
-//   const { address } = Wallet.fromMnemonic(mnemonics);
-//   return new Wallet(address, PROVIDER);
-// }
 
 
 export function loadWalletFromPrivateKey(pk) {
@@ -48,5 +60,9 @@ export function loadWalletFromPrivateKey(pk) {
   } catch (e) {
     throw new Error('invalid private key');
   }
+}
+
+export async function saveWallet(walletarray) {
+  return await AsyncStorage.setItem('wallet_array', JSON.stringify(walletarray));
 }
 

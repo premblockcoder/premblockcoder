@@ -7,31 +7,17 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QRCode from 'react-native-qrcode-svg';
-import { useNavigation,useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 
-export const QRModal = ({ setModalVisible, Visible, }) => {
-    const [walletaddress, setwalletaddress] = useState('')
+export const QRModal = ({ setModalVisible, Visible, walletaddress, SelectedWallet }) => {
     const navigation = useNavigation();
-
-    useEffect(() => {
-        const Address = AsyncStorage.getItem('Gen_wallet_user_data')
-        Address.then(a => setwalletaddress(JSON.parse(a)))
-    }, [])
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            const Address = AsyncStorage.getItem('Gen_wallet_user_data')
-            Address.then(a => setwalletaddress(JSON.parse(a)))
-        });
-        return unsubscribe;
-    }, [navigation])
 
     const onShare = async () => {
         try {
             const result = await Share.share({
-                message:walletaddress.address,
+                message: SelectedWallet || walletaddress[0]?.address,
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -50,7 +36,7 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
     };
 
     const copyToClipboard = () => {
-        Clipboard.setString(walletaddress.address);
+        Clipboard.setString(SelectedWallet || walletaddress[0]?.address);
         Toast.show({
             text1: 'Copied..',
         })
@@ -70,7 +56,7 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
                 <View style={{
                     flex: 1, justifyContent: 'center', alignItems: 'center',
                     backgroundColor: 'rgba(1,1,1,0.7)',
-                    paddingHorizontal: 24
+                    paddingHorizontal: 20
                 }}>
                     <View style={styles.view}>
                         <View style={styles.sentview}>
@@ -85,7 +71,7 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 15 }}>
                             <QRCode
-                                value={walletaddress?.address || '0'}
+                                value={SelectedWallet || walletaddress[0]?.address || '0'}
                                 size={170}
                             />
                         </View>
@@ -97,7 +83,7 @@ export const QRModal = ({ setModalVisible, Visible, }) => {
                             borderTopWidth: 1, borderTopColor: colors.bordergray,
                             justifyContent: "space-between"
                         }}>
-                            <Text style={styles.text3}>{walletaddress?.address}</Text>
+                            <Text style={styles.text3}>{SelectedWallet || walletaddress[0]?.address}</Text>
                             <TouchableOpacity onPress={copyToClipboard}>
                                 <Image
                                     source={Images.copy}

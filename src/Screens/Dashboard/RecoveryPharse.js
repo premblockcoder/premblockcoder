@@ -9,8 +9,9 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 
 
-const RecoveryPharse = ({ navigation }) => {
+const RecoveryPharse = ({ navigation,route }) => {
     const [Array, setArray] = useState()
+    const {walletname}=route?.params || {}
 
     useEffect(() => {
         const data = AsyncStorage.getItem('Mnemonic')
@@ -61,7 +62,7 @@ const RecoveryPharse = ({ navigation }) => {
                             text={'Next'}
                             styling={styles.btn}
                             textstyle={styles.btntext}
-                            onPress={() => navigation.navigate('VerifyMnemonic', { array: Array })}
+                            onPress={() => navigation.navigate('VerifyMnemonic', { array: Array,walletname })}
                         />
                     </View>
                 </View>

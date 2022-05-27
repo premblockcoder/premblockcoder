@@ -43,7 +43,7 @@ const GenerateWallet = ({ navigation }) => {
         }
         generateMnemonics()
         AsyncStorage.setItem('Gen_wallet_user_data', JSON.stringify(userwallet))
-        navigation.navigate('RecoveryPharse')
+        navigation.navigate('RecoveryPharse', { walletname : userwallet.name })
     }
 
     return (
