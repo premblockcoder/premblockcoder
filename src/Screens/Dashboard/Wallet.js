@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 import { Picker } from '@react-native-picker/picker'
+import { getBal } from '../../Utils';
 
 
 const Wallet = ({ navigation }) => {
@@ -15,9 +16,24 @@ const Wallet = ({ navigation }) => {
     const [walletaddress, setwalletaddress] = useState('')
     const imagePickerRef = useRef()
     const [SelectedWallet, setSelected] = useState()
+    const [bal, SetBal] = useState()
+
     console.log(SelectedWallet, 'selected')
     console.log(walletaddress, 'get state list ---')
-    //  AsyncStorage.removeItem('walletInfoList')  
+
+
+    const _balance = async () => {
+        if (SelectedWallet || walletaddress[0]?.address) {
+            await getBal(SelectedWallet || walletaddress[0]?.address).then(e => {
+                SetBal(e)
+                console.log(e)
+            })
+        }
+    }
+
+    useEffect(() => {
+        _balance()
+    }, [SelectedWallet, walletaddress, bal])
 
     const fetchList = async () => {
         const Address = await AsyncStorage.getItem('walletInfoList')
@@ -144,7 +160,7 @@ const Wallet = ({ navigation }) => {
                     </View>
                     <View style={styles.secondview}>
                         <Text style={styles.curr}>Current Balance </Text>
-                        <Text style={styles.price}>$0</Text>
+                        <Text style={styles.price} numberOfLines={1}>${Number(bal)?.toFixed(5) || "0.0"}</Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
                             <View style={[styles.code, { maxWidth: 120 }]}>
                                 <Text style={styles.textcode} numberOfLines={1}>{SelectedWallet || walletaddress[0]?.address}</Text>
@@ -152,12 +168,13 @@ const Wallet = ({ navigation }) => {
                             <TouchableOpacity onPress={copyToClipboard}>
                                 <Image source={Images.copy} style={{ marginLeft: 5 }} />
                             </TouchableOpacity>
-                            <Image source={Images.setting} style={{ marginLeft: 6 }} />
-
+                            <TouchableOpacity onPress={() => navigation.navigate('EditWallet', { SelectedWallet, walletaddress })} >
+                                <Image source={Images.setting} style={{ marginLeft: 6 }} />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.sendview}>
                             <TouchableOpacity style={{ alignItems: "center" }}
-                                onPress={() => navigation.navigate('SendBitcoin')}>
+                                onPress={() => navigation.navigate('SendBitcoin', { SelectedWallet, walletaddress, bal })}>
                                 <Image source={Images.send} />
                                 <Text style={styles.sendtext}> Send </Text>
                             </TouchableOpacity>
@@ -190,7 +207,6 @@ const Wallet = ({ navigation }) => {
                     selectedValue={''}
                     onValueChange={(itemValue, itemIndex) => {
                         setSelected(itemValue)
-                        console.log(itemIndex)
                     }}>
                     <Picker.Item label={'Select Wallet'} value={''} />
                     {walletaddress ?
@@ -239,10 +255,10 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.SourceSansProLight
     },
     price: {
-        fontSize: 45,
+        fontSize: 42,
         color: colors.white,
         fontFamily: Fonts.SourceSansProLight,
-        marginTop: 5
+        marginTop: 5,
     },
     secondview: {
         alignItems: "center",

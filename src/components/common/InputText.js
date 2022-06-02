@@ -18,7 +18,9 @@ export const InputText = ({
   onChangeText,
   keyboardType,
   value,
-  onChange
+  onChange,
+  editable,
+  defaultValue
 }) => (
   <>
     <View
@@ -33,6 +35,8 @@ export const InputText = ({
         keyboardType={keyboardType}
         value={value}
         onChange={onChange}
+        editable={editable}
+        defaultValue={defaultValue}
 
       />
       {

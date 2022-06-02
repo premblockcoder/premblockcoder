@@ -4,9 +4,22 @@ import { Button, CustomHeader, Header } from '../../components/common';
 import { Fonts } from '../../Res';
 import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
+import { sendTrans } from '../../Utils';
+import Toast from 'react-native-toast-message'
 
 
-const ConfirmSend = ({ navigation }) => {
+const ConfirmSend = ({ navigation, route }) => {
+    const { ScanAddress, amount, walletKey } = route?.params || {}
+
+    const _send = () => {
+        sendTrans(ScanAddress, amount, walletKey).then(res => {
+            console.log(res, 'trans------- res ---')
+        })
+        Toast.show({
+            text1: 'Transaction Send.',
+        })
+        navigation.navigate('CompleteTrans')
+    }
 
     return (
         <>
@@ -18,12 +31,12 @@ const ConfirmSend = ({ navigation }) => {
                     <Text style={styles.text}>Transaction Detail </Text>
                     <View style={styles.box}>
                         <Text style={styles.text2}>Currency </Text>
-                        <Text style={styles.text3}>Bitcoin </Text>
+                        <Text style={styles.text3}>ETH</Text>
                     </View>
                     <View style={styles.box2}>
                         <View style={{}}>
                             <Text style={styles.text2}>To </Text>
-                            <Text style={styles.text3}>1GLrWy2GuZi8rg7nT6dAJrW8kxJZZ6dHks</Text>
+                            <Text style={styles.text3}>{ScanAddress}</Text>
                         </View>
                     </View>
                     <View style={styles.box2}>
@@ -39,7 +52,7 @@ const ConfirmSend = ({ navigation }) => {
                             text={"Confirm & Send"}
                             styling={{ height: 52 }}
                             textstyle={{ fontSize: 16, }}
-                            onPress={() => navigation.navigate('CompleteTrans')} />
+                            onPress={_send} />
                     </View>
                 </View>
             </SafeAreaView>
@@ -100,9 +113,9 @@ const styles = StyleSheet.create({
     },
     text3: {
         color: colors.black,
-        fontSize: 15,
+        fontSize: 14,
         lineHeight: 22,
-        fontFamily: Fonts.SourceSansProSemiBold
+        fontFamily: Fonts.SourceSansProRegular
 
     },
     resbtn: {

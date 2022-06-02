@@ -167,7 +167,8 @@ const BitcoinDetail = ({ navigation, route }) => {
                     </View>
                 </View>
                 <StatusModal Visible={modalVisible} setModalVisible={setModalVisible} />
-                <QRModal Visible={QRVisible} setModalVisible={setQRVisible} />
+                <QRModal Visible={QRVisible} setModalVisible={setQRVisible}
+                    walletaddress={'0'} SelectedWallet={'0'} />
             </SafeAreaView>
         </>
     )
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
         bottom: 18
     },
     con: {
-        marginTop: 18, borderTopWidth: 1, borderTopColor: colors.borderlightgray,paddingBottom:30
+        marginTop: 18, borderTopWidth: 1, borderTopColor: colors.borderlightgray, paddingBottom: 30
     },
     sendtext: {
         fontSize: 16,

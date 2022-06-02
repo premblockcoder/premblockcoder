@@ -18,7 +18,7 @@ const Crypto_currencies = ({ navigation, route }) => {
     const { SelectedWallet, walletaddress } = route?.params || {}
 
     const get_Currencies = () => {
-        dispatch(crypto_Currencies()).then(res => {
+        dispatch(crypto_Currencies()).then(res => { 
             setcurrency(res.payload.data.result)
         })
     }

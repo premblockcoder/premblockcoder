@@ -36,7 +36,7 @@ export const QRModal = ({ setModalVisible, Visible, walletaddress, SelectedWalle
     };
 
     const copyToClipboard = () => {
-        Clipboard.setString(SelectedWallet || walletaddress[0]?.address);
+        Clipboard.setString(SelectedWallet || walletaddress[0]?.address || '0');
         Toast.show({
             text1: 'Copied..',
         })
@@ -71,7 +71,7 @@ export const QRModal = ({ setModalVisible, Visible, walletaddress, SelectedWalle
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 15 }}>
                             <QRCode
-                                value={SelectedWallet || walletaddress[0]?.address || '0'}
+                                value={SelectedWallet || walletaddress[0]?.address}
                                 size={170}
                             />
                         </View>

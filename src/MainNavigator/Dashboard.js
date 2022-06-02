@@ -29,6 +29,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Pin from '../Screens/Dashboard/Pin.js';
 import Crypto_currencies from '../Screens/Dashboard/Crypto_Currencies';
 import Transaction from '../Screens/Dashboard/Transactions.js';
+import EditWallet from '../Screens/Dashboard/Editwallet.js';
 
 
 const Stack = createNativeStackNavigator();
@@ -148,6 +149,10 @@ const Dashboard = ({ route, navigation }) => {
          <Stack.Screen
         name="Transaction"
         component={Transaction}
+      />
+        <Stack.Screen
+        name="EditWallet"
+        component={EditWallet}
       />
     </Stack.Navigator>
   );

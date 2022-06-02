@@ -5,42 +5,48 @@ import { Fonts } from "../../Res";
 import { colors } from '../../Res/Colors';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
-import { loadWalletFromMnemonics, saveWallet } from "../../Utils";
+import { getBal, loadWalletFromMnemonics, saveWallet } from "../../Utils";
 import Loader from "../../components/common/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { add_Wallet } from "../../redux/actions/needs.actions";
 
 
 const VerifyMnemonic = ({ navigation, route }) => {
-    const { array, walletname } = route?.params || {}
+    const { array, walletname, walletPass, walletConfirmPass } = route?.params || {}
+
 
     const [shuffle, setShuffle] = useState(
         [...array].sort(() => 0.5 - Math.random())
     );
     const [result, setResult] = useState([]);
-    // const [isLoading, SetisLoading] = useState(false)
+    const [isLoading, SetisLoading] = useState(false)
     const dispatch = useDispatch()
-    const isLoading = useSelector(state => state.needs.isRequesting)
+    // const isLoading = useSelector(state => state.needs.isRequesting)
 
     console.log(array, "originalarray")
 
+    const test = () => {
+        SetisLoading(true)
+        setTimeout(() => {
+            checkIfResultIsValid()
+        }, 500)
+    }
 
 
     const checkIfResultIsValid = async () => {
-
         if (result.length) {
             const res = result.every((valueFromShuffle, index) => {
                 return (valueFromShuffle === array[index])
             })
             if (!!res) {
                 try {
-                    const wallet = await loadWalletFromMnemonics(array, walletname)
+                    const wallet = await loadWalletFromMnemonics(array, walletname, walletPass, walletConfirmPass)
                     if (wallet) {
                         Toast.show({
                             type: "success",
                             text1: 'mnemonics matched success.',
                         })
                         navigation.navigate('Wallet')
+                        SetisLoading(false)
                     }
                 }
                 catch (err) { console.log(err) }
@@ -136,7 +142,7 @@ const VerifyMnemonic = ({ navigation, route }) => {
                     />
                     <View style={{ justifyContent: "flex-end", width: "100%" }}>
                         <Button
-                            onPress={() => checkIfResultIsValid()}
+                            onPress={() => test()}
                             styling={styles.resbtn}
                             text={'Verify'}
                             textstyle={{ fontSize: 16, }}
