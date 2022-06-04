@@ -37,8 +37,7 @@ const Main = () => {
         const token = await AsyncStorage.getItem('access_token')
         const pin = await AsyncStorage.getItem('Pin')
         const refreshtoken = await AsyncStorage.getItem('refresh_Access_Token') 
-        console.log(pin, token,"token--" ,refreshtoken,"refresh--", "firstrender")
-        console.log(pin, "pin===========")
+        // console.log(pin, token,"token--" ,refreshtoken,"refresh--", "firstrender")
 
         if (pin) {
             if (token && refreshtoken) {

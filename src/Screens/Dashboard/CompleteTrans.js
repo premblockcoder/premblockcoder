@@ -13,7 +13,7 @@ const CompleteTrans = ({ navigation }) => {
          <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 0, backgroundColor: colors.blue }} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
-                <CustomHeader text={"Send Bitcoin"} back />
+                <CustomHeader text={"Transaction Sent"} />
                 <View style={styles.containter}>
                     <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', }}>
                         <Image source={Images.check} />
@@ -23,7 +23,7 @@ const CompleteTrans = ({ navigation }) => {
                             Your transaction is on the way!
                         </Text>
                         <Text style={styles.text2}>
-                            You sent 0.00117 BTC($10.00) to an external address</Text>
+                            You sent 0.00117 MATIC ($10.00) to an external address</Text>
                         <TouchableOpacity style={styles.view}
                             onPress={() => navigation.navigate('BitcoinDetail')}>
                             <Text style={styles.text3}>View Details</Text>

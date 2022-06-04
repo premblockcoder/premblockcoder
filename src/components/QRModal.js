@@ -21,7 +21,7 @@ export const QRModal = ({ setModalVisible, Visible, walletaddress, SelectedWalle
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
-                    console.log(result.activityType)
+                    // console.log(result.activityType)
                     // shared with activity type of result.activityType
                 } else {
                     // shared

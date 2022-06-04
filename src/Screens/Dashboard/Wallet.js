@@ -25,15 +25,14 @@ const Wallet = ({ navigation }) => {
     const _balance = async () => {
         if (SelectedWallet || walletaddress[0]?.address) {
             await getBal(SelectedWallet || walletaddress[0]?.address).then(e => {
-                SetBal(e)
-                console.log(e)
+                SetBal(e) 
             })
         }
     }
 
     useEffect(() => {
         _balance()
-    }, [SelectedWallet, walletaddress, bal])
+    }, [SelectedWallet, walletaddress,bal])
 
     const fetchList = async () => {
         const Address = await AsyncStorage.getItem('walletInfoList')
@@ -160,7 +159,7 @@ const Wallet = ({ navigation }) => {
                     </View>
                     <View style={styles.secondview}>
                         <Text style={styles.curr}>Current Balance </Text>
-                        <Text style={styles.price} numberOfLines={1}>${Number(bal)?.toFixed(5) || "0.0"}</Text>
+                        <Text style={styles.price} numberOfLines={1}>${bal ? Number(bal)?.toFixed(5) : "0.0"} </Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
                             <View style={[styles.code, { maxWidth: 120 }]}>
                                 <Text style={styles.textcode} numberOfLines={1}>{SelectedWallet || walletaddress[0]?.address}</Text>

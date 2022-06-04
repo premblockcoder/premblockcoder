@@ -30,6 +30,7 @@ export const Images = {
    wallet3:require('../assets/wallet3.png'),
    error:require('../assets/error.png'),
    BTN: require('../assets/BTN.png'),
+   polygon:require('../assets/polygon.png'),
    send2:require('../assets/send2.png'),
    Recevied:require('../assets/Received.png'),
    Deposit:require('../assets/Deposit.png'),

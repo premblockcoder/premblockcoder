@@ -6,19 +6,32 @@ import { colors } from '../../Res/Colors';
 import { Images } from '../../Res/Images';
 import { sendTrans } from '../../Utils';
 import Toast from 'react-native-toast-message'
+import { CommonActions } from '@react-navigation/native';
 
 
 const ConfirmSend = ({ navigation, route }) => {
-    const { ScanAddress, amount, walletKey } = route?.params || {}
+    const { ScanAddress, amount, walletKey, gasPrice } = route?.params || {}
 
     const _send = () => {
-        sendTrans(ScanAddress, amount, walletKey).then(res => {
-            console.log(res, 'trans------- res ---')
-        })
-        Toast.show({
-            text1: 'Transaction Send.',
-        })
-        navigation.navigate('CompleteTrans')
+        try {
+            sendTrans(ScanAddress, amount, walletKey).then(res => {
+               // console.log(res, 'trans------- res ---')
+            })
+            Toast.show({
+                text1: 'Transaction Send.',
+            })
+            navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: 'CompleteTrans',
+                    },
+                  ],
+                })
+              )
+        }
+        catch { err => console.log(err) }
     }
 
     return (
@@ -31,7 +44,7 @@ const ConfirmSend = ({ navigation, route }) => {
                     <Text style={styles.text}>Transaction Detail </Text>
                     <View style={styles.box}>
                         <Text style={styles.text2}>Currency </Text>
-                        <Text style={styles.text3}>ETH</Text>
+                        <Text style={styles.text3}>polygon</Text>
                     </View>
                     <View style={styles.box2}>
                         <View style={{}}>
@@ -41,11 +54,11 @@ const ConfirmSend = ({ navigation, route }) => {
                     </View>
                     <View style={styles.box2}>
                         <Text style={styles.text2}>Transaction Fee </Text>
-                        <Text style={styles.text3}>0.00001356 BTC (0.12 USD)</Text>
+                        <Text style={styles.text3}>{gasPrice} MATIC (0.12 USD)</Text>
                     </View>
                     <View style={styles.box3}>
                         <Text style={styles.text2}>Total </Text>
-                        <Text style={styles.text3}>0.00022532 BTC (12.14 USD)</Text>
+                        <Text style={styles.text3}>0.00022532 MATIC (12.14 USD)</Text>
                     </View>
                     <View style={{ marginTop: 24 }}>
                         <Button

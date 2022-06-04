@@ -25,7 +25,6 @@ const ForgotPassword = ({ navigation }) => {
       return
     }
     dispatch(forgotPassword(user)).then(res => {
-      console.log(res,"forgot token")
       if (res) {
         Toast.show({
           type: 'success',

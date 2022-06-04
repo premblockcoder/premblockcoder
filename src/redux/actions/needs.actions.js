@@ -21,7 +21,6 @@ export function add_Wallet(params) {
 
       throw response
     } catch (error) {
-      console.log('action failed', error)
       throw error.response
     }
   }
@@ -184,7 +183,6 @@ export function gen2FA(params) {
 
       throw response
     } catch (error) {
-      console.log('action failed', error)
       throw error.response
     }
   }
@@ -241,27 +239,6 @@ export function uploadImage(params) {
   }
 }
 
-
-// export const beginGetNeeds = params => ({
-//   type: needsConstants.GET_NEEDS,
-//   payload: {
-//     request: {
-//       url: API_URLS.MY_POSTED_NEEDS,
-//       params,
-//     },
-//   },
-// })
-
-// export const beginPostNeed = data => ({
-//   type: needsConstants.POST_NEEDS,
-//   payload: {
-//     request: {
-//       url: API_URLS.NEEDS_POST,
-//       method: 'post',
-//       data,
-//     },
-//   },
-// })
 
 // export function getProfile(params) {
 //   return async dispatch => {

@@ -33,7 +33,7 @@ const VerifyEmail = ({ navigation, route }) => {
     const [token, settoken] = useState()
     const t = AsyncStorage.getItem('access_token')
     t.then((e) => { settoken(e) })
-    console.log(token,"token")
+    //console.log(token,"token")
 
     const param = { otp: value, id: token }
 

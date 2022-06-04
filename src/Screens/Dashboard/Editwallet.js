@@ -61,7 +61,7 @@ const EditWallet = ({ navigation, route }) => {
             await AsyncStorage.setItem('walletInfoList', JSON.stringify(postsFav));
             navigation.goBack()
         } catch (error) {
-            console.log('error: ', error);
+          //  console.log('error: ', error);
         }
     };
 

@@ -85,7 +85,6 @@ const Register = ({ navigation }) => {
             return
         }
         dispatch(registerUser(user)).then(res => {
-            console.log(res, 'register =======')
             if (res) {
                 if (res?.user[0]?.id !== olduser?.id) {
                     AsyncStorage.removeItem('Pin')

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SvgUri } from 'react-native-svg';
 import Loader from '../../components/common/Loader';
 import Toast from 'react-native-toast-message';
+import { gasFee } from '../../Utils';
 
 
 const SendBitcoin = ({ navigation, route }) => {
@@ -22,6 +23,7 @@ const SendBitcoin = ({ navigation, route }) => {
     const [userData, setuserData] = useState({ amount: '' })
     const { SelectedWallet, walletaddress, bal } = route?.params || {}
     const [Selected, setSelected] = useState()
+    const [gasPrice, setgasPrice] = useState()
     // const [Visible, setModalVisible] = useState(false)
     // const isLoading = useSelector(state => state.needs.isRequesting)
     // const dispatch = useDispatch()
@@ -65,7 +67,7 @@ const SendBitcoin = ({ navigation, route }) => {
             return
         }
         const walletKey = Selected?.privateKey || walletaddress[0]?.privateKey
-        navigation.navigate('ConfirmSend', { ScanAddress, amount: userData?.amount, walletKey })
+        navigation.navigate('ConfirmSend', { ScanAddress, amount: userData?.amount, walletKey,gasPrice })
     }
 
     // const get_Currencies = () => {
@@ -100,6 +102,15 @@ const SendBitcoin = ({ navigation, route }) => {
     //     )
     // }
 
+    const getFee = () => {
+        gasFee().then(res => {
+            setgasPrice(res)
+        })
+    }
+    useEffect(() => {
+        getFee()
+    })
+
     return (
         <>
             <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
@@ -122,9 +133,9 @@ const SendBitcoin = ({ navigation, route }) => {
                                     <TouchableOpacity style={styles.view}>
                                         {/* // onPress={() => setModalVisible(true)}> */}
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                            <Image source={Images.eth}
-                                                style={styles.img} />
-                                            <Text style={styles.text7}>ETH</Text>
+                                            {/* <Image source={Images.eth}
+                                                style={styles.img} /> */}
+                                            <Text style={styles.text7}>Polygon</Text>
                                         </View>
                                         <Image source={Images.downarrow}
                                             style={styles.img2} />
@@ -134,10 +145,10 @@ const SendBitcoin = ({ navigation, route }) => {
                                     <Text style={styles.text}>Recipient</Text>
                                     <View style={{ flexDirection: 'row', alignItems: "center", marginTop: 6 }}>
                                         <View style={styles.view4}>
-                                            <TextInput style={{ flex: 1, fontFamily: Fonts.SourceSansProRegular, fontSize: 13, paddingHorizontal: 12,color:colors.black }}
+                                            <TextInput style={{ flex: 1, fontFamily: Fonts.SourceSansProRegular, fontSize: 13, paddingHorizontal: 12, color: colors.black }}
                                                 placeholder={"Paste or scan address"} placeholderTextColor={colors.gray}
                                                 value={ScanAddress}
-                                                onChangeText={(t)=> setScanAddress(t)}
+                                                onChangeText={(t) => setScanAddress(t)}
                                             />
                                         </View>
                                         <TouchableOpacity style={styles.view5} onPress={openScanner}>
@@ -154,7 +165,7 @@ const SendBitcoin = ({ navigation, route }) => {
                                                 keyboardType={'number-pad'}
                                                 onChangeText={(a) => setuserData({ ...userData, amount: a })
                                                 } />
-                                            <Text style={styles.text6}>ETH</Text>
+                                            <Text style={styles.text6}>MATIC</Text>
                                         </View>
                                         <Image source={Images.arrow} />
                                         <View style={styles.view2}>
@@ -174,7 +185,7 @@ const SendBitcoin = ({ navigation, route }) => {
                                 </View>
                                 <View style={styles.trans}>
                                     <Text style={styles.text}> Transaction Fee: </Text>
-                                    <Text style={styles.text5}>0.00001356 BTC (0.12 USD)</Text>
+                                    <Text style={styles.text5}>{gasPrice} MATIC (0.12 USD)</Text>
                                 </View>
                                 <View style={{ flex: 1, marginTop: 15 }}>
                                     <Button onPress={_continue}

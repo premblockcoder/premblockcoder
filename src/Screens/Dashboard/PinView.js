@@ -69,7 +69,6 @@ const PinView = ({ navigation, route }) => {
             color: "#FFF",
           }}
           onButtonPress={key => {
-            console.log({ key }, "keyy")
             if (key === "custom_left") {
               pinView.current.clear()
             }

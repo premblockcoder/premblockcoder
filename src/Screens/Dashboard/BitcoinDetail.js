@@ -17,60 +17,60 @@ const BitcoinDetail = ({ navigation, route }) => {
     const Data = [
         {
             id: 1,
-            bitcoinstatus: "Sent Bitcoin",
-            status: "Pending",
-            BTC: "-0.00142263 BTC",
+            bitcoinstatus: "Sent polygon",
+            status: "Success",
+            BTC: "-0.00142263 MATIC",
             amount: "-$12.50",
             img: 'arrow-up-right'
         },
-        {
-            id: 2,
-            bitcoinstatus: "Received Bitcoin",
-            status: "Success",
-            BTC: "-0.00142263 BTC",
-            amount: "-$12.50",
-            img: 'download'
-        },
-        {
-            id: 3,
-            bitcoinstatus: "Received Bitcoin",
-            status: "Success",
-            BTC: "-0.00142263 BTC",
-            amount: "-$12.50",
-            img: 'download'
-        },
-        {
-            id: 4,
-            bitcoinstatus: "Deposit Bitcoin",
-            status: "Cancel",
-            BTC: "-0.00142263 BTC",
-            amount: "-$12.50",
-            img: 'credit-card'
-        },
-        {
-            id: 5,
-            bitcoinstatus: "Received Bitcoin",
-            status: "Pending",
-            BTC: "-0.00142263 BTC",
-            amount: "-$12.50",
-            img: 'download'
-        },
-        {
-            id: 6,
-            bitcoinstatus: "Sent Bitcoin",
-            status: "Success",
-            BTC: "-0.00142263 BTC",
-            amount: "-$12.50",
-            img: 'arrow-up-right'
-        },
-        {
-            id: 7,
-            bitcoinstatus: "Sent Bitcoin",
-            status: "Success",
-            BTC: "-0.00142263 BTC",
-            amount: "-$12.50",
-            img: 'arrow-up-right'
-        },
+        // {
+        //     id: 2,
+        //     bitcoinstatus: "Received Bitcoin",
+        //     status: "Success",
+        //     BTC: "-0.00142263 BTC",
+        //     amount: "-$12.50",
+        //     img: 'download'
+        // },
+        // {
+        //     id: 3,
+        //     bitcoinstatus: "Received Bitcoin",
+        //     status: "Success",
+        //     BTC: "-0.00142263 BTC",
+        //     amount: "-$12.50",
+        //     img: 'download'
+        // },
+        // {
+        //     id: 4,
+        //     bitcoinstatus: "Deposit Bitcoin",
+        //     status: "Cancel",
+        //     BTC: "-0.00142263 BTC",
+        //     amount: "-$12.50",
+        //     img: 'credit-card'
+        // },
+        // {
+        //     id: 5,
+        //     bitcoinstatus: "Received Bitcoin",
+        //     status: "Pending",
+        //     BTC: "-0.00142263 BTC",
+        //     amount: "-$12.50",
+        //     img: 'download'
+        // },
+        // {
+        //     id: 6,
+        //     bitcoinstatus: "Sent Bitcoin",
+        //     status: "Success",
+        //     BTC: "-0.00142263 BTC",
+        //     amount: "-$12.50",
+        //     img: 'arrow-up-right'
+        // },
+        // {
+        //     id: 7,
+        //     bitcoinstatus: "Sent Bitcoin",
+        //     status: "Success",
+        //     BTC: "-0.00142263 BTC",
+        //     amount: "-$12.50",
+        //     img: 'arrow-up-right'
+        // },
     ]
 
     const render = (item) => {
@@ -106,11 +106,11 @@ const BitcoinDetail = ({ navigation, route }) => {
         <>
             <StatusBar backgroundColor={colors.blue} barStyle={"light-content"} />
             <SafeAreaView style={{ flex: 1, backgroundColor: colors.blue }}>
-                <CustomHeader text={coinname || "Bitcoin"} back />
+                <CustomHeader text={coinname || "Polygon"} back />
                 <View style={styles.container}>
                     <View style={styles.view}>
-                        <Image source={Images.BTN} />
-                        <Text style={styles.text}> 0.5 BTC </Text>
+                        <Image source={Images.polygon} style={{width:68,height:68}} />
+                        <Text style={styles.text}> 0.1 MATIC</Text>
                     </View>
                     <View style={styles.btnview}>
                         <TouchableOpacity style={[styles.btn,
